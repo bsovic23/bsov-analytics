@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 
+// Imports - Components/Pages
+import Table from '../components/Table';
+
+// Data and Functions
 import { mockData } from '../data/cme';
 import { topCoursesCompleteFx, topCoursesEnrollFx, enrollmentProfession }  from '../functions/cmeFx';
 
