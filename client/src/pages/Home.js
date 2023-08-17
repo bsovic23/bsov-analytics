@@ -5,24 +5,19 @@ import Table from '../components/Table';
 
 // Data and Functions
 import { mockData } from '../data/cme';
-import { topCoursesCompleteFx, topCoursesEnrollFx, enrollmentProfession }  from '../functions/cmeFx';
+import { topCoursesCompleteFx, topCoursesEnrollFx, enrollmentProfessionFx, treatPtFx }  from '../functions/cmeFx';
 
 const Home = () => {
-    const [coursesEnroll, setTopEnroll] = useState(topCoursesCompleteFx(mockData));
-    const [coursesComplete, setTopComplete] = useState(topCoursesEnrollFx(mockData));
-    const [coursesProfession, setProfession] = useState(enrollmentProfession(mockData));
+    // const [coursesEnroll, setTopEnroll] = useState(topCoursesCompleteFx(mockData));
+    // const [coursesComplete, setTopComplete] = useState(topCoursesEnrollFx(mockData));
+    // const [coursesProfession, setProfession] = useState(enrollmentProfessionFx(mockData));
+    // const [rateCount, setRateCount] = useState(treatPtFx(mockData));
 
     return(
         <section class='page' id='home'>
             <h1>HOME</h1>
             <div>
-                <pre>{JSON.stringify(coursesEnroll, null, 2)}</pre>
-            </div>
-            <div>
-                <pre>{JSON.stringify(coursesComplete, null, 2)}</pre>
-            </div>
-            <div>
-                <pre>{JSON.stringify(coursesProfession, null, 2)}</pre>
+                <pre>{JSON.stringify(rateCount, null, 2)}</pre>
             </div>
         </section>
     )

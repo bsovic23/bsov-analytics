@@ -49,7 +49,7 @@ export const topCoursesEnrollFx = (data) => {
 // Total Enrollments Based on Discipline
 // ========================================================================================================================
 
-export const enrollmentProfession = (data) => {
+export const enrollmentProfessionFx = (data) => {
     const count = {};
 
     for (const obj of data) {
@@ -64,3 +64,30 @@ export const enrollmentProfession = (data) => {
 // ========================================================================================================================
 // Information presented will improve ability to effectively treat and manage patients
 // ========================================================================================================================
+
+export const treatPtFx = (data) => {
+    const count = {};
+
+    for (const obj of data) {
+        let profession = obj.profession;
+        let rate = obj.rate;
+
+        if (rate === '') {
+            continue; // Skip this iteration and move to the next object
+        }
+
+        if (!count[profession]) {
+            count[profession] = {
+                'Strongly Agree': 0,
+                'Agree': 0,
+                'Neutral': 0,
+                'Disagree': 0,
+                'Strongly Disagree': 0
+            };
+        }
+
+        count[profession][rate] = (count[profession][rate] || 0) + 1;
+    }
+
+    return count;
+};
