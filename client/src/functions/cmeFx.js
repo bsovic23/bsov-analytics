@@ -62,5 +62,5 @@ export const enrollmentProfession = (data) => {
 };
 
 // ========================================================================================================================
-// Total Enrollments Based on Discipline
+// Information presented will improve ability to effectively treat and manage patients
 // ========================================================================================================================
