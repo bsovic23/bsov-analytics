@@ -4,27 +4,26 @@ import React, { useState } from 'react';
 import Table from '../components/Table';
 
 // Data and Functions
-import { mockData } from '../data/cme';
+// import { mockData } from '../data/cme';
+import { mockRegData } from '../data/registry';
 import { topCoursesCompleteFx, topCoursesEnrollFx, enrollmentProfessionFx, treatPtFx }  from '../functions/cmeFx';
+import { potentialDupsFx } from '../functions/registryFx';
 
 const Home = () => {
     // const [coursesEnroll, setTopEnroll] = useState(topCoursesCompleteFx(mockData));
     // const [coursesComplete, setTopComplete] = useState(topCoursesEnrollFx(mockData));
-    //const [coursesProfession, setProfession] = useState(enrollmentProfessionFx(mockData));
+    // const [coursesProfession, setProfession] = useState(enrollmentProfessionFx(mockData));
     // const [rateCount, setRateCount] = useState(treatPtFx(mockData));
+    const [dups, setDups] = useState(potentialDupsFx(mockRegData));
 
     return(
         <section class='page' id='home'>
             <h1>HOME</h1>
             <div>
-                <pre>{JSON.stringify(coursesProfession, null, 2)}</pre>
+                <pre>{JSON.stringify(dups, null, 2)}</pre>
             </div>
             <div>
-                <Table 
-                    objCount={1}
-                    data={coursesProfession}
-                    tableTitle={"Number of Professions"}
-                />
+
             </div>
         </section>
     )
