@@ -10,14 +10,21 @@ import { topCoursesCompleteFx, topCoursesEnrollFx, enrollmentProfessionFx, treat
 const Home = () => {
     // const [coursesEnroll, setTopEnroll] = useState(topCoursesCompleteFx(mockData));
     // const [coursesComplete, setTopComplete] = useState(topCoursesEnrollFx(mockData));
-    // const [coursesProfession, setProfession] = useState(enrollmentProfessionFx(mockData));
+    //const [coursesProfession, setProfession] = useState(enrollmentProfessionFx(mockData));
     // const [rateCount, setRateCount] = useState(treatPtFx(mockData));
 
     return(
         <section class='page' id='home'>
             <h1>HOME</h1>
             <div>
-                <pre>{JSON.stringify(rateCount, null, 2)}</pre>
+                <pre>{JSON.stringify(coursesProfession, null, 2)}</pre>
+            </div>
+            <div>
+                <Table 
+                    objCount={1}
+                    data={coursesProfession}
+                    tableTitle={"Number of Professions"}
+                />
             </div>
         </section>
     )
