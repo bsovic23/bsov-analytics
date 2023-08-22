@@ -2,6 +2,39 @@
 //  Surveys Duplicates that do not have the same answers
 // ========================================================================================================================
 
+// Count of each unique ID per survey
+export const surveyCount = (data) => {
+    const surveyN = {};
+    const surveyCount = {};
+
+    for (const obj of data) {
+        const id = obj.id;
+        const survey = obj.survey;
+
+        if (!surveyN[survey]) {
+            surveyN[survey] = {
+                completedSurveyId: [],
+            };
+
+            surveyCount[survey] = {
+                surveyCount: 0
+            }
+        }
+
+        if (!surveyN[survey].completedSurveyId.includes(id)) {
+            surveyN[survey].completedSurveyId.push(id)
+            surveyCount[survey].surveyCount ++;
+        } else {
+            continue;
+        }
+    }
+
+    return surveyCount;
+};
+
+
+// Potential Duplicate IDs
+
 export const potentialDupsFx = (data) => {
     const potentialErrorIds = {};
 
