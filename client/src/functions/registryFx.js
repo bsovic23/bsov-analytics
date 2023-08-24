@@ -73,3 +73,42 @@ export const potentialDupsFx = (data) => {
 
     return errorIdsWithQuestions;
 };
+
+
+// --------------------------------------------------------- Creating the master sheet for analysis -------------------------------------- //
+
+export const studyPopulation = (data) => {
+    const registryPt = {};
+
+    for (const obj of data) {
+        let id = obj.patient_id;
+        let survey = obj.survey_name;
+        let question = obj.question_key;
+        let questionType = obj.response_type;
+        let answer = obj.effective_text;
+        let site = obj.site_name;
+        let date = obj.created;
+
+        if (!registryPt[id]) {
+            registryPt[id] = {
+                recruited: site,
+            };
+        }
+
+        if (!registryPt[id][survey]) {
+            registryPt[id][survey] = {};
+        }
+
+        if (!registryPt[id][survey][question]) {
+            if (questionType === 'multi-select') {
+                registryPt[id][survey][question] = [answer];
+            } else {
+                registryPt[id][survey][question] = answer;
+            }
+        } else if (questionType === 'multi-select') {
+            registryPt[id][survey][question].push(answer);
+        }
+    }
+
+    return registryPt;
+};
