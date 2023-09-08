@@ -112,3 +112,115 @@ export const studyPopulation = (data) => {
 
     return registryPt;
 };
+
+
+
+// --------------------------------------------------------- Checking N for Registry -------------------------------------- //
+
+export const registryIdN = (data) => {
+    const uniqueId = {};
+    const dupSurveysCount = {};
+
+    for (const obj of data) {
+        const id = obj.patient_id;
+        const survey = obj.survey_name;
+        const surveyId  = obj.patient_survey_id;
+        const site = obj.site;
+        
+        if (!uniqueId[id]) {
+            uniqueId[id] = {
+                "id": id,
+                "site": site,
+                "surveys": {}
+            };
+        }
+
+        if (!uniqueId[id].surveys[survey]) {
+            uniqueId[id].surveys[survey] = [];
+        }
+
+        // Check if surveyId already exists in the array, if not, add it
+        if (!uniqueId[id].surveys[survey].some(item => item.surveyId === surveyId)) {
+            uniqueId[id].surveys[survey].push({ surveyId });
+
+            // Check if this survey has been taken more than once by the same individual
+            if (uniqueId[id].surveys[survey].length > 1) {
+                if (!dupSurveysCount[survey]) {
+                    dupSurveysCount[survey] = 1;
+                } else {
+                    dupSurveysCount[survey]++;
+                }
+            }
+        }
+    }
+
+    return dupSurveysCount;
+};
+
+// ----------------------------------------
+
+export const registryIdNTwo = (data) => {
+    const surveyIds = {};
+
+    for (const obj of data) {
+        let survey_id = obj.patient_survey_id;
+        let survey = obj.survey_name;
+
+        if (!surveyIds[survey]) {
+            surveyIds[survey] = {
+                "completedSurveyIds": []
+            }
+        }
+
+        // Check if survey_id is not already in the completedSurveyIds array
+        if (surveyIds[survey]["completedSurveyIds"].indexOf(survey_id) === -1) {
+            surveyIds[survey]["completedSurveyIds"].push(survey_id);
+        }
+    }
+
+    const surveyLengths = {};
+
+    // Iterate through surveyIds and calculate the length for each survey
+    for (const survey in surveyIds) {
+        surveyLengths[survey] = surveyIds[survey]["completedSurveyIds"].length;
+    }
+
+    return surveyLengths;
+};
+
+// ------------------ Check unique ids by site ---- 
+
+export const registrySiteId = (data) => {
+    const uniqueIds = {}; // To store unique patient IDs
+    const siteCount = [];
+
+    for (const obj of data) {
+        let id = obj.patient_id;
+        let site = obj.site_name;
+
+        // Check if the patient ID is not already counted
+        if (!uniqueIds[id]) {
+            uniqueIds[id] = true; // Mark the patient ID as counted
+            siteCount.push({ "id": id, "site": site });
+        }
+    }
+
+    // Initialize site count objects
+    const siteCounts = {
+        "dr-bhanu-prasad": 0,
+        "alport": 0,
+        "empty": 0,
+        "geisinger": 0
+    };
+
+    // Count occurrences of specific site IDs
+    for (const obj of siteCount) {
+        let site = obj.site;
+
+        if (siteCounts.hasOwnProperty(site)) {
+            siteCounts[site]++;
+        }
+    }
+
+    return siteCounts;
+}
