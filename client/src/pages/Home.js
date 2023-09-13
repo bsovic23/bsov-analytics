@@ -10,10 +10,10 @@ import Table from '../components/Table';
 // import { mockSCMdata } from '../data/scm';
 
 // Functions
-import { topCoursesCompleteFx, topCoursesEnrollFx, enrollmentProfessionFx, treatPtFx,  }  from '../functions/cmeFx';
+import { topCoursesCompleteFx, topCoursesEnrollFx, enrollmentProfessionFx, treatPtFx, scoreChange }  from '../functions/cmeFx';
 import { potentialDupsFx, surveyCount, studyPopulation, registryIdN, registryIdNTwo, registrySiteId } from '../functions/registryFx';
 import { klcModulesFx, klcModuleScores } from '../functions/klcFx';
-import { scmCleanup, scmStats, scmRoleWordCount, scoreChange } from '../functions/scmFx';
+import { scmCleanup, scmStats, scmRoleWordCount } from '../functions/scmFx';
 
 const Home = () => {
 
@@ -29,7 +29,6 @@ const Home = () => {
     // const [dups, setDups] = useState(surveyCount(mockRegData));
     // const [pt, setDups] = useState(studyPopulation(mockRegData));
     // const [unique, setDups] = useState(registrySiteId(mockRegData));
-
 
     // ----- KLC Pre/post Analysis
     // const [klcCourses, setKlcCourses] = useState(klcModulesFx(mockKlcData));
