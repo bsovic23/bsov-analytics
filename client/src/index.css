@@ -11,3 +11,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* ============================================================================ */
+
+
+
+
+/* ------ Page ------ */
+.page .analysis-buttons {
+  display: block;
+  margin-top: 10px;
+  padding: 5px;
+}
