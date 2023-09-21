@@ -21,6 +21,7 @@ const Page = ({ pageTitle, navChoices, buttons }) => {
                     <button 
                         key={button.id}
                         onClick={() => handleButtonClick(button.data)}
+                        class='analysis-buttons'
                     >
                         {button.name}
                     </button>

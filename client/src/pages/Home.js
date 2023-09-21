@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Table from '../components/Table';
 import Cme from './CME';
+import Registry from './Registry';
+import DataDictionary from './DataDictionary';
 
 // Data
 // import { mockRegData } from '../data/registry';
@@ -18,11 +20,7 @@ import { scmCleanup, scmStats, scmRoleWordCount, scoreChange } from '../function
 
 const Home = () => {
 
-    // ----- Registry
-    // const [dups, setDups] = useState(potentialDupsFx(mockRegData));
-    // const [dups, setDups] = useState(surveyCount(mockRegData));
-    // const [pt, setDups] = useState(studyPopulation(mockRegData));
-    // const [unique, setDups] = useState(registrySiteId(mockRegData));
+    
 
     // ----- KLC Pre/post Analysis
     // const [klcCourses, setKlcCourses] = useState(klcModulesFx(mockKlcData));
@@ -45,7 +43,7 @@ const Home = () => {
                 < Navbar navElements={navChoices} />
             </header>
             <div>
-                < Cme />
+                < DataDictionary />
             </div>
             <div>
                 Please click the nav options above to run the
