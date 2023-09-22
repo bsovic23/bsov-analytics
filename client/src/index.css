@@ -12,10 +12,22 @@ code {
     monospace;
 }
 
+* {
+  background-color: aquamarine;
+}
+
 /* ============================================================================ */
+/* ------ Header ------ */
+#home header {
+  background-color: gray;
+}
 
-
-
+/* ------ Navbar ------ */
+.navbar button {
+  padding: 10px;
+  background-color: blueviolet;
+  margin: 10px;
+}
 
 /* ------ Page ------ */
 .page .analysis-buttons {

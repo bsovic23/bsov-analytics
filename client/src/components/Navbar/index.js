@@ -1,12 +1,24 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Navbar = ({navElements}) => {
+const Navbar = () => {
+
+    const navElements = [
+        {id: 1, text: 'Home', link: "/bsov-analytics"},
+        {id: 2, text: 'Data Dictionary', link: "/DataDictionary"},
+    ];
+
     return(
         <section class='navbar'>
             {navElements.map((nav) => (
-                <li key={nav.id}>
-                    {nav.text}
-                </li>
+              <Link 
+                key={nav.id}
+                to={nav.link}
+                >
+                    <button>
+                        {nav.text}
+                    </button>
+                </Link>
             ))}
         </section>
     )

@@ -19,10 +19,6 @@ const DataDictionary = () => {
 
     // Page Variables
     const pageTitle ="Data Dictionary Analytics";
-
-    const navChoices = [
-        {id: 1, text: "Data Dictionary"}
-    ];
     
     const analysisButtons = [
         {id: 1, "name": "Dup Check Same Group and Same Term", "data": dictionaryDups},
@@ -33,7 +29,7 @@ const DataDictionary = () => {
 
     return(
         <section>
-            <Page pageTitle={pageTitle} navChoices={navChoices} buttons={analysisButtons} />
+            <Page pageTitle={pageTitle} buttons={analysisButtons} />
         </section>
     )
 };

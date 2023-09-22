@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 // Page/Component Imports
 import Navbar from '../Navbar';
 
-const Page = ({ pageTitle, navChoices, buttons }) => {
+const Page = ({ pageTitle, buttons }) => {
     const [selectedData, setSelectedData] = useState(null);
 
     const handleButtonClick = (data) => {
@@ -14,7 +14,7 @@ const Page = ({ pageTitle, navChoices, buttons }) => {
         <section class='page'>
             <header>
                 <h1>{pageTitle}</h1>
-                < Navbar navElements={navChoices} />
+                < Navbar />
             </header>
             <div>
                 {buttons.map((button) => (
@@ -28,7 +28,7 @@ const Page = ({ pageTitle, navChoices, buttons }) => {
                 ))}
             </div>
             <div>
-                {(!selectedData) ? (
+                {(selectedData === null) ? (
                     <div>
                         Select button above to view data
                     </div>
