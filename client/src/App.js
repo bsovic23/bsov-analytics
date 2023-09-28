@@ -4,10 +4,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // Page Imports
 import Home from '../src/pages/Home';
 import DataDictionary from './pages/DataDictionary';
+import Registry from './pages/Registry';
 
 const routes = [
   {path: "/bsov-analytics", element: <Home />},
   {path: "/DataDictionary", element: <DataDictionary />},
+  {path: "/Registry", element: <Registry />},
 ]
 
 function App() {

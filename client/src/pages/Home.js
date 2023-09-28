@@ -6,7 +6,7 @@ import Navbar from '../components/Navbar';
 const Home = () => {
     return(
         <section class='page' id='home'>
-            <header>
+            <header class='header'>
                 <h1>HOME</h1>
                 < Navbar />
             </header>

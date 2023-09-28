@@ -34,7 +34,7 @@ const Page = ({ pageTitle, buttons }) => {
                     </div>
                 ) : (
                     <div>
-                        <pre>{JSON.stringify(selectedData, null, 2)}</pre>
+                        <pre class='json-display'>{JSON.stringify(selectedData, null, 2)}</pre>
                     </div>
                 )}
             </div>

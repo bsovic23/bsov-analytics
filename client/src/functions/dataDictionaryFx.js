@@ -42,7 +42,7 @@ export const dupCheckFx1 = (data) => {
   const totalArrays = filteredTerms.length;
 
   // Create the one-line sentence
-  const sentence = `There are ${totalObjects} number of objects, and ${totalArrays} number of arrays`;
+  const sentence = `There are ${totalObjects} number of rows to be checked, and ${totalArrays} number of variables`;
 
   return { sentence, filteredTerms };
 };
@@ -87,7 +87,7 @@ export const dupCheckFx2 = (data) => {
   const totalArrays = filteredTerms.length;
 
   // Create the one-line sentence
-  const sentence = `There are ${totalObjects} number of objects, and ${totalArrays} number of arrays`;
+  const sentence = `There are ${totalObjects} number of rows to be checked, and ${totalArrays} number of variables`;
 
   return { sentence, filteredTerms };
 };
@@ -133,7 +133,7 @@ export const dupCheckFx3 = (data) => {
   const totalArrays = filteredTerms.length;
 
   // Create the one-line sentence
-  const sentence = `There are ${totalObjects} number of objects, and ${totalArrays} number of arrays`;
+  const sentence = `There are ${totalObjects} number of rows to be checked, and ${totalArrays} number of variables`;
 
   return { sentence, filteredTerms };
 };
@@ -185,7 +185,7 @@ const totalObjects = filteredTerms.reduce((count, termArray) => count + termArra
 const totalArrays = filteredTerms.length;
 
 // Create the one-line sentence
-const sentence = `There are ${totalObjects} number of objects, and ${totalArrays} number of arrays`;
+const sentence = `There are ${totalObjects} number of rows to be checked, and ${totalArrays} number of variables`;
 
 return { sentence, filteredTerms };
 };

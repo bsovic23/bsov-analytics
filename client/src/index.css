@@ -13,13 +13,13 @@ code {
 }
 
 * {
-  background-color: aquamarine;
+  background-color: rgb(180, 171, 171);
 }
 
 /* ============================================================================ */
 /* ------ Header ------ */
-#home header {
-  background-color: gray;
+#home .header, #home .navbar {
+  background-color: rgb(27, 140, 192);
 }
 
 /* ------ Navbar ------ */
@@ -34,4 +34,24 @@ code {
   display: block;
   margin-top: 10px;
   padding: 5px;
+  background-color: rgb(204, 46, 46);
+}
+
+.page .analysis-buttons:hover {
+  border-color: yellow;
+}
+
+.json-display {
+  font-size: 16px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin: 5px 0;
+}
+
+.even {
+  background-color: #d37474; 
+}
+
+.odd {
+  background-color: #79bbc7; 
 }

@@ -3,20 +3,27 @@
 // ========================================================================================================================
 
 // ========================================================================================================================
-//  mockDeleteData Analysis
+//  Raw Data Analysis   [ALL RAW DATA]
 // ========================================================================================================================
 
-// Count of Unique Ids in the deleteData file
+// Count of Unique Ids
 
-export const deleteDataUniqueId = (data) => {
+export const allDataId = (data) => {
     let uniqueIds = {};
+    let alport = 0;
+    let empty = 0;
+    let geisinger = 0;
+    let prasad = 0;
+
 
     for (const obj of data) {
         let id = obj.patient_id;
+        let site = obj.site_name;
 
         if (!uniqueIds[id]) {
             uniqueIds[id] = {
-                "id": id
+                "id": id,
+                "site": site
             }
         };
 
@@ -25,13 +32,156 @@ export const deleteDataUniqueId = (data) => {
         };
     }
 
+    for (const id in uniqueIds) {
+        let obj = uniqueIds[id]
+        let site = obj.site
+
+        if (site === "alport") {
+            alport++;
+        } else if (site === "empty") {
+            empty++;
+        } else if (site === "geisinger") {
+            geisinger++;
+        } else if (site === "dr-bhanu-prasad") {
+            prasad++;
+        }
+    }
+
     let uniqueIdsLength = Object.keys(uniqueIds).length;
 
-    return uniqueIdsLength;
+    return `There are ${uniqueIdsLength} unique Ids in the All Raw Data file. Site Count = Alport: ${alport}, NKF: ${empty}, Geisinger: ${geisinger}, Prasad: ${prasad}`;
 };
 
 // ========================================================================================================================
-//  A_Original Analysis
+//  mockDeleteData Analysis   [work.delete]
+// ========================================================================================================================
+
+// Count of Unique Ids in the deleteData file
+
+export const deleteDataUniqueId = (data) => {
+    let uniqueIds = {};
+    let alport = 0;
+    let empty = 0;
+    let geisinger = 0;
+    let prasad = 0;
+
+
+    for (const obj of data) {
+        let id = obj.patient_id;
+        let site = obj.site_name;
+
+        if (!uniqueIds[id]) {
+            uniqueIds[id] = {
+                "id": id,
+                "site": site
+            }
+        };
+
+        if (uniqueIds[id]) {
+            continue;
+        };
+    }
+
+    for (const id in uniqueIds) {
+        let obj = uniqueIds[id]
+        let site = obj.site
+
+        if (site === "alport") {
+            alport++;
+        } else if (site === "empty") {
+            empty++;
+        } else if (site === "geisinger") {
+            geisinger++;
+        } else if (site === "dr-bhanu-prasad") {
+            prasad++;
+        }
+    }
+
+    let uniqueIdsLength = Object.keys(uniqueIds).length;
+
+    return `There are ${uniqueIdsLength} unique Ids in Delete Data (work.Delete) file. Site Count = Alport: ${alport}, NKF: ${empty}, Geisinger: ${geisinger}, Prasad: ${prasad}`;
+};
+
+// Count of Unique Ids that have just an id and no other information
+
+export const deleteDataEmptyInfo = (data) => {
+    let uniqueIds = {};
+    let emptyInfoCount = 0;
+
+    for (const obj of data) {
+        let id = obj.patient_id;
+        let gender = obj.gender_at_birth_name;
+        let race = obj.race_name;
+        let ethnicity = obj.ethnicity_name;
+        let dob = obj.year_of_birth;
+
+        if (!uniqueIds[id]) {
+            uniqueIds[id] = {
+                "id": id,
+                "gender": gender,
+                "race": race,
+                "ethnicity": ethnicity,
+                "dob": dob
+            }
+        }
+    }
+
+    for (const id in uniqueIds) {
+        let obj = uniqueIds[id]
+        let gender = obj.gender || "";
+        let race = obj.race || "";
+        let ethnicity = obj.ethnicity || "";
+        let dob = obj.dob || "";
+        
+        if (gender === "" && race === "" && ethnicity === "" && dob === "") {
+            emptyInfoCount += 1;
+        } 
+    }
+
+    return `There are ${emptyInfoCount} Ids in the delete file that have no gender, race, ethnicity, AND dob`;
+};
+
+// Count of Unique Ids that just have a birth year and no other information
+
+export const deleteDataDobOnly = (data) => {
+    let uniqueIds = {};
+    let emptyInfoCount = 0;
+
+    for (const obj of data) {
+        let id = obj.patient_id;
+        let gender = obj.gender_at_birth_name;
+        let race = obj.race_name;
+        let ethnicity = obj.ethnicity_name;
+        let dob = obj.year_of_birth;
+
+        if (!uniqueIds[id]) {
+            uniqueIds[id] = {
+                "id": id,
+                "gender": gender,
+                "race": race,
+                "ethnicity": ethnicity,
+                "dob": dob
+            }
+        }
+    }
+
+    for (const id in uniqueIds) {
+        let obj = uniqueIds[id]
+        let gender = obj.gender || "";
+        let race = obj.race || "";
+        let ethnicity = obj.ethnicity || "";
+        let dob = obj.dob || "";
+        
+        if (gender === "" && race === "" && ethnicity === "" && dob !== "") {
+            emptyInfoCount += 1;
+        } 
+    }
+
+    return `There are ${emptyInfoCount} Ids in the delete file that only have a DOB year but no gender, race, ethnicity, dob`;
+};
+
+// ========================================================================================================================
+//  A_Original Analysis  [work.a_original]
 // ========================================================================================================================
 
 // Site Count for Unique Ids
@@ -54,12 +204,24 @@ export const aOriginalSiteCount = (data) => {
 };
 
 // ========================================================================================================================
-//  MockFinalData Analysis
+//  MockFinalData Analysis  (Merged file work.z_merge i think)
 // ========================================================================================================================
 
 
 
 
+
+
+
+
+
+
+
+
+
+// ========================================================================================================================
+//  DELETE / COPY / REFORMAT FUNCTIONS BELOW INTO THE CORRECT CATEGORIES ABOVE
+// ========================================================================================================================
 
 
 

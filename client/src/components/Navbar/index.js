@@ -6,6 +6,7 @@ const Navbar = () => {
     const navElements = [
         {id: 1, text: 'Home', link: "/bsov-analytics"},
         {id: 2, text: 'Data Dictionary', link: "/DataDictionary"},
+        {id: 3, text: 'Registry', link: "/Registry"},
     ];
 
     return(
