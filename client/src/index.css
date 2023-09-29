@@ -12,9 +12,6 @@ code {
     monospace;
 }
 
-* {
-  background-color: rgb(180, 171, 171);
-}
 
 /* ============================================================================ */
 /* ------ Header ------ */
@@ -48,10 +45,23 @@ code {
   margin: 5px 0;
 }
 
-.even {
-  background-color: #d37474; 
+/* Component - Data Dictionary */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.odd {
-  background-color: #79bbc7; 
+.data-table th, .data-table td {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+.data-table tr.blue {
+  background-color: rgba(0, 255, 221, 0.555);
+  color: black;
+}
+
+.data-table tr.white {
+  background-color: white;
+  color: black; 
 }

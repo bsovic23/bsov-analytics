@@ -5,13 +5,13 @@ import Page from '../components/Page';
 
 // Data imports
 // import { registryMockRawData } from '../data/registryRawData';
-import { mockDeleteData } from '../data/registryDelete';
+// import { mockDeleteData } from '../data/registryDelete';
 // import { mockA_OrginalData } from '';
 // import { mockFinalData } from '';
 
 // Function Imports
 // import { allDataId } from '../functions/registryFx';
-import { deleteDataUniqueId, deleteDataEmptyInfo, deleteDataDobOnly } from '../functions/registryFx';
+// import { deleteDataUniqueId, deleteDataEmptyInfo, deleteDataDobOnly } from '../functions/registryFx';
 
 const Registry = () => {
     

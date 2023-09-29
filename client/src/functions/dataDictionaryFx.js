@@ -37,14 +37,7 @@ export const dupCheckFx1 = (data) => {
     (termArray) => termArray.length > 1
   );
 
-  // Calculate the total number of objects and arrays
-  const totalObjects = filteredTerms.reduce((count, termArray) => count + termArray.length, 0);
-  const totalArrays = filteredTerms.length;
-
-  // Create the one-line sentence
-  const sentence = `There are ${totalObjects} number of rows to be checked, and ${totalArrays} number of variables`;
-
-  return { sentence, filteredTerms };
+  return { filteredTerms };
 };
 
 // ----- Same Group, Term, Defintion
@@ -82,14 +75,7 @@ export const dupCheckFx2 = (data) => {
     (termArray) => termArray.length > 1
   );
 
-  // Calculate the total number of objects and arrays
-  const totalObjects = filteredTerms.reduce((count, termArray) => count + termArray.length, 0);
-  const totalArrays = filteredTerms.length;
-
-  // Create the one-line sentence
-  const sentence = `There are ${totalObjects} number of rows to be checked, and ${totalArrays} number of variables`;
-
-  return { sentence, filteredTerms };
+  return { filteredTerms };
 };
 
 

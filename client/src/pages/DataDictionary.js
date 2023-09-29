@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // Component/Page Imports
-import Page from '../components/Page';
+import DataDictionaryPage from '../components/DataDictionary';
 
 // Data imports
 import { mockDataDictionaryData } from '../data/dataDictionary';
@@ -29,7 +29,7 @@ const DataDictionary = () => {
 
     return(
         <section>
-            <Page pageTitle={pageTitle} buttons={analysisButtons} />
+            <DataDictionaryPage pageTitle={pageTitle} buttons={analysisButtons} />
         </section>
     )
 };
