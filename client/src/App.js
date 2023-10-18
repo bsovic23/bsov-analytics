@@ -5,11 +5,13 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from '../src/pages/Home';
 import DataDictionary from './pages/DataDictionary';
 import Registry from './pages/Registry';
+import Klc from './pages/KLC';
 
 const routes = [
-  {path: "/bsov-analytics", element: <Home />},
+  {path: "/", element: <Home />},
   {path: "/DataDictionary", element: <DataDictionary />},
   {path: "/Registry", element: <Registry />},
+  {path: "/Klc", element: <Klc />},
 ]
 
 function App() {

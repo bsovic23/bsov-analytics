@@ -13,23 +13,30 @@ const DataDictionaryPage = ({ pageTitle, buttons }) => {
         setSelectedData(data);
     };
 
-      const handleKeepClick = (rowIndex) => {
-        const updatedStates = [...rowStates];
-        updatedStates[rowIndex] = 'keep';
-        setRowStates(updatedStates);
-      };
-      
-      const handleDeleteClick = (rowIndex) => {
-        const updatedStates = [...rowStates];
-        updatedStates[rowIndex] = 'delete';
-        setRowStates(updatedStates);
-      };
-      
-      const handleMergeClick = (rowIndex) => {
-        const updatedStates = [...rowStates];
-        updatedStates[rowIndex] = 'merge';
-        setRowStates(updatedStates);
-      };
+    const handleKeepClick = (rowIndex) => {
+    const updatedStates = [...rowStates];
+    updatedStates[rowIndex] = 'keep';
+    setRowStates(updatedStates);
+    console.log(rowIndex);
+    };
+    
+    const handleDeleteClick = (rowIndex) => {
+    const updatedStates = [...rowStates];
+    updatedStates[rowIndex] = 'delete';
+    setRowStates(updatedStates);
+    };
+    
+    const handleMergeClick = (rowIndex) => {
+    const updatedStates = [...rowStates];
+    updatedStates[rowIndex] = 'merge';
+    setRowStates(updatedStates);
+    };
+
+    const handleReviewClick = (rowIndex) => {
+    const updatedStates = [...rowStates];
+    updatedStates[rowIndex] = 'review';
+    setRowStates(updatedStates);
+    };
 
     return (
         <section className='page'>
@@ -55,6 +62,7 @@ const DataDictionaryPage = ({ pageTitle, buttons }) => {
                     <table className="data-table">
                         <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>Group</th>
                                 <th>Term</th>
                                 <th>Term Owner</th>
@@ -67,11 +75,12 @@ const DataDictionaryPage = ({ pageTitle, buttons }) => {
                         <tbody>
                             {selectedData.filteredTerms.map((innerArray, index) => (
                                 <React.Fragment key={index}>
-                                    {innerArray.map((item, itemIndex) => (
+                                    {innerArray.map((item) => (
                                         <tr
-                                            key={itemIndex}
+                                            key={item.id}
                                             class={index % 2 === 0 ? 'blue' : 'white'}
                                         >
+                                            <td>{item.id}</td>
                                             <td>{item.Group}</td>
                                             <td>{item.Term}</td>
                                             <td>{item['Term Owner']}</td>
@@ -80,9 +89,10 @@ const DataDictionaryPage = ({ pageTitle, buttons }) => {
                                             <td>{item['Additional Comments']}</td>
                                             <td>
                                             <DictionaryButtons
-                                                onKeepClick={() => handleKeepClick(itemIndex)}
-                                                onDeleteClick={() => handleDeleteClick(itemIndex)}
-                                                onMergeClick={() => handleMergeClick(itemIndex)}
+                                                onKeepClick={() => handleKeepClick(item.id)}
+                                                onDeleteClick={() => handleDeleteClick(item.id)}
+                                                onMergeClick={() => handleMergeClick(item.id)}
+                                                onReviewClick={() => handleReviewClick(item.id)}
                                             />
                                             </td>
                                         </tr>

@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom';
 const Navbar = () => {
 
     const navElements = [
-        {id: 1, text: 'Home', link: "/bsov-analytics"},
+        {id: 1, text: 'Home', link: "/"},
         {id: 2, text: 'Data Dictionary', link: "/DataDictionary"},
         {id: 3, text: 'Registry', link: "/Registry"},
+        {id: 4, text: 'KLC', link: "/Klc"},
     ];
 
     return(

@@ -2,62 +2,65 @@
 //  KLC Pre/Post Survey Review
 // ========================================================================================================================
 
-export const klcModulesFx = (data) => {
-    const moduleCount = {};
+// ========================================================================================================================
+//  Score Avg, Change, Total Missed Questions, Most Missed Questions For Each Module
+// ========================================================================================================================
 
-    for (const obj of data) {
+export const klcMissedQuestions = (moduleId, surveyData, answersData) => {
+    const filteredSurveyData = surveyData.filter(item => item.moduleId === moduleId && item["Course Completed"] === true);
+    const filteredAnswersData = answersData.filter(item => item.Id === moduleId);
+  
+    // Missed Question Analysis
+    const missedQuestionCounts = {};
+  
+    filteredSurveyData.forEach(surveyItem => {
+      for (const question in surveyItem) {
+        if (question !== 'moduleId' || question !== 'Course Complete' || question !== 'Score_Pretest' || question !== 'Score') {
+          const userAnswer = surveyItem[question];
+          
+          filteredAnswersData.forEach(answerItem => {
+            const correctAnswer = answerItem[question];
+  
+            if (userAnswer !== correctAnswer) {
 
-        const module = obj.module;
-
-        if (!moduleCount[module]) {
-            moduleCount[module] = {
-                count: 0
-            };
+              if (!missedQuestionCounts[question]) {
+                missedQuestionCounts[question] = 1;
+              } else {
+                missedQuestionCounts[question]++;
+              }
+            }
+          });
         }
-
-        moduleCount[module].count ++;
-    }
-
-    return moduleCount;
-};
-
-// Determines the Number of individuals who increased, stayed the same (if score not already 100), and decreased for each course, as well as avg scores
-
-export const klcModuleScores = (data) => {
-    const klcAvgScores = {};
-
-    data.forEach(obj => {
-        const pretest = obj.pretest;
-        const posttest = obj.posttest;
-        const course = obj.course_id;
-        const scoreChange = posttest - pretest;
-    
-        if (!klcAvgScores[course]) {
-            klcAvgScores[course] = { n: 0, preScoreTotal: 0, postScoreTotal: 0, increase: 0, same: 0, decrease: 0, scored100: 0 };
-        }
-    
-        if (scoreChange > 0) {
-            klcAvgScores[course].increase++;
-        } else if (scoreChange === 0 && (posttest !== 1 && pretest !== 1)) {
-            klcAvgScores[course].same++;
-        } else if (scoreChange < 0) { 
-            klcAvgScores[course].decrease++;
-        } else {
-            klcAvgScores[course].scored100++;
-        }
-    
-        klcAvgScores[course].preScoreTotal += pretest;
-        klcAvgScores[course].postScoreTotal += posttest;
-        klcAvgScores[course].n++;
+      }
     });
 
-    for (const course in klcAvgScores) {
-        if (klcAvgScores.hasOwnProperty(course)) {
-            const total = klcAvgScores[course].n;
-            klcAvgScores[course].preScoreAvg = klcAvgScores[course].preScoreTotal / total;
-            klcAvgScores[course].postScoreAvg = klcAvgScores[course].postScoreTotal / total;
-        }
+    const moduleChosen = moduleId;
+    const totalMissedQuestionsCount = Object.values(missedQuestionCounts).reduce((total, count) => total + count, 0);
+    const sortedMissedQuestions = Object.entries(missedQuestionCounts).sort((a, b) => b[1] - a[1]);
+
+    // Score Analysis
+    const scoreAnalysis = { n: 0, preScore: 0, postScore: 0, preAvg: 0, postAvg: 0, scoreInc: 0, scoreDec: 0, scoreSame: 0, scoreBoth100: 0 };
+    
+    for (const obj of filteredSurveyData) {
+      let preScoreId = obj["Score_Pretest"];
+      let postScoreId = obj["Score"];
+      let scoreChangeId = postScoreId - preScoreId;
+
+      scoreAnalysis.preScore += preScoreId;
+      scoreAnalysis.postScore += postScoreId;
+      scoreAnalysis.n ++;
+      
+      if (scoreChangeId > 0) {
+        scoreAnalysis.scoreInc ++;
+      } else if (scoreChangeId < 0) {
+        scoreAnalysis.scoreDec ++;
+      } else if (scoreChangeId === 0 && preScoreId !== 1) {
+        scoreAnalysis.scoreSame ++;
+      } else scoreAnalysis.scoreBoth100 ++;
     }
 
-    return klcAvgScores;
-};
+    scoreAnalysis.preAvg = scoreAnalysis.preScore / scoreAnalysis.n;
+    scoreAnalysis.postAvg = scoreAnalysis.postScore / scoreAnalysis.n;
+    
+    return { moduleChosen, scoreAnalysis, totalMissedQuestionsCount, sortedMissedQuestions };
+  };
