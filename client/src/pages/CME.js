@@ -18,9 +18,7 @@ const Cme = () => {
     const [scoreCount, setScoreCount] = useState(scoreChange(mockData));
 
     const title = "CME PAGE";
-    const navItems = [
-        {id: 1, text: "CME NAV"}
-    ];
+    
     const analysisButtons = [
         {id: 1, "name": "Courses Enrolled", "data": coursesEnroll},
         {id: 2, "name": "Courses Completed", "data": coursesComplete},
@@ -32,7 +30,7 @@ const Cme = () => {
     return(
         <section id='cme'>
             <div>
-                < Page pageTitle={title} navChoices={navItems} buttons={analysisButtons} />
+                < Page pageTitle={title} buttons={analysisButtons} />
             </div>
         </section>
     )

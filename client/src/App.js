@@ -6,12 +6,14 @@ import Home from '../src/pages/Home';
 import DataDictionary from './pages/DataDictionary';
 import Registry from './pages/Registry';
 import Klc from './pages/KLC';
+import CKD from './pages/CKD';
 
 const routes = [
   {path: "/", element: <Home />},
   {path: "/DataDictionary", element: <DataDictionary />},
   {path: "/Registry", element: <Registry />},
   {path: "/Klc", element: <Klc />},
+  {path: "/Ckd", element: <CKD />}
 ]
 
 function App() {

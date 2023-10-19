@@ -8,6 +8,7 @@ const Navbar = () => {
         {id: 2, text: 'Data Dictionary', link: "/DataDictionary"},
         {id: 3, text: 'Registry', link: "/Registry"},
         {id: 4, text: 'KLC', link: "/Klc"},
+        {id: 5, text: 'CKD', link: "/Ckd"},
     ];
 
     return(
