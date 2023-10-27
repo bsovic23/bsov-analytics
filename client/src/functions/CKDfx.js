@@ -21,10 +21,10 @@ export const ckdStageCorrectFx = (data) => {
         
         stageCount.count++;
 
-        if (stage === 'No CKD (eGFR ≥ 60 with no protein excretion)' && egfr < 60) {
+        if (stage === 'No CKD (eGFR ? 60 with no protein excretion)' && egfr < 60) {
             stageCount.count ++;
             stageCount.noCkdWrongCount ++;
-        } else if (stage === 'Stage 1: (eGFR ≥ 90 with abnormal protein excretion)' && egfr < 90) {
+        } else if (stage === 'Stage 1 (eGFR ? 90 with abnormal protein excretion)' && egfr < 90) {
             stageCount.count ++;
             stageCount.stageOneWrongCount++;
         } else if (stage === 'Stage 2 (eGFR: 60-89 with abnormal protein excretion): Mild' && (egfr < 60 || egfr > 89)) {

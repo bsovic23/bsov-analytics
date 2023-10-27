@@ -14,7 +14,7 @@ const routes = [
   {path: "/Registry", element: <Registry />},
   {path: "/Klc", element: <Klc />},
   {path: "/Ckd", element: <CKD />}
-]
+];
 
 function App() {
   return (
