@@ -8,11 +8,9 @@ const Home = () => {
         <section class='page' id='home'>
             <header class='header'>
                 <h1>HOME</h1>
+                <p>Click the Nav buttons below to see the associated analytics</p>
                 < Navbar />
             </header>
-            <section>
-                INSERT INFORMATION ABOUT WHAT THIS APPLICATION IS
-            </section>
             <footer>
                 FOOTER HERE
             </footer>

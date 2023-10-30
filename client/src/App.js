@@ -19,7 +19,9 @@ const routes = [
 function App() {
   return (
     <section class='app'>
-        <h1>BSOV ANALYTICS</h1>
+        <div class='app-heading'>
+          <h1>BSOV ANALYTICS</h1>
+        </div>
         <div>
             <body>
               <Router>

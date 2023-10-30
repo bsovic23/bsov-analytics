@@ -12,11 +12,18 @@ code {
     monospace;
 }
 
+/* App.js ============================================================================ */
+.app .app-heading {
+  background-color: rgb(158, 23, 46);
+  text-align: center;
+  padding: 5px;
+}
 
-/* ============================================================================ */
+/* Components ============================================================================ */
 /* ------ Header ------ */
 #home .header, #home .navbar {
-  background-color: rgb(27, 140, 192);
+  background-color: rgb(65, 187, 218);
+  min-height: 100vh;
 }
 
 /* ------ Navbar ------ */
@@ -45,7 +52,7 @@ code {
   margin: 5px 0;
 }
 
-/* Component - Data Dictionary */
+/* Data Dictionary */
 .data-table {
   width: 100%;
   border-collapse: collapse;
@@ -69,3 +76,7 @@ code {
 .page .dictionary-buttons button:active {
   background-color: yellow;
 }
+
+/* Pages ============================================================================ */
+
+/* Home */
