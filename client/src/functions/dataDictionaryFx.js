@@ -10,10 +10,10 @@ export const dupCheckFx1 = (data) => {
 
   // Iterate through the input array
   data.forEach((item) => {
-    const { id, Group, Term, "Term Owner": TermOwner, Definition, "Data Source": DataSource, "Duplicate Metric": DuplicateMetric, "Additional Comments": AdditionalComments  } = item;
+    const { id, "Sub Group": SubGroup, Term, "Term Owner": TermOwner, Definition, "Data Source": DataSource, "Duplicate Metric": DuplicateMetric, "Additional Comments": AdditionalComments  } = item;
 
     // Create a unique key for each term based on its name
-    const termKey = `${Group}-${Term}`.toLowerCase();
+    const termKey = `${SubGroup}-${Term}`.toLowerCase();
 
     // Initialize an array for the term if it doesn't exist
     if (!groupedTerms[termKey]) {
@@ -23,7 +23,7 @@ export const dupCheckFx1 = (data) => {
     // Add the current item to the array for this term
     groupedTerms[termKey].push({
         id,
-        Group,
+        SubGroup,
         Term,
         "Term Owner": TermOwner,
         Definition,
@@ -49,10 +49,10 @@ export const dupCheckFx2 = (data) => {
 
   // Iterate through the input array
   data.forEach((item) => {
-    const { id, Group, Term, "Term Owner": TermOwner, Definition, "Data Source": DataSource, "Duplicate Metric": DuplicateMetric, "Additional Comments": AdditionalComments  } = item;
+    const { id, "Sub Group": SubGroup, Term, "Term Owner": TermOwner, Definition, "Data Source": DataSource, "Duplicate Metric": DuplicateMetric, "Additional Comments": AdditionalComments  } = item;
 
     // Create a unique key for each term based on its name
-    const termKey = `${Group}-${Term}-${Definition}`.toLowerCase();
+    const termKey = `${SubGroup}-${Term}-${Definition}`.toLowerCase();
 
     // Initialize an array for the term if it doesn't exist
     if (!groupedTerms[termKey]) {
@@ -61,14 +61,14 @@ export const dupCheckFx2 = (data) => {
 
     // Add the current item to the array for this term
     groupedTerms[termKey].push({
-        id,
-        Group,
-        Term,
-        "Term Owner": TermOwner,
-        Definition,
-        "Data Source": DataSource,
-        "Duplicate Metric": DuplicateMetric,
-        "Additional Comments": AdditionalComments
+      id,
+      SubGroup,
+      Term,
+      "Term Owner": TermOwner,
+      Definition,
+      "Data Source": DataSource,
+      "Duplicate Metric": DuplicateMetric,
+      "Additional Comments": AdditionalComments
     });
   });
 
@@ -89,10 +89,10 @@ export const dupCheckFx3 = (data) => {
 
   // Iterate through the input array
   data.forEach((item) => {
-    const { id, Group, Term, "Term Owner": TermOwner, Definition, "Data Source": DataSource, "Duplicate Metric": DuplicateMetric, "Additional Comments": AdditionalComments  } = item;
+    const { id, "Sub Group": SubGroup, Term, "Term Owner": TermOwner, Definition, "Data Source": DataSource, "Duplicate Metric": DuplicateMetric, "Additional Comments": AdditionalComments  } = item;
 
     // Create a unique key for each term based on its name
-    const termKey = `${Group}-${Term}-${Definition}-${TermOwner}`.toLowerCase();
+    const termKey = `${SubGroup}-${Term}-${Definition}-${TermOwner}`.toLowerCase();
 
     // Initialize an array for the term if it doesn't exist
     if (!groupedTerms[termKey]) {
@@ -101,14 +101,14 @@ export const dupCheckFx3 = (data) => {
 
     // Add the current item to the array for this term
     groupedTerms[termKey].push({
-        id,
-        Group,
-        Term,
-        "Term Owner": TermOwner,
-        Definition,
-        "Data Source": DataSource,
-        "Duplicate Metric": DuplicateMetric,
-        "Additional Comments": AdditionalComments
+      id,
+      SubGroup,
+      Term,
+      "Term Owner": TermOwner,
+      Definition,
+      "Data Source": DataSource,
+      "Duplicate Metric": DuplicateMetric,
+      "Additional Comments": AdditionalComments
     });
   });
 

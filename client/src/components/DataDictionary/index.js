@@ -7,35 +7,34 @@ import DictionaryButtons from '../DictionaryButtons';
 
 const DataDictionaryPage = ({ pageTitle, buttons }) => {
     const [selectedData, setSelectedData] = useState([]);
-    const [rowStates, setRowStates] = useState([]);
+    const [rowStates, setRowStates] = useState({});
 
     const handleButtonClick = (data) => {
         setSelectedData(data);
     };
 
-    const handleKeepClick = (rowIndex) => {
-    const updatedStates = [...rowStates];
-    updatedStates[rowIndex] = 'keep';
-    setRowStates(updatedStates);
-    console.log(rowIndex);
+    const handleKeepClick = (id) => {
+        setRowStates((prevRowStates) => {
+            return { ...prevRowStates, [id]: 'keep' };
+        });
     };
     
-    const handleDeleteClick = (rowIndex) => {
-    const updatedStates = [...rowStates];
-    updatedStates[rowIndex] = 'delete';
-    setRowStates(updatedStates);
+    const handleDeleteClick = (id) => {
+        setRowStates((prevRowStates) => {
+            return { ...prevRowStates, [id]: 'delete' };
+        });
     };
     
-    const handleMergeClick = (rowIndex) => {
-    const updatedStates = [...rowStates];
-    updatedStates[rowIndex] = 'merge';
-    setRowStates(updatedStates);
+    const handleMergeClick = (id) => {
+        setRowStates((prevRowStates) => {
+            return { ...prevRowStates, [id]: 'merge' };
+        });
     };
 
-    const handleReviewClick = (rowIndex) => {
-    const updatedStates = [...rowStates];
-    updatedStates[rowIndex] = 'review';
-    setRowStates(updatedStates);
+    const handleReviewClick = (id) => {
+        setRowStates((prevRowStates) => {
+            return { ...prevRowStates, [id]: 'review' };
+        });
     };
 
     return (
@@ -63,7 +62,7 @@ const DataDictionaryPage = ({ pageTitle, buttons }) => {
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Group</th>
+                                <th>SubGroup</th>
                                 <th>Term</th>
                                 <th>Term Owner</th>
                                 <th>Definition</th>
@@ -81,12 +80,13 @@ const DataDictionaryPage = ({ pageTitle, buttons }) => {
                                             class={index % 2 === 0 ? 'blue' : 'white'}
                                         >
                                             <td>{item.id}</td>
-                                            <td>{item.Group}</td>
+                                            <td>{item.SubGroup}</td>
                                             <td>{item.Term}</td>
                                             <td>{item['Term Owner']}</td>
                                             <td>{item.Definition}</td>
                                             <td>{item['Data Source']}</td>
                                             <td>{item['Additional Comments']}</td>
+                                            <td>{rowStates[item.id] ? rowStates[item.id] : ''}</td>
                                             <td>
                                             <DictionaryButtons
                                                 onKeepClick={() => handleKeepClick(item.id)}

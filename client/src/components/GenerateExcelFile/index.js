@@ -24,8 +24,8 @@ const GenerateExcelFile = ({ selectedData, rowStates }) => {
 
   // Format the data into an Excel-friendly structure
   const excelData = keepRows.map((row) => ({
-    Id: row.id,
-    Group: row.Group,
+    id: row.id,
+    SubGroup: row.SubGroup,
     Term: row.Term,
     'Term Owner': row['Term Owner'],
     Defintion: row['Definition']
