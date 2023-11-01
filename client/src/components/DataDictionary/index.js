@@ -67,8 +67,9 @@ const DataDictionaryPage = ({ pageTitle, buttons }) => {
                                 <th>Term Owner</th>
                                 <th>Definition</th>
                                 <th>Data Source</th>
+                                <th>Duplicate Metric?</th>
                                 <th>Additional Comments</th>
-                                <th>To Do: Data Dictionary Variable</th>
+                                <th>Data Dictionary To Do</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -85,6 +86,7 @@ const DataDictionaryPage = ({ pageTitle, buttons }) => {
                                             <td>{item['Term Owner']}</td>
                                             <td>{item.Definition}</td>
                                             <td>{item['Data Source']}</td>
+                                            <td>{item['Duplicate Metric?']}</td>
                                             <td>{item['Additional Comments']}</td>
                                             <td>{rowStates[item.id] ? rowStates[item.id] : ''}</td>
                                             <td>

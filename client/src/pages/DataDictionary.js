@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import DataDictionaryPage from '../components/DataDictionary';
 
 // Data imports
-// import { mockDataDictionaryData } from '../data/dataDictionary';
+import { mockDataDictionaryData } from '../data/dataDictionary';
 
 // Function Imports
 import { dupCheckFx1, dupCheckFx2, dupCheckFx3, dupCheckFx4 } from '../functions/dataDictionaryFx';

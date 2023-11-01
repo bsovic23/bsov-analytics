@@ -1,34 +1,32 @@
 import { utils, writeFile } from 'xlsx';
+import { mockDataDictionaryData } from '../../data/dataDictionary';
 
 const GenerateExcelFile = ({ selectedData, rowStates }) => {
-  console.log(selectedData);
-  console.log(rowStates);
 
-  // Create a dictionary to map filteredTerms.id to their corresponding states
-  const stateMap = {};
-  selectedData.filteredTerms.forEach((innerArray) => {
-    innerArray.forEach((item) => {
-      stateMap[item.id] = rowStates[item.id]; // Include the state of each row
-    });
-  });
+// Updates the full dataset with the state term
+const updatedData = mockDataDictionaryData.map((item)=> {
+  const id = item.id;
+  const stateTerm = rowStates[id] || '';
+  return {...item, state: stateTerm }
+});
 
-  // Filter the selectedData based on rowStates
-  const keepRows = selectedData.filteredTerms
-    .flatMap((innerArray) =>
-      innerArray.map((item) => ({
-        ...item,
-        state: stateMap[item.id],
-      }))
-    )
-    .filter(({ state }) => state === 'keep');
+// Takes the updatedData and removes any 'delete' (keep, merge, '' all stay)
+const filteredData = updatedData.filter((item) => {
+  const state = item.state;
+  return state === 'keep' || state === 'merge' || state === '';
+});
 
   // Format the data into an Excel-friendly structure
-  const excelData = keepRows.map((row) => ({
+  const excelData = filteredData.map((row) => ({
     id: row.id,
-    SubGroup: row.SubGroup,
+    "Sub Group": row['Sub Group'],
     Term: row.Term,
-    'Term Owner': row['Term Owner'],
-    Defintion: row['Definition']
+    "Term Owner": row['Term Owner'],
+    Defintion: row.Definition,
+    "Data Source": row['Data Source'],
+    "Duplicate Metric": row['Duplicate Metric?'],
+    "Additional Comments": row['Additional Comments'],
+    "Data Dictionary Process": row.state
   }));
 
   const ws = utils.json_to_sheet(excelData);
