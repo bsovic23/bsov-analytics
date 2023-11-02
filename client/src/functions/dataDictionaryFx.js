@@ -117,14 +117,7 @@ export const dupCheckFx3 = (data) => {
     (termArray) => termArray.length > 1
   );
 
-  // Calculate the total number of objects and arrays
-  const totalObjects = filteredTerms.reduce((count, termArray) => count + termArray.length, 0);
-  const totalArrays = filteredTerms.length;
-
-  // Create the one-line sentence
-  const sentence = `There are ${totalObjects} number of rows to be checked, and ${totalArrays} number of variables`;
-
-  return { sentence, filteredTerms };
+  return { filteredTerms };
 };
 
 
@@ -136,12 +129,7 @@ const groupedTerms = {};
 
 // Iterate through the input array
 data.forEach((item) => {
-  const {
-    id,
-    Term,
-    Definition,
-    "Term Owner": TermOwner,
-  } = item;
+  const { id, "Sub Group": SubGroup, Term, "Term Owner": TermOwner, Definition, "Data Source": DataSource, "Duplicate Metric": DuplicateMetric, "Additional Comments": AdditionalComments  } = item;
 
   // Create a unique key for each term based on its name and definition
   const termKey = `${Term}-${Definition}`.toLowerCase();
@@ -159,9 +147,13 @@ data.forEach((item) => {
   if (!existingTermOwner) {
     termArray.push({
       id,
+      SubGroup,
       Term,
-      Definition,
       "Term Owner": TermOwner,
+      Definition,
+      "Data Source": DataSource,
+      "Duplicate Metric": DuplicateMetric,
+      "Additional Comments": AdditionalComments
     });
   }
 });
@@ -171,12 +163,5 @@ const filteredTerms = Object.values(groupedTerms).filter(
   (termArray) => termArray.length > 1
 );
 
-// Calculate the total number of objects and arrays
-const totalObjects = filteredTerms.reduce((count, termArray) => count + termArray.length, 0);
-const totalArrays = filteredTerms.length;
-
-// Create the one-line sentence
-const sentence = `There are ${totalObjects} number of rows to be checked, and ${totalArrays} number of variables`;
-
-return { sentence, filteredTerms };
+return { filteredTerms };
 };

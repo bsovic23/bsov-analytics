@@ -16,7 +16,7 @@ const Page = ({ pageTitle, buttons }) => {
                 <h1>{pageTitle}</h1>
                 < Navbar />
             </header>
-            <div>
+            <div class='analysis-buttons-div'>
                 {buttons.map((button) => (
                     <button 
                         key={button.id}

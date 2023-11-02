@@ -21,6 +21,7 @@ function App() {
     <section class='app'>
         <div class='app-heading'>
           <h1>BSOV ANALYTICS</h1>
+          <p>Version 1.01</p>
         </div>
         <div>
             <body>

@@ -1,7 +1,9 @@
 import { utils, writeFile } from 'xlsx';
-import { mockDataDictionaryData } from '../../data/dataDictionary';
 
-const GenerateExcelFile = ({ selectedData, rowStates }) => {
+// Data Imports
+// import { mockDataDictionaryData } from '../../data/dataDictionary';
+
+const GenerateExcelFile = ({ rowStates }) => {
 
 // Updates the full dataset with the state term
 const updatedData = mockDataDictionaryData.map((item)=> {
@@ -13,7 +15,7 @@ const updatedData = mockDataDictionaryData.map((item)=> {
 // Takes the updatedData and removes any 'delete' (keep, merge, '' all stay)
 const filteredData = updatedData.filter((item) => {
   const state = item.state;
-  return state === 'keep' || state === 'merge' || state === '';
+  return state === 'Keep' || (state.startsWith('Merge') && state.split(' ')[0] === 'Merge') || state === 'Re-Review' || state === '';
 });
 
   // Format the data into an Excel-friendly structure

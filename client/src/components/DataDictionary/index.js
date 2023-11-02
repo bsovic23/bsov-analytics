@@ -15,25 +15,32 @@ const DataDictionaryPage = ({ pageTitle, buttons }) => {
 
     const handleKeepClick = (id) => {
         setRowStates((prevRowStates) => {
-            return { ...prevRowStates, [id]: 'keep' };
+            return { ...prevRowStates, [id]: 'Keep' };
         });
     };
     
     const handleDeleteClick = (id) => {
         setRowStates((prevRowStates) => {
-            return { ...prevRowStates, [id]: 'delete' };
+            return { ...prevRowStates, [id]: 'Delete' };
         });
     };
     
     const handleMergeClick = (id) => {
-        setRowStates((prevRowStates) => {
-            return { ...prevRowStates, [id]: 'merge' };
-        });
+        const mergedId = window.prompt(`Enter the ID to merge "${id}" into:`);
+
+        if (mergedId === null || mergedId.trim() === '') {
+            alert('Merge canceled or ID is empty.');
+        } else {
+            setRowStates((prevRowStates) => {
+                const mergedDescription = `Merge with ID ${mergedId}`;
+                return { ...prevRowStates, [id]: mergedDescription };
+            });
+        }
     };
 
     const handleReviewClick = (id) => {
         setRowStates((prevRowStates) => {
-            return { ...prevRowStates, [id]: 'review' };
+            return { ...prevRowStates, [id]: 'Re-Review' };
         });
     };
 
@@ -43,7 +50,7 @@ const DataDictionaryPage = ({ pageTitle, buttons }) => {
                 <h1>{pageTitle}</h1>
                 <Navbar />
             </header>
-            <div>
+            <div class='analysis-buttons-div'>
                 {buttons.map((button) => (
                     <button
                         key={button.id}
@@ -112,7 +119,7 @@ const DataDictionaryPage = ({ pageTitle, buttons }) => {
                 )}
             </div>
             <div>
-                <button onClick={() => GenerateExcelFile({ selectedData, rowStates })}>
+                <button onClick={() => GenerateExcelFile({ rowStates })}>
                     Generate Excel
                 </button>
             </div>
