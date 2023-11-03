@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 // Page/Component Imports
 import Navbar from '../Navbar';
+import GenerateExcelFileGeneral from '../GenerateExcelFileGeneral';
 
 const Page = ({ pageTitle, buttons }) => {
     const [selectedData, setSelectedData] = useState(null);
@@ -16,6 +17,11 @@ const Page = ({ pageTitle, buttons }) => {
                 <h1>{pageTitle}</h1>
                 < Navbar />
             </header>
+            <div>
+                <button onClick={() => GenerateExcelFileGeneral({ generalData: selectedData })}>
+                    Generate Genreal Excel File
+                </button>
+            </div>
             <div class='analysis-buttons-div'>
                 {buttons.map((button) => (
                     <button 

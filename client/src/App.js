@@ -7,13 +7,15 @@ import DataDictionary from './pages/DataDictionary';
 import Registry from './pages/Registry';
 import Klc from './pages/KLC';
 import CKD from './pages/CKD';
+import GeneralAnalysis from './pages/GeneralAnalysis';
 
 const routes = [
   {path: "/", element: <Home />},
   {path: "/DataDictionary", element: <DataDictionary />},
   {path: "/Registry", element: <Registry />},
   {path: "/Klc", element: <Klc />},
-  {path: "/Ckd", element: <CKD />}
+  {path: "/Ckd", element: <CKD />},
+  {path: "/GeneralAnalysis", element: <GeneralAnalysis />}
 ];
 
 function App() {

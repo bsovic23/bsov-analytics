@@ -9,6 +9,7 @@ const Navbar = () => {
         {id: 3, text: 'Registry', link: "/Registry"},
         {id: 4, text: 'KLC', link: "/Klc"},
         {id: 5, text: 'CKD', link: "/Ckd"},
+        {id: 6, text: 'General Analysis', link: "/GeneralAnalysis"},
     ];
 
     return(
