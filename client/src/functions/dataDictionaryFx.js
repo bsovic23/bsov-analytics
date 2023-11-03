@@ -10,7 +10,7 @@ export const dupCheckFx1 = (data) => {
 
   // Iterate through the input array
   data.forEach((item) => {
-    const { id, "Sub Group": SubGroup, Term, "Term Owner": TermOwner, Definition, "Data Source": DataSource, "Duplicate Metric": DuplicateMetric, "Additional Comments": AdditionalComments  } = item;
+    const { id, "Sub Group": SubGroup, Term, "Term Owner": TermOwner, Definition, "Data Source": DataSource, "Duplicate Metric": DuplicateMetric, "Additional Comments": AdditionalComments, "Data Dictionary Process": DataDictionaryProcess  } = item;
 
     // Create a unique key for each term based on its name
     const termKey = `${SubGroup}-${Term}`.toLowerCase();
@@ -29,7 +29,8 @@ export const dupCheckFx1 = (data) => {
         Definition,
         "Data Source": DataSource,
         "Duplicate Metric": DuplicateMetric,
-        "Additional Comments": AdditionalComments
+        "Additional Comments": AdditionalComments,
+        "Data Dictionary Process": DataDictionaryProcess
     });
   });
 
@@ -49,7 +50,7 @@ export const dupCheckFx2 = (data) => {
 
   // Iterate through the input array
   data.forEach((item) => {
-    const { id, "Sub Group": SubGroup, Term, "Term Owner": TermOwner, Definition, "Data Source": DataSource, "Duplicate Metric": DuplicateMetric, "Additional Comments": AdditionalComments  } = item;
+    const { id, "Sub Group": SubGroup, Term, "Term Owner": TermOwner, Definition, "Data Source": DataSource, "Duplicate Metric": DuplicateMetric, "Additional Comments": AdditionalComments, "Data Dictionary Process": DataDictionaryProcess  } = item;
 
     // Create a unique key for each term based on its name
     const termKey = `${SubGroup}-${Term}-${Definition}`.toLowerCase();
@@ -68,7 +69,8 @@ export const dupCheckFx2 = (data) => {
       Definition,
       "Data Source": DataSource,
       "Duplicate Metric": DuplicateMetric,
-      "Additional Comments": AdditionalComments
+      "Additional Comments": AdditionalComments,
+      "Data Dictionary Process": DataDictionaryProcess
     });
   });
 
@@ -89,7 +91,7 @@ export const dupCheckFx3 = (data) => {
 
   // Iterate through the input array
   data.forEach((item) => {
-    const { id, "Sub Group": SubGroup, Term, "Term Owner": TermOwner, Definition, "Data Source": DataSource, "Duplicate Metric": DuplicateMetric, "Additional Comments": AdditionalComments  } = item;
+    const { id, "Sub Group": SubGroup, Term, "Term Owner": TermOwner, Definition, "Data Source": DataSource, "Duplicate Metric": DuplicateMetric, "Additional Comments": AdditionalComments, "Data Dictionary Process": DataDictionaryProcess  } = item;
 
     // Create a unique key for each term based on its name
     const termKey = `${SubGroup}-${Term}-${Definition}-${TermOwner}`.toLowerCase();
@@ -108,7 +110,8 @@ export const dupCheckFx3 = (data) => {
       Definition,
       "Data Source": DataSource,
       "Duplicate Metric": DuplicateMetric,
-      "Additional Comments": AdditionalComments
+      "Additional Comments": AdditionalComments,
+      "Data Dictionary Process": DataDictionaryProcess
     });
   });
 
@@ -129,7 +132,7 @@ const groupedTerms = {};
 
 // Iterate through the input array
 data.forEach((item) => {
-  const { id, "Sub Group": SubGroup, Term, "Term Owner": TermOwner, Definition, "Data Source": DataSource, "Duplicate Metric": DuplicateMetric, "Additional Comments": AdditionalComments  } = item;
+  const { id, "Sub Group": SubGroup, Term, "Term Owner": TermOwner, Definition, "Data Source": DataSource, "Duplicate Metric": DuplicateMetric, "Additional Comments": AdditionalComments, "Data Dictionary Process": DataDictionaryProcess  } = item;
 
   // Create a unique key for each term based on its name and definition
   const termKey = `${Term}-${Definition}`.toLowerCase();
@@ -153,7 +156,8 @@ data.forEach((item) => {
       Definition,
       "Data Source": DataSource,
       "Duplicate Metric": DuplicateMetric,
-      "Additional Comments": AdditionalComments
+      "Additional Comments": AdditionalComments,
+      "Data Dictionary Process": DataDictionaryProcess
     });
   }
 });

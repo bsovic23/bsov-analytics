@@ -22,7 +22,7 @@ code {
 /* Components ============================================================================ */
 /* ------ Header ------ */
 #home .header, #home .navbar {
-  background-color: rgb(65, 187, 218);
+  background-color: rgb(113, 117, 126);
   min-height: 100vh;
 }
 

@@ -8,7 +8,7 @@ const GenerateExcelFile = ({ rowStates }) => {
 // Updates the full dataset with the state term
 const updatedData = mockDataDictionaryData.map((item)=> {
   const id = item.id;
-  const stateTerm = rowStates[id] || '';
+  const stateTerm = rowStates[id] || item["Data Dictionary Process"] || '';
   return {...item, state: stateTerm }
 });
 
@@ -24,7 +24,7 @@ const filteredData = updatedData.filter((item) => {
     "Sub Group": row['Sub Group'],
     Term: row.Term,
     "Term Owner": row['Term Owner'],
-    Defintion: row.Definition,
+    Definition: row.Definition,
     "Data Source": row['Data Source'],
     "Duplicate Metric": row['Duplicate Metric?'],
     "Additional Comments": row['Additional Comments'],

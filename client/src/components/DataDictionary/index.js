@@ -95,7 +95,7 @@ const DataDictionaryPage = ({ pageTitle, buttons }) => {
                                             <td>{item['Data Source']}</td>
                                             <td>{item['Duplicate Metric?']}</td>
                                             <td>{item['Additional Comments']}</td>
-                                            <td>{rowStates[item.id] ? rowStates[item.id] : ''}</td>
+                                            <td>{rowStates[item.id] ? rowStates[item.id] : item['Data Dictionary Process']}</td>
                                             <td>
                                             <DictionaryButtons
                                                 onKeepClick={() => handleKeepClick(item.id)}
