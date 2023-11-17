@@ -2,8 +2,16 @@
 //  General Analysis/Cleanup Functions
 // ========================================================================================================================
 
+// ===== KLC ==============================================================================================================
+
 // ------ FX-1 Created Account but not registered for course
 export const klcNoCourseRegistrationFx = (data) => {
+
+    if (!Array.isArray(data) || data.length === 0) {
+        console.warn('Input data is not a non-empty array.');
+        return [];
+      }
+
     let userInformation = {};
 
     for (const obj of data) {
@@ -51,6 +59,12 @@ export const klcNoCourseRegistrationFx = (data) => {
 // ------ FX-2 People who have Created Account and Registered but not completed any courses
 
 export const klcRegistrationNoCompleteFx = (data) => {
+
+    if (!Array.isArray(data) || data.length === 0) {
+        console.warn('Input data is not a non-empty array.');
+        return [];
+      }
+
     let userInformation = {};
 
     for (const obj of data) {
@@ -99,3 +113,12 @@ export const klcRegistrationNoCompleteFx = (data) => {
 
     return functionTwoOutput;
 };
+
+// ===== Data Dictionary ==============================================================================================================
+
+// ------ Update with data dictionary comments
+
+export const ddCleanupDeletes = (all, edits) => {
+    const deletedIds = all.filter(item => !edits.some(editItem => editItem.id === item.id));
+    return deletedIds;
+  };
