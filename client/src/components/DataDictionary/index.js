@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // Page/Component Imports
-import Navbar from '../Navbar';
+import Sidebar from '../Sidebar';
 import GenerateExcelFile from '../GenerateExcelFile';
 import DictionaryButtons from '../DictionaryButtons';
 
@@ -48,7 +48,7 @@ const DataDictionaryPage = ({ pageTitle, buttons }) => {
         <section className='page'>
             <header>
                 <h1>{pageTitle}</h1>
-                <Navbar />
+                <Sidebar />
             </header>
             <div class='analysis-buttons-div'>
                 {buttons.map((button) => (
@@ -123,9 +123,6 @@ const DataDictionaryPage = ({ pageTitle, buttons }) => {
                     Generate Excel
                 </button>
             </div>
-            <footer>
-                Footer Here
-            </footer>
         </section>
     );
 };

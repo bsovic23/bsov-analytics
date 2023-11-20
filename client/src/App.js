@@ -21,10 +21,10 @@ const routes = [
 function App() {
   return (
     <section class='app'>
-        <div class='app-heading'>
+        <header class='app-heading'>
           <h1>BSOV ANALYTICS</h1>
           <p>Version 1.01</p>
-        </div>
+        </header>
         <div>
             <body>
               <Router>
@@ -36,6 +36,9 @@ function App() {
               </Router>
             </body>
         </div>
+        <footer class='app-footer'>
+            Footer Created Here
+        </footer>
     </section>
   );
 }

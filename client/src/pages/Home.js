@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 
 // Imports - Components/Pages
-import Navbar from '../components/Navbar';
+import Sidebar from '../components/Sidebar';
 
 const Home = () => {
     return(
-        <section class='page' id='home'>
-            <header class='header'>
+        <section id='home'>
+            <div class='header'>
                 <h1>HOME</h1>
-                <p>Click the Nav buttons below to see the associated analytics</p>
-                < Navbar />
-            </header>
+                <p>Use the sidebar to navigate to associated analytics</p>
+            </div>
+            <div>
+                < Sidebar />
+            </div>
             <footer>
                 FOOTER HERE
             </footer>

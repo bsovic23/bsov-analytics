@@ -21,23 +21,57 @@ code {
 
 /* Components ============================================================================ */
 /* ------ Header ------ */
-#home .header, #home .navbar {
+#home .header {
   background-color: rgb(113, 117, 126);
-  min-height: 100vh;
-}
-
-/* ------ Navbar ------ */
-.navbar button {
   padding: 10px;
-  background-color: rgb(43, 174, 226);
-  margin: 10px;
 }
 
-.navbar button:hover {
-  background-color: yellow;
+/* ------ Sidebar ------ */
+.sidebar {
+  height: 80vh;
+  width: 200px;
+  background-color: rgb(78, 78, 194);
+}
+
+.sidebar-list {
+  height: auto;
+  padding: 0;
+  width: 100%;
+}
+
+.sidebar-list .sidebar-row {
+  width: 100%;
+  height: 60px;
+  background-color: rgb(0, 217, 255);
+  border: 1px solid black;
+  list-style-type: none;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebar-list .sidebar-row:hover {
+  cursor: pointer;
+  background-color: rgba(0, 217, 255, 0.671);
+}
+
+.sidebar #sidebar-icon {
+  flex: 30%;
+  display: grid;
+  place-items: center;
+}
+
+.sidebar #sidebar-title {
+  flex: 70%;
 }
 
 /* ------ Page ------ */
+.page {
+  display: flex
+}
+
 .page .analysis-buttons-div {
   background: linear-gradient(to bottom, rgb(0, 187, 255), #97A7B3);
   text-align: center;
@@ -90,6 +124,4 @@ code {
   background-color: yellow;
 }
 
-/* Pages ============================================================================ */
 
-/* Home */
