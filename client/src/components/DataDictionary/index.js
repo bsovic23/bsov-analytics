@@ -46,83 +46,85 @@ const DataDictionaryPage = ({ pageTitle, buttons }) => {
 
     return (
         <section className='page'>
-            <header>
+            <section class='page-section'>
                 <h1>{pageTitle}</h1>
                 <Sidebar />
-            </header>
-            <div class='analysis-buttons-div'>
-                {buttons.map((button) => (
-                    <button
-                        key={button.id}
-                        onClick={() => handleButtonClick(button.data)}
-                        className='analysis-buttons'
-                    >
-                        {button.name}
-                    </button>
-                ))}
-            </div>
-            <div>
-            {selectedData.filteredTerms && selectedData.filteredTerms.length > 0 ? (
+            </section>
+            <section className='page-section'>
+                <div class='analysis-buttons-div'>
+                    {buttons.map((button) => (
+                        <button
+                            key={button.id}
+                            onClick={() => handleButtonClick(button.data)}
+                            className='analysis-buttons'
+                        >
+                            {button.name}
+                        </button>
+                    ))}
+                </div>
                 <div>
+                {selectedData.filteredTerms && selectedData.filteredTerms.length > 0 ? (
                     <div>
-                    <table className="data-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>SubGroup</th>
-                                <th>Term</th>
-                                <th>Term Owner</th>
-                                <th>Definition</th>
-                                <th>Data Source</th>
-                                <th>Duplicate Metric?</th>
-                                <th>Additional Comments</th>
-                                <th>Data Dictionary To Do</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {selectedData.filteredTerms.map((innerArray, index) => (
-                                <React.Fragment key={index}>
-                                    {innerArray.map((item) => (
-                                        <tr
-                                            key={item.id}
-                                            class={index % 2 === 0 ? 'blue' : 'white'}
-                                        >
-                                            <td>{item.id}</td>
-                                            <td>{item.SubGroup}</td>
-                                            <td>{item.Term}</td>
-                                            <td>{item['Term Owner']}</td>
-                                            <td>{item.Definition}</td>
-                                            <td>{item['Data Source']}</td>
-                                            <td>{item['Duplicate Metric?']}</td>
-                                            <td>{item['Additional Comments']}</td>
-                                            <td>{rowStates[item.id] ? rowStates[item.id] : item['Data Dictionary Process']}</td>
-                                            <td>
-                                            <DictionaryButtons
-                                                onKeepClick={() => handleKeepClick(item.id)}
-                                                onDeleteClick={() => handleDeleteClick(item.id)}
-                                                onMergeClick={() => handleMergeClick(item.id)}
-                                                onReviewClick={() => handleReviewClick(item.id)}
-                                            />
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </React.Fragment>
-                            ))}
-                        </tbody>
-                    </table>
+                        <div>
+                        <table className="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>SubGroup</th>
+                                    <th>Term</th>
+                                    <th>Term Owner</th>
+                                    <th>Definition</th>
+                                    <th>Data Source</th>
+                                    <th>Duplicate Metric?</th>
+                                    <th>Additional Comments</th>
+                                    <th>Data Dictionary To Do</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {selectedData.filteredTerms.map((innerArray, index) => (
+                                    <React.Fragment key={index}>
+                                        {innerArray.map((item) => (
+                                            <tr
+                                                key={item.id}
+                                                class={index % 2 === 0 ? 'blue' : 'white'}
+                                            >
+                                                <td>{item.id}</td>
+                                                <td>{item.SubGroup}</td>
+                                                <td>{item.Term}</td>
+                                                <td>{item['Term Owner']}</td>
+                                                <td>{item.Definition}</td>
+                                                <td>{item['Data Source']}</td>
+                                                <td>{item['Duplicate Metric?']}</td>
+                                                <td>{item['Additional Comments']}</td>
+                                                <td>{rowStates[item.id] ? rowStates[item.id] : item['Data Dictionary Process']}</td>
+                                                <td>
+                                                <DictionaryButtons
+                                                    onKeepClick={() => handleKeepClick(item.id)}
+                                                    onDeleteClick={() => handleDeleteClick(item.id)}
+                                                    onMergeClick={() => handleMergeClick(item.id)}
+                                                    onReviewClick={() => handleReviewClick(item.id)}
+                                                />
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </React.Fragment>
+                                ))}
+                            </tbody>
+                        </table>
+                        </div>
                     </div>
+                    ) : (
+                    <div>
+                        Select a button above to view data
+                    </div>
+                    )}
                 </div>
-                ) : (
                 <div>
-                    Select a button above to view data
+                    <button onClick={() => GenerateExcelFile({ rowStates })}>
+                        Generate Excel
+                    </button>
                 </div>
-                )}
-            </div>
-            <div>
-                <button onClick={() => GenerateExcelFile({ rowStates })}>
-                    Generate Excel
-                </button>
-            </div>
+            </section>
         </section>
     );
 };

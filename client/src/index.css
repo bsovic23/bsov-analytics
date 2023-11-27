@@ -72,6 +72,11 @@ code {
   display: flex
 }
 
+.page .page-section {
+  display: flex;
+  flex-direction: column;
+}
+
 .page .analysis-buttons-div {
   background: linear-gradient(to bottom, rgb(0, 187, 255), #97A7B3);
   text-align: center;
