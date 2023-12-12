@@ -122,3 +122,63 @@ export const ddCleanupDeletes = (all, edits) => {
     const deletedIds = all.filter(item => !edits.some(editItem => editItem.id === item.id));
     return deletedIds;
   };
+
+
+
+  // ===== Pt Registry Additional  ==============================================================================================================
+  export const registryAnalysis = (data) => {
+    const result = [];
+
+    data.forEach(item => {
+      const existingItem = result.find(obj => obj.id === item.id);
+  
+      if (existingItem) {
+        // If the id already exists, add the color to the existing item
+        if (item.variable === 'ckd_cause_detail') {
+            const causeExists = existingItem.ckd_cause.some(causeObj => causeObj.cause === item.answer);
+        
+            if (!causeExists) {
+            existingItem.ckd_cause.push({ cause: item.answer });
+            }
+        } else {
+          // If the variable is 'student_yn', update the 'student_yn' property
+          existingItem.transplant_kidney_yn = item.answer;
+        }
+      } else {
+        // If the id doesn't exist, create a new object
+        const newItem = {
+          id: item.id,
+          transplant_kidney_yn: item.variable === 'transplant_kidney_yn' ? item.answer : null,
+          ckd_cause: item.variable === 'ckd_cause_detail' ? [{ cause: item.answer }] : []
+        };
+  
+        result.push(newItem);
+      }
+    });
+  
+    // return result;
+    // part 2
+    const causeCounts = {};
+
+        // Iterate through each object in the result array
+        result.forEach(entry => {
+            // Iterate through each cause in the ckd_cause array
+            entry.ckd_cause.forEach(causeObj => {
+            const cause = causeObj.cause;
+
+            // Initialize counts for the cause if not present
+            if (!causeCounts[cause]) {
+                causeCounts[cause] = { Yes: 0, No: 0 };
+            }
+
+            // Update counts based on transplant_organ_yn value
+            if (entry.transplant_kidney_yn === "yes") {
+                causeCounts[cause].Yes++;
+            } else if (entry.transplant_kidney_yn === "no") {
+                causeCounts[cause].No++;
+            }
+            });
+        });
+
+        return causeCounts;
+  };

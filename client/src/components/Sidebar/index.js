@@ -2,7 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { SidebarData } from '../SidebarData';
 
-export const Sidebar = () => {
+export const Sidebar = ({ onLinkHover }) => {
+
     return(
         <div class='sidebar'>
             <ul class='sidebar-list'>
@@ -12,6 +13,8 @@ export const Sidebar = () => {
                         key={key}
                         to={val.link}
                         style={{ textDecoration: 'none'}}
+                        onMouseEnter={() => onLinkHover(val.title)}
+                        onMouseLeave={() => onLinkHover(null)}
                     >
                         <button class='sidebar-row'>
                             <div id='sidebar-icon'>{val.icon}</div>

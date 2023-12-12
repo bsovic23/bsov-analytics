@@ -8,6 +8,7 @@ import Registry from './pages/Registry';
 import Klc from './pages/KLC';
 import CKD from './pages/CKD';
 import GeneralAnalysis from './pages/GeneralAnalysis';
+import Survey from './pages/Survey';
 
 const routes = [
   {path: "/", element: <Home />},
@@ -15,7 +16,8 @@ const routes = [
   {path: "/Registry", element: <Registry />},
   {path: "/Klc", element: <Klc />},
   {path: "/Ckd", element: <CKD />},
-  {path: "/GeneralAnalysis", element: <GeneralAnalysis />}
+  {path: "/GeneralAnalysis", element: <GeneralAnalysis />},
+  {path: "/Survey", element: <Survey />}
 ];
 
 function App() {

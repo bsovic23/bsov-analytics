@@ -19,6 +19,17 @@ code {
   padding: 15px;
 }
 
+/* Pages ============================================================================ */
+/* ----- Home ----- */
+#home .home-section {
+  display: flex;
+}
+
+#home #home-preview {
+  background-color: rgb(0, 132, 255);
+  flex: 1;
+}
+
 /* Components ============================================================================ */
 /* ------ Header ------ */
 #home .header {
@@ -104,7 +115,7 @@ code {
   margin: 5px 0;
 }
 
-/* Data Dictionary */
+/* ------ Data Dictionary ------ */
 .data-table {
   width: 100%;
   border-collapse: collapse;
@@ -130,3 +141,7 @@ code {
 }
 
 
+
+
+
+/* DELETE BELOW */

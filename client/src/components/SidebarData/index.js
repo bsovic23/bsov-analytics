@@ -35,6 +35,11 @@ export const SidebarData = [
         link: "/GeneralAnalysis"
     },
     {
+        title: "Survey", 
+        icon: <AnalyticsIcon />,
+        link: "/Survey"
+    },
+    {
         title: "Information", 
         icon: <InfoIcon />,
         link: "/"
