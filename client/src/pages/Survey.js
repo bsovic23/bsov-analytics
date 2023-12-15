@@ -9,7 +9,14 @@ const Survey = () => {
     const [deptSelected, setDepartment] = useState('');
     const [codingLanguages, setCodingLanguages] = useState([]);
 
-    const [buttonNumber, setButtonNumber] = useState('');
+    // Drop down useState
+    const [showModal, setShowModal] = useState(false);
+    const [choiceData, setChoiceData] = useState('');
+    const [categories, setCategories] = useState({
+        1: 'Click to select',
+        2: 'Click to select',
+        3: 'Click to select',
+    });
 
   const handleCheckboxChange = (request) => {
     const isSelected = selectedRequest.includes(request);
@@ -46,6 +53,13 @@ const Survey = () => {
         {category: 1, text: 'javascript'},
         {category: 1, text: 'html'},
         {category: 1, text: 'react'},
+        {category: 1, text: 'mongodb'},
+        {category: 1, text: 'sas'},
+        {category: 1, text: 'stata'},
+        {category: 1, text: 'r'},
+        {category: 1, text: 'react'},
+        {category: 1, text: 'react'},
+        {category: 1, text: 'react'},
         {category: 2, text: 'clean up'},
         {category: 2, text: 'stats'},
         {category: 2, text: 'publication'},
@@ -54,16 +68,19 @@ const Survey = () => {
         {category: 3, text: '1 month'},
     ];
 
-    const handleButtonClick = (buttonNumber) => {
-        const data = choices
-           .filter(choice => buttonNumber === choice.category)
+    const handleCategoryClick = (categoryNumber) => {
+        const data = choices.filter(choice => choice.category === categoryNumber)
 
-        setButtonNumber(data);
-        console.log(data);
+        setChoiceData(data);
+        setShowModal(true);
      };
 
-    const setButtonChoice = (buttonChoice) => {
-        console.log(buttonChoice)
+    const setChoice = (category, text) => {
+        setCategories(prevCategories => ({
+            ...prevCategories,
+            [category]: text
+        }));
+        setShowModal(false);
     };
 
     return(
@@ -99,7 +116,7 @@ const Survey = () => {
                     />
                 </div>
                 <div>
-                    <p>What kind of analysis/data management will this project require (Select all that apply):</p>
+                    <h3>What kind of analysis/data management will this project require (Select all that apply):</h3>
                         <label>
                         <input
                             type="checkbox"
@@ -189,29 +206,33 @@ const Survey = () => {
                     <p>Coding Languages: {codingLanguages.join(', ')}</p>
                     </div>
                 </div>
+
                 <section>
                     <h3>Analysis Form</h3>
-                    <div>
-                        <button onClick={() => handleButtonClick(1)}>Analysis Language:</button><p>chosen language here</p>
-                        <button onClick={() => handleButtonClick(2)}>Analysis Type:</button><p>chosen type here</p>
-                        <button onClick={() => handleButtonClick(3)}>Analysis Timeframe</button><p>chosen time here</p>
-                    </div>
-                    <div>
-                        <div>
-                            Current Button Number: {buttonNumber && Array.isArray(buttonNumber) && buttonNumber.length > 0 ? buttonNumber.map((button) => button.text).join(', ') : 'None'}
+                    <div id='analysis-form' className='flex-container'>
+                        <div id='section-1'>
+                        <button onClick={() => handleCategoryClick(1)}>Analysis Language: {categories[1]}</button>
+                        <button onClick={() => handleCategoryClick(2)}>Analysis Type: {categories[2]}</button>
+                        <button onClick={() => handleCategoryClick(3)}>Analysis Timeframe: {categories[3]}</button>
                         </div>
-                        <div>
-                            {buttonNumber && Array.isArray(buttonNumber) && buttonNumber.map((button, index) => (
-                                <button 
-                                    key={index}
-                                    onClick={() => setButtonChoice(button.category, button.text)}
+                        {showModal && (
+                        <div className='modal' id='section-2'>
+                            <button onClick={() => setShowModal(false)}>X</button>
+                            <div className='scrollable-container'>
+                            {choiceData && Array.isArray(choiceData) && choiceData.map((choice, index) => (
+                                <button
+                                key={index}
+                                onClick={() => setChoice(choice.category, choice.text)}
                                 >
-                                    {button.category}: {button.text}
+                                {choice.category}: {choice.text}
                                 </button>
                             ))}
+                            </div>
                         </div>
+                        )}
                     </div>
                 </section>
+
             </form>
         </section>
     )
