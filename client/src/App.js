@@ -17,7 +17,7 @@ const routes = [
   {path: "/Klc", element: <Klc />},
   {path: "/Ckd", element: <CKD />},
   {path: "/GeneralAnalysis", element: <GeneralAnalysis />},
-  {path: "/Survey", element: <Survey />}
+  {path: "/Survey", element: <Survey />},
 ];
 
 function App() {
