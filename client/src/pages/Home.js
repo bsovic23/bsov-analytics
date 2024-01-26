@@ -4,10 +4,21 @@ import React, { useState } from 'react';
 import Sidebar from '../components/Sidebar';
 
 const Home = () => {
-    const [previewLink, setPreviewLink] = useState(null);
+    const [preview, setPreview] = useState({
+        title: '',
+        icon: '',
+        link: '',
+        image: ''
+    });
 
-    const handleLinkHover = (link) => {
-        setPreviewLink(link);
+
+    const handleLinkHover = (title, icon, link, image) => {
+        setPreview({
+            title,
+            icon,
+            link,
+            image
+        })
     };
 
     return(
@@ -21,10 +32,13 @@ const Home = () => {
                     < Sidebar onLinkHover={handleLinkHover}/>
                 </div>
                 <div id='home-preview'>
-                    {previewLink && (
-                        <div>
-                            {previewLink}
-                        </div>
+                    {preview.title && (
+                     <div>
+                     <h2>{preview.title}</h2>
+                     <p>{preview.icon}</p>
+                     <p>{preview.link}</p>
+                     {preview.image && <img src={preview.image} alt="Preview" />}
+                 </div>
                     )}
                 </div>
             </div>

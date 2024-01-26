@@ -3,45 +3,56 @@ import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
 
+import imageOne from '../../images/imageOne.png';
+import imageTwo from '../../images/imageTwo.png';
+
 export const SidebarData = [
     {
         title: "Home", 
         icon: <HomeIcon />,
-        link: "/"
+        link: "/",
+        image: imageOne
     },
     {
         title: "Data Dictionary Analytics", 
         icon: <AnalyticsIcon />,
-        link: "/DataDictionary"
+        link: "/DataDictionary",
+        image: imageTwo
     },
     {
         title: "Registry Analytics", 
         icon: <AnalyticsIcon />,
-        link: "/Registry"
+        link: "/Registry",
+        image: imageOne
     },
     {
         title: "KLC Analytics", 
         icon: <AnalyticsIcon />,
-        link: "/Klc"
+        link: "/Klc",
+        image: imageTwo
     },
     {
         title: "CKD Analytics", 
         icon: <AnalyticsIcon />,
-        link: "/Ckd"
+        link: "/Ckd",
+        image: imageOne
     },
     {
         title: "General Analysis Analytics", 
         icon: <AnalyticsIcon />,
-        link: "/GeneralAnalysis"
+        link: "/GeneralAnalysis",
+        image: imageTwo
     },
     {
         title: "Survey", 
         icon: <AnalyticsIcon />,
-        link: "/Survey"
+        link: "/Survey",
+        image: imageOne
     },
     {
         title: "Information", 
         icon: <InfoIcon />,
-        link: "/"
+        link: "/",
+        image: imageTwo
     },
 ];
