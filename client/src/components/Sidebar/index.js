@@ -2,7 +2,19 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { SidebarData } from '../SidebarData';
 
-export const Sidebar = ({ onLinkHover }) => {
+export const Sidebar = ({ onLinkHover, enableHover }) => {
+
+    const handleMouseEnter = (val) => {
+        if (enableHover) {
+            onLinkHover(val.title, val.icon, val.description, val.image)
+        }
+    };
+
+    const handleMouseLeave = () => {
+        if (enableHover) {
+            onLinkHover(null)
+        }
+    };
 
     return(
         <div class='sidebar'>
@@ -13,8 +25,8 @@ export const Sidebar = ({ onLinkHover }) => {
                         key={key}
                         to={val.link}
                         style={{ textDecoration: 'none'}}
-                        onMouseEnter={() => onLinkHover(val.title, val.icon, val.description, val.image)}
-                        onMouseLeave={() => onLinkHover(null)}
+                        onMouseEnter={() => handleMouseEnter(val)}
+                        onMouseLeave={handleMouseLeave}
                     >
                         <button class='sidebar-row'>
                             <div id='sidebar-icon'>{val.icon}</div>

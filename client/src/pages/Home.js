@@ -28,7 +28,7 @@ const Home = () => {
             </div>
             <div class='home-section'>
                 <div>
-                    < Sidebar onLinkHover={handleLinkHover}/>
+                    < Sidebar onLinkHover={handleLinkHover} enableHover={true}/>
                 </div>
                 <div id='home-preview'>
                     {preview.title && (

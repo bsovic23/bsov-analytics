@@ -15,7 +15,7 @@ const Page = ({ pageTitle, buttons }) => {
         <section class='page'>
             <section class='page-section'>
                 <h1>{pageTitle}</h1>
-                < Sidebar />
+                < Sidebar enableHover={false}/>
             </section>
             <section class='page-section'>
                 <div>
