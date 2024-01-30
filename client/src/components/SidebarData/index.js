@@ -11,48 +11,56 @@ export const SidebarData = [
         title: "Home", 
         icon: <HomeIcon />,
         link: "/",
-        image: imageOne
+        image: imageOne,
+        description: 'Return Home'
     },
     {
         title: "Data Dictionary Analytics", 
         icon: <AnalyticsIcon />,
         link: "/DataDictionary",
-        image: imageTwo
+        image: imageTwo,
+        description: 'Program identifies Ids that need to be deleted, merged, or edited'
     },
     {
         title: "Registry Analytics", 
         icon: <AnalyticsIcon />,
         link: "/Registry",
-        image: imageOne
+        image: imageOne,
+        description: 'Analysis for Patient Registry'
     },
     {
         title: "KLC Analytics", 
         icon: <AnalyticsIcon />,
         link: "/Klc",
-        image: imageTwo
+        image: imageTwo,
+        description: 'Analytics for KLC'
     },
     {
         title: "CKD Analytics", 
         icon: <AnalyticsIcon />,
         link: "/Ckd",
-        image: imageOne
+        image: imageOne,
+        description: 'Analytics for CKD'
     },
     {
         title: "General Analysis Analytics", 
         icon: <AnalyticsIcon />,
         link: "/GeneralAnalysis",
-        image: imageTwo
+        image: imageTwo,
+        description: 'general analysis'
     },
     {
         title: "Survey", 
         icon: <AnalyticsIcon />,
         link: "/Survey",
-        image: imageOne
+        image: imageOne,
+        description: 'complete a survey for analysis requests'
     },
     {
         title: "Information", 
         icon: <InfoIcon />,
         link: "/",
-        image: imageTwo
+        image: imageTwo,
+        description: 'information about the application'
     },
 ];

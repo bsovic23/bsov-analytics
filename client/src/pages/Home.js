@@ -11,12 +11,11 @@ const Home = () => {
         image: ''
     });
 
-
-    const handleLinkHover = (title, icon, link, image) => {
+    const handleLinkHover = (title, icon, description, image) => {
         setPreview({
             title,
             icon,
-            link,
+            description,
             image
         })
     };
@@ -36,7 +35,7 @@ const Home = () => {
                      <div>
                      <h2>{preview.title}</h2>
                      <p>{preview.icon}</p>
-                     <p>{preview.link}</p>
+                     <p>{preview.description}</p>
                      {preview.image && <img src={preview.image} alt="Preview" />}
                  </div>
                     )}

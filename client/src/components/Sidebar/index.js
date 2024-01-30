@@ -13,7 +13,7 @@ export const Sidebar = ({ onLinkHover }) => {
                         key={key}
                         to={val.link}
                         style={{ textDecoration: 'none'}}
-                        onMouseEnter={() => onLinkHover(val.title, val.icon, val.link, val.image)}
+                        onMouseEnter={() => onLinkHover(val.title, val.icon, val.description, val.image)}
                         onMouseLeave={() => onLinkHover(null)}
                     >
                         <button class='sidebar-row'>
