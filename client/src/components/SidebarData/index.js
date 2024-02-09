@@ -29,20 +29,6 @@ export const SidebarData = [
         description: 'Analysis for Patient Registry'
     },
     {
-        title: "KLC Analytics", 
-        icon: <AnalyticsIcon />,
-        link: "/Klc",
-        image: imageTwo,
-        description: 'Analytics for KLC'
-    },
-    {
-        title: "CKD Analytics", 
-        icon: <AnalyticsIcon />,
-        link: "/Ckd",
-        image: imageOne,
-        description: 'Analytics for CKD'
-    },
-    {
         title: "General Analysis Analytics", 
         icon: <AnalyticsIcon />,
         link: "/GeneralAnalysis",

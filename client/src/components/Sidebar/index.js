@@ -6,14 +6,14 @@ export const Sidebar = ({ onLinkHover, enableHover }) => {
 
     const handleMouseEnter = (val) => {
         if (enableHover) {
-            onLinkHover(val.title, val.icon, val.description, val.image)
+            onLinkHover(val.title, val.description, val.image)
         }
     };
 
     const handleMouseLeave = () => {
         if (enableHover) {
             onLinkHover(null)
-        }
+        } 
     };
 
     return(

@@ -6,15 +6,13 @@ import Sidebar from '../components/Sidebar';
 const Home = () => {
     const [preview, setPreview] = useState({
         title: '',
-        icon: '',
         link: '',
         image: ''
     });
 
-    const handleLinkHover = (title, icon, description, image) => {
+    const handleLinkHover = (title, description, image) => {
         setPreview({
             title,
-            icon,
             description,
             image
         })
@@ -22,22 +20,17 @@ const Home = () => {
 
     return(
         <section id='home'>
-            <div class='header'>
-                <h1>HOME</h1>
-                <p>Use the sidebar to navigate to associated analytics</p>
-            </div>
             <div class='home-section'>
                 <div>
                     < Sidebar onLinkHover={handleLinkHover} enableHover={true}/>
                 </div>
-                <div id='home-preview'>
+                <div id='home-preview-section'>
                     {preview.title && (
-                     <div>
-                     <h2>{preview.title}</h2>
-                     <p>{preview.icon}</p>
-                     <p>{preview.description}</p>
-                     {preview.image && <img src={preview.image} alt="Preview" />}
-                 </div>
+                        <div id='home-preview-info'>
+                            <h2>{preview.title}</h2>
+                            <p>{preview.description}</p>
+                            {preview.image && <img src={preview.image} alt="Preview" />}
+                        </div>
                     )}
                 </div>
             </div>
