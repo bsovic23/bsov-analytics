@@ -7,6 +7,7 @@ import DataDictionary from './pages/DataDictionary';
 import Registry from './pages/Registry';
 import GeneralAnalysis from './pages/GeneralAnalysis';
 import Survey from './pages/Survey';
+import Salesforce from './pages/Salesforce';
 
 const routes = [
   {path: "/", element: <Home />},
@@ -14,6 +15,7 @@ const routes = [
   {path: "/Registry", element: <Registry />},
   {path: "/GeneralAnalysis", element: <GeneralAnalysis />},
   {path: "/Survey", element: <Survey />},
+  {path: "/Salesforce", element: <Salesforce />},
 ];
 
 function App() {

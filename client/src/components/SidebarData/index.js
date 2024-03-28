@@ -43,6 +43,13 @@ export const SidebarData = [
         description: 'complete a survey for analysis requests'
     },
     {
+        title: "Salesforce", 
+        icon: <AnalyticsIcon />,
+        link: "/Salesforce",
+        image: imageOne,
+        description: 'Salesforce data cleanup'
+    },
+    {
         title: "Information", 
         icon: <InfoIcon />,
         link: "/",
