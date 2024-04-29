@@ -353,3 +353,26 @@ export const functionNine = (data) => {
 
     return stateCount;
 };
+
+
+export const functionTen = (data) => {
+    let stateCourseCount = {};
+
+    for (const obj of data) {
+        let state = obj.state;
+        let country = obj.country;
+        let moduleComplete = obj.moduleComplete;
+
+        if (country !== "United States" || !state || !moduleComplete ) {
+            continue;
+        }
+
+        if (!stateCourseCount[state]) {
+            stateCourseCount[state] = { count: 0 }
+        }
+
+        stateCourseCount[state].count += 1;
+    }
+
+    return stateCourseCount;
+}

@@ -12,11 +12,17 @@ import { functionOne,
     functionSix,
     functionSeven,
     functionEight,
-    functionNine
+    functionNine,
+    functionTen,
 } from '../functions/generalAnalysisFx';
 
 // Data Imports
-import { fy24UserReport, allUserReport, fy24ModuleReport, allModuleReport } from '../data/generalAnalysis';
+import { 
+    // fy24UserReport, 
+    // allUserReport, 
+    fy24ModuleReport, 
+    // allModuleReport 
+} from '../data/generalAnalysis';
 
 export const GeneralAnalysis = () => {
 
@@ -24,6 +30,7 @@ export const GeneralAnalysis = () => {
     const pageTitle = 'General Analysis Analytics';
 
     // Data
+    /*
     const [fxOne, setFxOne] = useState(functionOne(allUserReport));
     const [fxTwo, setFxTwo] = useState(functionTwo(allModuleReport));
     const [fxThree, setFxThree] = useState(functionThree(allModuleReport));
@@ -33,8 +40,11 @@ export const GeneralAnalysis = () => {
     const [fxSeven, setFxSeven] = useState(functionSeven(fy24UserReport));
     const [fxEight, setFxEight] = useState(functionEight(fy24ModuleReport));
     const [fxNine, setFxNine] = useState(functionNine(fy24UserReport));
+    */
+    const [fxTen, setTen] = useState(functionTen(fy24ModuleReport));
 
     const analysisButtons = [
+        /*
         {id: 1, "name": "function One Result", "data": fxOne},
         {id: 2, "name": "function Two Results", "data": fxTwo},
         {id: 3, "name": "function Three Results", "data": fxThree},
@@ -44,6 +54,8 @@ export const GeneralAnalysis = () => {
         {id: 7, "name": "function Seven Results", "data": fxSeven},
         {id: 8, "name": "function Eight Results", "data": fxEight},
         {id: 9, "name": "function Nine Results", "data": fxNine},
+        */
+        {id: 10, "name": "function Ten Results", "data": fxTen},
     ];
     
     return(
