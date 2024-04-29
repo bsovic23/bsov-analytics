@@ -182,3 +182,174 @@ export const ddCleanupDeletes = (all, edits) => {
 
         return causeCounts;
   };
+
+
+
+
+
+
+  // ===== Katey ==============================================================================================================
+
+  export const functionOne = (data) => {
+    let peopleCount = {};
+    
+    for (const obj of data) {
+        let fn = obj.firstName;
+        let ln = obj.lastName;
+        let email = obj.email;
+
+        let uniqueId = `${fn}-${ln}-${email}`;
+
+        if (!peopleCount[uniqueId]) {
+            peopleCount[uniqueId] = true; 
+        }
+    }
+
+    return `There are ${Object.keys(peopleCount).length} unique ids`;
+}
+
+export const functionTwo = (data) => {
+    let courseCompleteCount = 0;
+
+    for (const obj of data) {
+        if (obj.moduleComplete) {
+            courseCompleteCount +=1;
+        }
+    }
+
+    return courseCompleteCount;
+};
+
+export const functionThree = (data) => {
+    let courseCount = 0;
+
+    for (const obj of data) {
+        courseCount += 1;
+    }
+
+    return courseCount;
+};
+
+export const functionFour = (data) => {
+    let learnerCourseCount = {}
+
+    for (const obj of data) {
+        let fn = obj.firstName;
+        let ln = obj.lastName;
+        let email = obj.email;
+        let moduleName = obj.moduleName;
+        let moduleComplete = obj.moduleComplete;
+
+        let id = `${fn}-${ln}-${email}`;
+
+        if (!moduleComplete) {
+            continue;
+        }
+
+        if (!learnerCourseCount[id]) {
+            learnerCourseCount[id] = {
+                modules: []
+            };
+        }
+
+        if (!learnerCourseCount[id].modules.includes(moduleName)) {
+            learnerCourseCount[id].modules.push(moduleName);
+        }
+    }
+
+    const multipleCourses = Object.values(learnerCourseCount).filter(user => user.modules.length > 1);
+
+    return multipleCourses.length;
+};
+
+export const functionFive = (data) => {
+    let courseCount = 0;
+
+    for (const obj of data) {
+        courseCount += 1;
+    }
+
+    return courseCount;
+};
+
+export const functionSix = (data) => {
+    let courseCount = 0;
+
+    for (const obj of data) {
+        let complete = obj.moduleComplete;
+
+        if (complete) {
+            courseCount += 1;
+        }
+    }
+
+    return courseCount;
+};
+
+export const functionSeven = (data) => {
+    let uniqueUsers = {};
+
+    for (const obj of data) {
+        let fn = obj.firstName;
+        let ln = obj.lastName;
+        let email = obj.email;
+
+        let id = `${fn}-${ln}-${email}`;
+
+        uniqueUsers[id] = true;
+    }
+
+    return Object.keys(uniqueUsers).length;
+}
+
+
+export const functionEight = (data) => {
+    let unitedStatesCount = 0;
+
+    for (const obj of data) {
+        let country = obj.country;
+        let complete = obj.moduleComplete;
+
+        if (country === 'United States' && complete) {
+            unitedStatesCount += 1;
+        }
+    }
+
+    return unitedStatesCount;
+}
+
+export const functionNine = (data) => {
+    let stateCount = {};
+    let uniqueIds = {}; // To track unique IDs
+
+    const unitedStatesPx = data.filter((item) => item.country === 'United States');
+
+    for (const obj of unitedStatesPx) {
+        let fn = obj.firstName;
+        let ln = obj.lastName;
+        let email = obj.email;
+
+        let id = `${fn}-${ln}-${email}`;
+
+        // Check if ID already exists
+        if (uniqueIds[id]) {
+            continue; // If ID exists, skip this entry
+        }
+
+        uniqueIds[id] = true; // Mark ID as seen
+
+        let state = obj.state;
+
+        if (!state) {
+            continue;
+        }
+
+        if (!stateCount[state]) {
+            stateCount[state] = { count: 0 };
+        }
+
+        stateCount[state].count += 1;
+    }
+
+    return stateCount;
+};
