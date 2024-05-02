@@ -8,6 +8,7 @@ import Registry from './pages/Registry';
 import GeneralAnalysis from './pages/GeneralAnalysis';
 import Survey from './pages/Survey';
 import Salesforce from './pages/Salesforce';
+import Affinia from './pages/Affinia';
 
 const routes = [
   {path: "/", element: <Home />},
@@ -16,6 +17,7 @@ const routes = [
   {path: "/GeneralAnalysis", element: <GeneralAnalysis />},
   {path: "/Survey", element: <Survey />},
   {path: "/Salesforce", element: <Salesforce />},
+  {path: "/Affinia", element: <Affinia />},
 ];
 
 function App() {

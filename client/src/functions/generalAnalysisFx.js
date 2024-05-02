@@ -182,3 +182,40 @@ export const ddCleanupDeletes = (all, edits) => {
 
         return causeCounts;
   };
+
+
+
+  // ===== KLC learners ==============================================================================================================
+
+  export const countUniqueIdsPerState = (data) => {
+    // Create an object to store unique IDs per state
+    const stateObjects = {};
+  
+    // Iterate over the data
+    data.forEach((record) => {
+      const state = record.state;
+      const id = record.email; // Assuming email is the unique ID
+  
+      // Initialize state object if it doesn't exist
+      if (!stateObjects[state]) {
+        stateObjects[state] = {};
+      }
+  
+      // Sort each unique ID into the state object
+      stateObjects[state][id] = true;
+    });
+  
+    // Create an object to store state counts
+    const stateCounts = {};
+  
+    // Count the number of unique IDs per state
+    for (const state in stateObjects) {
+      if (stateObjects.hasOwnProperty(state)) {
+        const uniqueIds = Object.keys(stateObjects[state]);
+        const uniqueIdCount = uniqueIds.length;
+        stateCounts[state] = uniqueIdCount;
+      }
+    }
+  
+    return stateCounts;
+  }

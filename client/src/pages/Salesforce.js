@@ -28,9 +28,11 @@ const Salesforce = () => {
         { id: 1, "name": "Missing Case Hippo Course Tags", "data": test1 }
     ];
 
-    <section class='page' id='salesforce'>
-        <Page pageTitle={pageTitle} buttons={analysisButtons} />
-    </section>
+    return(
+        <section class='page' id='salesforce'>
+            <Page pageTitle={pageTitle} buttons={analysisButtons} />
+        </section>
+    )
 };
 
 export default Salesforce;

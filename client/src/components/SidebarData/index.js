@@ -50,6 +50,13 @@ export const SidebarData = [
         description: 'Salesforce data cleanup'
     },
     {
+        title: "Affinia",
+        icon: <AnalyticsIcon />,
+        link: "/Affinia",
+        image: imageTwo,
+        description: "At home CKD test kit"
+    },
+    {
         title: "Information", 
         icon: <InfoIcon />,
         link: "/",
