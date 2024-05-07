@@ -6,7 +6,9 @@ import Page from '../components/Page';
 // Function Imports
 import { 
     mergeData,
-    functionOne, 
+    functionOne,
+    functionTwo,
+    functionThree, 
 } from '../functions/affiniaFx';
 
 // Data Imports
@@ -30,15 +32,16 @@ const Affinia = () => {
 
     // Analysis Numbers
     const [outcomeMeasures, setOutcomeMeasures] = useState(functionOne(data1));
-    const [secondaryOutcomes, setSecondaryOutcomes] = useState('');
-    const [demographics, setDemographics] = useState('');
-
+    const [secondaryOutcomesPre, setSecondaryOutcomesPre] = useState(functionTwo(data1));
+    const [secondaryOutcomesPost, setSecondaryOutcomesPost] = useState('');
+    const [demographicsPre, setDemographicsPre] = useState(functionThree(data1));
 
     const analysisButtons = [
         { id: 1, "name": "Full Clean DataSet", "data": data1 },
-        { id: 2, "name": "Section 1: Outcome Measures", "data": outcomeMeasures },
-        { id: 3, "name": "Section 2: Secondary Outcomes", "data": secondaryOutcomes },
-        { id: 4, "name": "Section 3: Demographics", "data": demographics }
+        { id: 2, "name": "Section 1: Outcome Measures Post", "data": outcomeMeasures },
+        { id: 3, "name": "Section 2: Secondary Outcomes Pre", "data": secondaryOutcomesPre },
+        { id: 4, "name": "Section 2: Secondary Outcomes Post", "data": secondaryOutcomesPost },
+        { id: 5, "name": "Section 3: Demographic Data Points Pre", "data": demographicsPre }
     ];
 
     return(

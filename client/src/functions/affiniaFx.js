@@ -94,10 +94,69 @@ Function pre2: Medications sorted correctly analysis for ANDREW
 
 Function 1: Demographics analysis
 Function 2: Medication analysis
+Function 3: Demographic Data Points analysis
 */
 
-
 export const functionOne = (data) => {
+    return 'hello world function 1';
+};
+
+
+export const functionTwo = (data) => {
+
+    let secondaryOutcomesData = {
+        medCategoryCount: {},
+        chronicDiseaseMgmt: {
+            a1cControl: {
+                '>9%': 0,
+                '7-9%': 0,
+                '<7%': 0,
+                'Not Found': 0,
+            },
+            bpControl: {
+                '>140/90': 0,
+                '140/90-130/80': 0,
+                '<130/80': 0,
+                'None of the above': 0
+            }
+        }
+    }
+
+    for (const key in data) {
+        let obj = data[key];
+
+        const health = obj.healthConditions;
+
+        // Bloop Pressure
+        if (health.bp_systolic_pre > 140 && health.bp_diastolic_pre > 90) {
+            secondaryOutcomesData.chronicDiseaseMgmt.bpControl['>140/90'] ++;
+        } else if ((health.bp_systolic_pre < 141 && health.bp_systolic_pre > 130) && 
+                    (health.bp_diastolic_pre < 91 && health.bp_diastolic_pre > 80)) {
+            secondaryOutcomesData.chronicDiseaseMgmt.bpControl['140/90-130/80'] ++;          
+        } else if (health.bp_systolic_pre < 131 && health.bp_diastolic_pre < 81) {
+            secondaryOutcomesData.chronicDiseaseMgmt.bpControl['<130/80'] ++;
+        } else {
+            console.log(health.bp_systolic_pre, health.bp_diastolic_pre);
+            secondaryOutcomesData.chronicDiseaseMgmt.bpControl['None of the above'] ++;
+        }
+
+        // A1C
+        if (health.a1c_result_pre > 9) {
+            secondaryOutcomesData.chronicDiseaseMgmt.a1cControl['>9%'] ++;
+        } else if (health.a1c_result_pre >= 7) {
+            secondaryOutcomesData.chronicDiseaseMgmt.a1cControl['7-9%'] ++;
+        } else if (health.a1c_result_pre < 7) {
+            secondaryOutcomesData.chronicDiseaseMgmt.a1cControl['<7%'] ++;
+        } else {
+            secondaryOutcomesData.chronicDiseaseMgmt.a1cControl['Not Found'] ++;
+        }
+    }
+
+    return secondaryOutcomesData;
+};
+
+
+export const functionThree = (data) => {
 
     let demographics = {
         "diabetes only": 0,
@@ -148,31 +207,4 @@ export const functionOne = (data) => {
     }
 
     return demographics
-};
-
-
-
-export const functionTwo = (data) => {
-
-    let secondaryOutcomesData = {
-        ptReferrals: 0,
-        medCategoryCount: {},
-        chronicDiseaseMgmt: {
-            a1cControl: {
-                '>9%': 0,
-                '7-9%': 0,
-                '<7%': 0
-            },
-            bpControl: {
-                '>140/90': 0,
-                '140/90-130/80': 0,
-                '<130/80': 0
-            }
-        }
-
-    // for..... 
-
-    }
-
-    return secondaryOutcomesData;
 };
