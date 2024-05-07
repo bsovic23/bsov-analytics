@@ -4,10 +4,10 @@ import React, { useState } from 'react';
 import Page from '../components/Page';
 
 // Function Imports
-import { functionOne } from '../functions/salesForceFx';
+// import { functionOne } from '../functions/salesForceFx';
 
 // Data Imports
-import { salesforceMockData } from '../data/salesforce';
+// import { salesforceMockData } from '../data/salesforce';
 
 const Salesforce = () => {
 

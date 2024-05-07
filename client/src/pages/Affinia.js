@@ -4,14 +4,16 @@ import React, { useState } from 'react';
 import Page from '../components/Page';
 
 // Function Imports
-import { mergeData } from '../functions/affiniaFx';
+import { 
+    mergeData,
+    functionOne, 
+} from '../functions/affiniaFx';
 
 // Data Imports
 import { 
-    mockData_ALL_PT_DEMOGRAPHICS,
-    mockData_ALL_PT_HTN_DM,
-    mockData_ALL_PT_MEDICATIONS, 
-
+    allPtData,
+    kitPtData,
+    medicationData,
 } from '../data/affinia';
 
 const Affinia = () => {
@@ -21,13 +23,13 @@ const Affinia = () => {
     const title = 'Affinia Analysis';
 
     const [data1, setData1] = useState(mergeData(
-        mockData_ALL_PT_DEMOGRAPHICS, // tab1
-        mockData_ALL_PT_HTN_DM, // tab2
-        mockData_ALL_PT_MEDICATIONS, // tab3
+        allPtData, // All Cohort Participant data
+        kitPtData, // Kit Return Cohort Participant data
+        medicationData, // Medication
     ));
 
     // Analysis Numbers
-    const [outcomeMeasures, setOutcomeMeasures] = useState('');
+    const [outcomeMeasures, setOutcomeMeasures] = useState(functionOne(data1));
     const [secondaryOutcomes, setSecondaryOutcomes] = useState('');
     const [demographics, setDemographics] = useState('');
 
