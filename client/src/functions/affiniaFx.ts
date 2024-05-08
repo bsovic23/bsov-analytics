@@ -1,3 +1,4 @@
+/*
 // =======================================================================
 // CLEAN UP DATASET AFFINIA FX
 // =======================================================================
@@ -84,6 +85,7 @@ export const mergeData = (allPtData, kitPtData, medicationData) => {
 };
 
 
+*/
 // =======================================================================
 // Affinia Analysis Functions
 // =======================================================================
@@ -101,6 +103,43 @@ export const functionOne = (data) => {
     return 'hello world function 1';
 };
 
+// Interface Data
+
+interface PatientData {
+    kitReturned: boolean;
+    demographics: Demographics;
+    healthConditions: HealthConditions;
+    medications: Medication[];
+}
+
+interface Demographics {
+    'Gender': string;
+    'Race': string;
+    'Ethnicity': string;
+    'Language': string;
+};
+
+interface HealthConditions {
+    'A1C Date Pre': string;
+    'A1C Result Pre': number;
+    'BP Date Pre': string;
+    'BP Result Pre': number;
+    'BP Systolic Pre': number;
+    'BP Diastolic Pre': number;
+    'Hypertension': string;
+    'Diabetes': string;
+    'Both Hypertension and Diabetes': string;
+}
+
+interface Medication {
+    'Start Date': string;
+    'Med Name': string;
+    'Med Type': string;
+}
+
+// Interface Function One
+
+// Interface Function Two
 
 export const functionTwo = (data) => {
 
