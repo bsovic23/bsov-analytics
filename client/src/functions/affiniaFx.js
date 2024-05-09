@@ -133,25 +133,25 @@ export const functionTwo = (data) => {
     for (const key in data) {
         let obj = data[key];
 
-        const health = obj.healthConditions;
+        const health = obj.healthConditions[0];
 
         // Medications
         const meds = obj.medications;
 
         secondaryOutcomesData.medCategoryCount[meds['Med Name']] = (secondaryOutcomesData.medCategoryCount[meds['Med Name']] || 0) +1;        
 
-        // A1C
-        if (health.a1c_result_pre > 9) {
+        // Chronic Disease Management - A1C
+        if (health['A1C Result Pre'] > 9) {
             chronicDiseaseMgmt.a1cControl['>9%'] ++;
-        } else if (health.a1c_result_pre >= 7) {
+        } else if (health['A1C Result Pre'] >= 7) {
             chronicDiseaseMgmt.a1cControl['7-9%'] ++;
-        } else if (health.a1c_result_pre < 7) {
+        } else if (health['A1C Result Pre'] < 7) {
             chronicDiseaseMgmt.a1cControl['<7%'] ++;
         } else {
             chronicDiseaseMgmt.a1cControl['Not Found'] ++;
         }
 
-        // Bloop Pressure
+        // Chronic Disease Management - Bloop Pressure
         if (health.bp_systolic_pre > BP_SYS_HIGH && health.bp_diastolic_pre > BP_DIA_HIGH) {
             chronicDiseaseMgmt.bpControl['>140/90'] ++;
         } else if ((health.bp_systolic_pre <= BP_SYS_HIGH && health.bp_systolic_pre > BP_SYS_NORMAL) && 
