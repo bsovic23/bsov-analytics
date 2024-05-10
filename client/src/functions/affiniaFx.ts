@@ -1,13 +1,34 @@
-/*
+import {
+    // Raw Data Interface 
+    AllPtData, 
+    KitPtData, 
+    MedicationData, 
+
+    // Clean Data Interface
+    PatientData,
+    Demographics,
+    HealthConditions,
+    Medication,
+
+    // Outcome Measures
+    OutcomeMeasures,
+
+    // Secondary Outcomes Interface
+    SecondaryOutcomesData,
+
+    // Demographics Outcomes Interface
+    DemographicsOutcomes,
+} from "../typeScript/affinia";
+
 // =======================================================================
 // CLEAN UP DATASET AFFINIA FX
 // =======================================================================
 
-export const mergeData = (allPtData, kitPtData, medicationData) => {
-    let finalData = {};
+export const mergeData = (allPtData:AllPtData[], kitPtData:KitPtData[], medicationData:MedicationData[]) => {
+    let finalData: Record<number, any> = {};
 
     // Set() is javascript collection of unique values, so ensures only one unique MRN passed through
-    let uniqueIds = new Set();
+    let uniqueIds = new Set<number>();
     allPtData.forEach((item) => uniqueIds.add(item.mrn));
     kitPtData.forEach((item) => uniqueIds.add(item.mrn));
 
@@ -15,8 +36,8 @@ export const mergeData = (allPtData, kitPtData, medicationData) => {
     uniqueIds.forEach((identifier) => {
         finalData[identifier] = {
             kitReturned: false,
-            demographics: [],
-            healthConditions: [],
+            demographics: {},
+            healthConditions: {},
             medications: [],
         }
     });
@@ -26,21 +47,21 @@ export const mergeData = (allPtData, kitPtData, medicationData) => {
     allPtData.forEach((item) => {
         let identifier = item.mrn;
 
-        finalData[identifier]['demographics'].push({
+        finalData[identifier]['demographics'] = {
             // Demographics
             'Gender': item.gender || 'Missing',
             'Race': item.race || 'Missing',
             "Ethnicity": item.ethnicity || 'Missing',
             "Language": item.language || 'Missing',
-        });
+        };
 
-        finalData[identifier]['healthConditions'].push({
+        finalData[identifier]['healthConditions'] = {
 
-            'A1C Date Pre': item.a1c_date_pre || 'Missing',
+            'A1C Date Pre': item.a1c_date_pre ? new Date(item.a1c_date_pre).toLocaleDateString('en-US') : 'Missing',
             'A1C Result Pre': item.a1c_result_pre || 'Missing',
 
             // Blood Pressure
-            'BP Date Pre': item.bp_date_pre || 'Missing',
+            'BP Date Pre': item.bp_date_pre ? new Date(item.bp_date_pre).toLocaleDateString('en-US') : 'Missing',
             'BP Result Pre': item.bp_result_pre || 'Missing',
             'BP Systolic Pre': item.bp_systolic_pre || 'Missing',
             'BP Diastolic Pre': item.bp_diastolic_pre || "Missing",
@@ -53,8 +74,7 @@ export const mergeData = (allPtData, kitPtData, medicationData) => {
             
             // Diabetes + Hypertension
             'Both Hypertension and Diabetes': item.htn_bp_yn_pre
-        });
-
+        };
     });
 
     // DATA SET 2
@@ -73,19 +93,18 @@ export const mergeData = (allPtData, kitPtData, medicationData) => {
     medicationData.forEach((item) => {
         let identifier = item.mrn;
         let medicationData = {
-            'Start Date': item.medDate || '',
+            'Start Date': item.medDate ? new Date(item.medDate).toLocaleDateString('en-US') : '',
             'Med Name': item.medName || '',
             'Med Type': item.medType || ''
         }
 
-        finalData[identifier]['medications'].push({medicationData});
+        finalData[identifier]['medications'].push(medicationData);
     });
 
     return finalData; 
 };
 
 
-*/
 // =======================================================================
 // Affinia Analysis Functions
 // =======================================================================
@@ -99,58 +118,13 @@ Function 2: Medication analysis
 Function 3: Demographic Data Points analysis
 */
 
-export const functionOne = (data) => {
+export const functionOne = (data: PatientData[]): OutcomeMeasures => {
     return 'hello world function 1';
 };
 
-// Interface Full Dataset
-
-interface PatientData {
-    kitReturned: boolean;
-    demographics: Demographics;
-    healthConditions: HealthConditions;
-    medications: Medication[];
-}
-
-interface Demographics {
-    'Gender': string;
-    'Race': string;
-    'Ethnicity': string;
-    'Language': string;
-};
-
-interface HealthConditions {
-    'A1C Date Pre': string;
-    'A1C Result Pre': number;
-    'BP Date Pre': string;
-    'BP Result Pre': number;
-    'BP Systolic Pre': number;
-    'BP Diastolic Pre': number;
-    'Hypertension': string;
-    'Diabetes': string;
-    'Both Hypertension and Diabetes': string;
-}
-
-interface Medication {
-    'Start Date': string;
-    'Med Name': string;
-    'Med Type': string;
-}
-
-// Interface Function One
-
-// Interface Function Two
-interface SecondaryOutcomesData {
-    medCategoryCount: Record<string, number>;
-    chronicDiseaseMgmt: {
-        a1cControl: Record<string, number>;
-        bpControl: Record<string, number>
-    }
-}
-
 export const functionTwo = (data: PatientData[]): SecondaryOutcomesData => {
 
-    let secondaryOutcomesData = {
+    let secondaryOutcomesData: SecondaryOutcomesData = {
         medCategoryCount: {},
         chronicDiseaseMgmt: {
             a1cControl: {
@@ -179,17 +153,21 @@ export const functionTwo = (data: PatientData[]): SecondaryOutcomesData => {
     for (const key in data) {
         let obj = data[key];
 
-        const health = obj.healthConditions[0];
+        const health = obj.healthConditions;
 
         // Medications
         const meds = obj.medications;
 
-        secondaryOutcomesData.medCategoryCount[meds['Med Name']] = (secondaryOutcomesData.medCategoryCount[meds['Med Name']] || 0) +1;        
+        for (const obj of meds) {
+            let medType = obj['Med Type'];
+
+            secondaryOutcomesData.medCategoryCount[medType] = (secondaryOutcomesData.medCategoryCount[medType] || 0) +1;
+        }
 
         // Chronic Disease Management - A1C
-        if (health['A1C Result Pre'] > '9') {
+        if (health['A1C Result Pre'] > 9) {
             chronicDiseaseMgmt.a1cControl['>9%'] ++;
-        } else if (health['A1C Result Pr'] >= '7') {
+        } else if (health['A1C Result Pre'] >= 7) {
             chronicDiseaseMgmt.a1cControl['7-9%'] ++;
         } else if (health['A1C Result Pre'] < 7) {
             chronicDiseaseMgmt.a1cControl['<7%'] ++;
@@ -198,15 +176,15 @@ export const functionTwo = (data: PatientData[]): SecondaryOutcomesData => {
         }
 
         // Chronic Disease Management - Bloop Pressure
-        if (health.bp_systolic_pre > BP_SYS_HIGH && health.bp_diastolic_pre > BP_DIA_HIGH) {
+        if (health['BP Systolic Pre'] > BP_SYS_HIGH && health['BP Diastolic Pre'] > BP_DIA_HIGH) {
             chronicDiseaseMgmt.bpControl['>140/90'] ++;
-        } else if ((health.bp_systolic_pre <= BP_SYS_HIGH && health.bp_systolic_pre > BP_SYS_NORMAL) && 
-                    (health.bp_diastolic_pre <= BP_DIA_HIGH && health.bp_diastolic_pre > BP_DIA_NORMAL)) {
+        } else if ((health['BP Systolic Pre'] <= BP_SYS_HIGH && health['BP Systolic Pre'] > BP_SYS_NORMAL) && 
+                    (health['BP Diastolic Pre'] <= BP_DIA_HIGH && health['BP Diastolic Pre'] > BP_DIA_NORMAL)) {
                     chronicDiseaseMgmt.bpControl['140/90-130/80'] ++;          
-        } else if (health.bp_systolic_pre <= BP_SYS_NORMAL && health.bp_diastolic_pre <= BP_DIA_NORMAL) {
+        } else if (health['BP Systolic Pre'] <= BP_SYS_NORMAL && health['BP Diastolic Pre'] <= BP_DIA_NORMAL) {
             chronicDiseaseMgmt.bpControl['<130/80'] ++;
         } else {
-            console.log(health.bp_systolic_pre, health.bp_diastolic_pre);
+            console.log(health['BP Systolic Pre'], health['BP Diastolic Pre']);
             chronicDiseaseMgmt.bpControl['None of the above'] ++;
         }
     };
@@ -215,9 +193,9 @@ export const functionTwo = (data: PatientData[]): SecondaryOutcomesData => {
 };
 
 
-export const functionThree = (data) => {
+export const functionThree = (data: PatientData[]): DemographicsOutcomes => {
 
-    let demographics = {
+    let demographics: DemographicsOutcomes = {
         "diabetes only": 0,
         "hypertension only": 0,
         "diabetes and hypertension": 0,
@@ -232,7 +210,7 @@ export const functionThree = (data) => {
         const obj = data[key];
 
         // Health
-        const healthConditions = obj.healthConditions[0];
+        const healthConditions = obj.healthConditions;
 
         if (healthConditions['Both Hypertension and Diabetes'] === 'Yes') {
             demographics['diabetes and hypertension'] ++;
@@ -250,13 +228,13 @@ export const functionThree = (data) => {
         }
 
         // Demographics - gender, race, eth, language
-        const demo = obj.demographics[0];
+        const demo = obj.demographics;
 
         // Gender
         demographics.gender[demo.Gender] = (demographics.gender[demo.Gender] || 0) + 1;
 
         // Race
-        demographics.race[demo.Race] = (demographics.race[demo.race] || 0) + 1;
+        demographics.race[demo.Race] = (demographics.race[demo.Race] || 0) + 1;
 
         // Ethnicity
         demographics.ethnicity[demo.Ethnicity] = (demographics.ethnicity[demo.Ethnicity] || 0) + 1;
