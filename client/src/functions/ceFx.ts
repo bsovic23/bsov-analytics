@@ -24,8 +24,14 @@ export const userDataFx = (
     let allData: Record<number, any> = {};
 
     completionData.forEach((item) => {
-        if (!allData[item.id]) {
-            allData[item.id];
+        let id = item.id;
+
+        if (!allData[id]) {
+            allData[id];
+        }
+
+        allData[id] = {
+            profession: item.profession
         }
     })
 };
