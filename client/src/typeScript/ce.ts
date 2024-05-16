@@ -62,7 +62,7 @@ export interface UserData {
 // ------------------
 
 export interface ModuleScoreData {
-    professionScoreChange: ProfessionStructure[];
+    professionScoreChange: Record<string, ProfessionStructure>;
     scoreIncreased: number;
     scoreDecreased: number;
     scoreSame: number;

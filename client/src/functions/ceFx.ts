@@ -62,7 +62,7 @@ export const userDataFx = (enrollmentData:EnrollmentReport[], evaluationData:Eva
 export const moduleScoring = (data: ModuleReport[]) => {
 
     let moduleData: ModuleScoreData = {
-        professionScoreChange: [],
+        professionScoreChange: {},
         scoreIncreased: 0,
         scoreDecreased: 0,
         score100Both: 0,
@@ -95,6 +95,20 @@ export const moduleScoring = (data: ModuleReport[]) => {
                 scoreSame: 0,
                 score100Both: 0
             };
+        }
+
+        if (complete && scorePretest && scorePretest) {
+            let scoreChange = scorePosttest - scorePretest;
+
+            if (scorePretest === 100 && scorePosttest === 100) {
+                moduleData.professionScoreChange[profession].score100Both ++;
+            } else if (scoreChange < 0) {
+                moduleData.professionScoreChange[profession].scoreDecreased ++;
+            } else if (scoreChange > 0) {
+                moduleData.professionScoreChange[profession].scoreIncreased ++;
+            } else if (scoreChange === 0) {
+                moduleData.professionScoreChange[profession].scoreSame ++
+            } else console.log(scoreChange); 
         }
         
     }
