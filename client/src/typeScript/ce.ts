@@ -2,64 +2,77 @@
 // Data Imports
 // ------------------
 
-export interface CompletionReport {
-    id: number;
-    profession: string;
-    city: string;
-    state: string;
-    zipcode: string;
-    country: string;
-    organization: string;
-    title: string;
-    dob: Date;
-    completed: Boolean;
-}
-
 export interface EnrollmentReport {
+    module: string;
     id: number;
+    first_name: string;
+    last_name: string;
     profession: string;
+    email: string;
     city: string;
     state: string;
-    zipcode: string;
+    zip: string;
     country: string;
     organization: string;
     title: string;
     dob: Date;
-    completed: Boolean;
+    member: Boolean;
+    complete: Boolean;
 }
 
 export interface EvaluationReport {
     id: Number;
-    profession: String;
+    profession: string;
     // each question differs ....
 };
 
 export interface ModuleReport {
-    id: Number;
-    profession: String;
-    scorePretest: Number;
-    scorePosttest: Number;
+    module: number;
+    id: number;
+    profession: string;
+    complete: Boolean;
+    scorePretest: number;
+    scorePosttest: number;
 }
-
-// ------------------
-// Data - Module Data
-// ------------------
 
 
 // ------------------
 // Data - User Data
 // ------------------
+
 export interface UserData {
-    id: number;
+    identifier: string;
     member: Boolean;
-    profession: String;
-    city: String;
-    state: String;
-    country: String;
-    enrolledCourses: Courses[];
-    completedCourses: Courses[];
+    profession: string;
+    city: string;
+    state: string;
+    country: string;
+    enrolledCourses: string[];
+    completedCourses: string[];
 };
 
-export interface Courses {
-    courseTitle: String;
+// ------------------
+// Data - Evaluation Data
+// ------------------
+
+
+
+// ------------------
+// Data - Module Data
+// ------------------
+
+export interface ModuleScoreData {
+    professionScoreChange: ProfessionStructure[];
+    scoreIncreased: number;
+    scoreDecreased: number;
+    scoreSame: number;
+    score100Both: number;
+}
+
+export interface ProfessionStructure {
+    professionType: string;
+    scoreIncreased: number;
+    scoreDecreased: number;
+    scoreSame: number;
+    score100Both: number;
 }
