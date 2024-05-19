@@ -9,6 +9,7 @@ import GeneralAnalysis from './pages/GeneralAnalysis';
 import Survey from './pages/Survey';
 import Salesforce from './pages/Salesforce';
 import Affinia from './pages/Affinia';
+import Ce from './pages/CE';
 
 const routes = [
   {path: "/", element: <Home />},
@@ -18,6 +19,7 @@ const routes = [
   {path: "/Survey", element: <Survey />},
   {path: "/Salesforce", element: <Salesforce />},
   {path: "/Affinia", element: <Affinia />},
+  {path: "/Ce", element: <Ce />},
 ];
 
 function App() {

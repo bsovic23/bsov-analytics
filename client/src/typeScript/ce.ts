@@ -30,9 +30,17 @@ export interface ModuleReport {
     module: number;
     id: number;
     profession: string;
-    complete: Boolean;
+    moduleStartDate: string;
+    moduleCompleteDate: string;
+    moduleComplete: Boolean;
     scorePretest: number;
     scorePosttest: number;
+}
+
+export interface ModuleReportMap {
+    module: number;
+    quiz: Boolean;
+    prepost_both: string;
 }
 
 
@@ -60,7 +68,7 @@ export interface UserData {
 // ------------------
 // Data - Module Data
 // ------------------
-
+Date
 export interface ModuleScoreData {
     professionScoreChange: Record<string, ProfessionStructure>;
     scoreIncreased: number;

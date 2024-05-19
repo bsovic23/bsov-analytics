@@ -71,12 +71,12 @@ export const moduleScoring = (data: ModuleReport[]) => {
 
     // Score Change
     for (const obj of data) {
-        const { complete, scorePretest, scorePosttest, profession } = obj;
+        const { moduleComplete, scorePretest, scorePosttest, profession } = obj;
 
-        if (complete && scorePretest && scorePretest) {
+        if (moduleComplete && scorePretest && scorePosttest) {
             let scoreChange = scorePosttest - scorePretest;
 
-            if (scorePretest === 100 && scorePosttest === 100) {
+            if (scorePretest === 1 && scorePosttest === 1) {
                 moduleData.score100Both ++;
             } else if (scoreChange < 0) {
                 moduleData.scoreDecreased ++;
@@ -97,10 +97,10 @@ export const moduleScoring = (data: ModuleReport[]) => {
             };
         }
 
-        if (complete && scorePretest && scorePretest) {
+        if (moduleComplete && scorePretest && scorePretest) {
             let scoreChange = scorePosttest - scorePretest;
 
-            if (scorePretest === 100 && scorePosttest === 100) {
+            if (scorePretest === 1 && scorePosttest === 1) {
                 moduleData.professionScoreChange[profession].score100Both ++;
             } else if (scoreChange < 0) {
                 moduleData.professionScoreChange[profession].scoreDecreased ++;

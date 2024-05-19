@@ -57,6 +57,13 @@ export const SidebarData = [
         description: "At home CKD test kit"
     },
     {
+        title: "CE",
+        icon: <AnalyticsIcon />,
+        link: "/Ce",
+        image: imageTwo,
+        description: "CE"
+    },
+    {
         title: "Information", 
         icon: <InfoIcon />,
         link: "/",
