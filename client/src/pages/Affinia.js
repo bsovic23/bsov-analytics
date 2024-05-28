@@ -6,6 +6,9 @@ import Page from '../components/Page';
 // Function Imports
 import { 
     mergeData,
+
+    andrewMeds,
+
     functionOne,
     functionTwo,
     functionThree, 
@@ -35,13 +38,15 @@ const Affinia = () => {
     const [secondaryOutcomesPre, setSecondaryOutcomesPre] = useState(functionTwo(data1));
     const [secondaryOutcomesPost, setSecondaryOutcomesPost] = useState('');
     const [demographicsPre, setDemographicsPre] = useState(functionThree(data1));
+    const [andrewData, setAndrewData] = useState(andrewMeds(medicationData));
 
     const analysisButtons = [
         { id: 1, "name": "Full Clean DataSet", "data": data1 },
         { id: 2, "name": "Section 1: Outcome Measures Post", "data": outcomeMeasures },
         { id: 3, "name": "Section 2: Secondary Outcomes Pre", "data": secondaryOutcomesPre },
         { id: 4, "name": "Section 2: Secondary Outcomes Post", "data": secondaryOutcomesPost },
-        { id: 5, "name": "Section 3: Demographic Data Points Pre", "data": demographicsPre }
+        { id: 5, "name": "Section 3: Demographic Data Points Pre", "data": demographicsPre },
+        { id: 6, "name": "Andrew Meds", "data": andrewData }
     ];
 
     return(

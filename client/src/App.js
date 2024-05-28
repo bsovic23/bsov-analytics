@@ -10,6 +10,7 @@ import Survey from './pages/Survey';
 import Salesforce from './pages/Salesforce';
 import Affinia from './pages/Affinia';
 import Ce from './pages/CE';
+import Pam from './pages/Pam';
 
 const routes = [
   {path: "/", element: <Home />},
@@ -20,6 +21,7 @@ const routes = [
   {path: "/Salesforce", element: <Salesforce />},
   {path: "/Affinia", element: <Affinia />},
   {path: "/Ce", element: <Ce />},
+  {path: "/Pam", element: <Pam />},
 ];
 
 function App() {

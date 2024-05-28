@@ -9,6 +9,7 @@ import {
     Demographics,
     HealthConditions,
     Medication,
+    MedicationReview,
 
     // Outcome Measures
     OutcomeMeasures,
@@ -31,6 +32,7 @@ export const mergeData = (allPtData:AllPtData[], kitPtData:KitPtData[], medicati
     let uniqueIds = new Set<number>();
     allPtData.forEach((item) => uniqueIds.add(item.mrn));
     kitPtData.forEach((item) => uniqueIds.add(item.mrn));
+    medicationData.forEach((item) => uniqueIds.add(item.mrn));
 
     // Set default data + kit return = false
     uniqueIds.forEach((identifier) => {
@@ -95,7 +97,7 @@ export const mergeData = (allPtData:AllPtData[], kitPtData:KitPtData[], medicati
         let medicationData = {
             'Start Date': item.medDate ? new Date(item.medDate).toLocaleDateString('en-US') : '',
             'Med Name': item.medName || '',
-            'Med Type': item.medType || ''
+            'Med Type': item.medType || '',
         }
 
         finalData[identifier]['medications'].push(medicationData);
@@ -103,6 +105,23 @@ export const mergeData = (allPtData:AllPtData[], kitPtData:KitPtData[], medicati
 
     return finalData; 
 };
+
+
+export const andrewMeds = (data: MedicationData[]) => {
+    let medCount: MedicationReview = {
+        medAnalysis: {}
+    };
+
+    for (const obj of data) {
+        const { medName, medType } = obj;
+
+        let uniqueMedIdentifier = `${medName}-${medType}`;
+
+        medCount.medAnalysis[uniqueMedIdentifier] = (medCount.medAnalysis[uniqueMedIdentifier] || 0) + 1;
+    }
+
+    return medCount;
+}
 
 
 // =======================================================================

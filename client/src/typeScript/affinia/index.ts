@@ -80,6 +80,10 @@ export interface Medication {
     'Med Type': string;
 }
 
+export interface MedicationReview {
+    'medAnalysis': Record<string, number>;
+}
+
 // --------------
 // Outcome Measures
 // --------------

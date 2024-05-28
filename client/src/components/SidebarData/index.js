@@ -64,6 +64,13 @@ export const SidebarData = [
         description: "CE"
     },
     {
+        title: "PAM",
+        icon: <AnalyticsIcon />,
+        link: "/Pam",
+        image: imageTwo,
+        description: "PAM"
+    },
+    {
         title: "Information", 
         icon: <InfoIcon />,
         link: "/",
