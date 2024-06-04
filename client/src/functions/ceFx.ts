@@ -141,6 +141,19 @@ export const enrollmentDataAnalysis = (enrollmentData: EnrollmentReport[]) => {
             enrollmentAnalysis.enrollmentMonth[enrollMonth] = (enrollmentAnalysis.enrollmentMonth[enrollMonth] || 0) + 1;
         }
     }
+    
+    const getTop10 = (obj: { [key: string]: number }) => {
+        return Object.entries(obj)
+            .sort(([, a], [, b]) => b - a)
+            .slice(0, 10)
+            .reduce((acc, [key, value]) => {
+                acc[key] = value;
+                return acc;
+            }, {} as { [key: string]: number });
+    };
+
+    enrollmentAnalysis.top10EnrolledModules = getTop10(enrollmentAnalysis.top10EnrolledModules);
+    enrollmentAnalysis.top10CompletedModules = getTop10(enrollmentAnalysis.top10CompletedModules);
 
     return enrollmentAnalysis;
 };

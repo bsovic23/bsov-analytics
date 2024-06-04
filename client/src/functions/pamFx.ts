@@ -131,36 +131,57 @@ export const pamCounts = (data: PamMockData[]) => {
 
 
 export const analyzeBaselineActivationChanges = (data: PamMockData[]) => {
+  // Initialize the counters and sum variables
   let changeCount = { increase: 0, decrease: 0, same: 0 };
+  let diffSum = 0;
+  let count = 0;
 
-  for (const obj of data) {
-      let lastScore = null;
-      const baseline = obj.activation_bl;
-
-      if (baseline !== undefined && baseline !== null) {
-          if (obj.activation_m12 !== undefined && obj.activation_m12 !== null) {
-              lastScore = obj.activation_m12;
-          } else if (obj.activation_m9 !== undefined && obj.activation_m9 !== null) {
-              lastScore = obj.activation_m9;
-          } else if (obj.activation_m6 !== undefined && obj.activation_m6 !== null) {
-              lastScore = obj.activation_m6;
-          } else if (obj.activation_m3 !== undefined && obj.activation_m3 !== null) {
-              lastScore = obj.activation_m3;
-          }
-
-          // Calculate changes only if there's a baseline and at least one follow-up survey filled
-          if (lastScore !== null) {
-              const diff = lastScore - baseline;
-              if (diff > 0) {
-                  changeCount.increase++;
-              } else if (diff < 0) {
-                  changeCount.decrease++;
-              } else {
-                  changeCount.same++;
-              }
-          }
-      }
+  // Object to hold the results
+  let information = {
+    changeCount,
+    diffSum,
+    count,
   }
 
-  return changeCount;
+  // Loop through each object in the data array
+  for (const obj of data) {
+    let lastScore = null;
+    const baseline = obj.activation_bl;
+  
+    // Check if the baseline is defined and not null
+    if (baseline !== undefined && baseline !== null) {
+      // Check for the most recent non-null follow-up score
+      if (obj.activation_m12 !== undefined && obj.activation_m12 !== null) {
+        lastScore = obj.activation_m12;
+      } else if (obj.activation_m9 !== undefined && obj.activation_m9 !== null) {
+        lastScore = obj.activation_m9;
+      } else if (obj.activation_m6 !== undefined && obj.activation_m6 !== null) {
+        lastScore = obj.activation_m6;
+      } else if (obj.activation_m3 !== undefined && obj.activation_m3 !== null) {
+        lastScore = obj.activation_m3;
+      }
+
+      // Calculate changes only if there's a baseline and at least one follow-up survey filled
+      if (lastScore !== null && baseline !==null) {
+        const diff = lastScore - baseline;
+        count++;
+        diffSum += diff;
+
+        // Update the change count based on the difference
+        if (diff > 0) {
+          changeCount.increase++;
+        } else if (diff < 0) {
+          changeCount.decrease++;
+        } else {
+          changeCount.same++;
+        }
+      }
+    }
+  }
+
+  information.diffSum = diffSum;
+  information.count = count;
+
+  // Return the result object
+  return information;
 };
