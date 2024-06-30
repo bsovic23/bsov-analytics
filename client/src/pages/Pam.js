@@ -10,10 +10,14 @@ import {
     analyzeBaselineActivationChanges
 } from '../functions/pamFx';
 
+
 // Data Imports
-import { 
-    pamMockData
-} from '../data/pam';
+let pamMockData;
+try {
+    pamMockData = require('../data/pam').pamMockData;
+} catch (error) {
+    pamMockData = 'No data found';
+}
 
 const Pam = () => {
 
@@ -22,9 +26,9 @@ const Pam = () => {
     const title = 'Pam Analysis';
 
     // Analysis Numbers
-    const [counts, setCounts] = useState(pamCounts(pamMockData));
-    const [levelChange, setLevelChange] = useState(analyzeLevelChanges(pamMockData));
-    const [activationChange, setActivationChange] = useState(analyzeBaselineActivationChanges(pamMockData));
+    const [counts, setCounts] = useState((pamMockData !== 'No data found') ? (pamCounts(pamMockData)) : 'No Pam Data Found');
+    const [levelChange, setLevelChange] = useState((pamMockData !== 'No data found') ? (analyzeLevelChanges(pamMockData)) : 'No Pam Data Found');
+    const [activationChange, setActivationChange] = useState((pamMockData !== 'No data found') ? (analyzeBaselineActivationChanges(pamMockData)) : 'No Pam Data Found');
 
     const analysisButtons = [
         { id: 1, "name": "Counts data", "data": counts },

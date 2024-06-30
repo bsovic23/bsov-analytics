@@ -71,6 +71,13 @@ export const SidebarData = [
         description: "PAM"
     },
     {
+        title: "TX Transplant",
+        icon: <AnalyticsIcon />,
+        link: "/TxTransplant",
+        image: imageTwo,
+        description: "TX TRNASPLANT"
+    },
+    {
         title: "Information", 
         icon: <InfoIcon />,
         link: "/",

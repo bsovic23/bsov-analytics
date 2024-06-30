@@ -4,10 +4,19 @@ import React, { useState } from 'react';
 import Page from '../components/Page';
 
 // Function Imports
-// import { functionOne } from '../functions/salesForceFx';
+import { dupsFunction } from '../functions/salesForceFx';
 
 // Data Imports
-// import { salesforceMockData } from '../data/salesforce';
+let wildApricot;
+let salesForce;
+
+try {
+    wildApricot.require('../data/salesforce').wildApricot;
+    salesForce.require('../data/salesforce').salesForce;
+} catch (error) {
+    wildApricot = 'No data found';
+    salesForce = 'No data found';
+};
 
 const Salesforce = () => {
 
@@ -22,10 +31,10 @@ const Salesforce = () => {
         fx5: FN-LN-ZIP with two different 18 digit identifiers -> merge request 
     */
 
-    const [test1, setTest1] = useState(functionOne(salesforceMockData));
+    const [test1, setTest1] = useState((wildApricot !== 'No data found' && salesForce !== 'No data found') ? dupsFunction(wildApricot, salesForce) : 'No data');
 
     const analysisButtons = [
-        { id: 1, "name": "Missing Case Hippo Course Tags", "data": test1 }
+        { id: 1, "name": "Wild Apricot + Salesforce Analysis", "data": test1 }
     ];
 
     return(

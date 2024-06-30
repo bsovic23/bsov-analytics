@@ -7,18 +7,22 @@ import {
  } from '../functions/ceFx';
 
 // Data
-import { 
-    moduleMockData,
-    enrollmentMockData, 
-} from '../data/ce';
+let moduleMockData, enrollmentMockData;
+try {
+    moduleMockData = require('../data/ce').moduleMockData;
+    enrollmentMockData = require('../data/ce').enrollmentMockData;
+} catch (error) {
+    moduleMockData = 'No data found';
+    enrollmentMockData = 'No data found';
+}
 
 // Page/Component Imports
 import Page from '../components/Page';
 
 const Ce = () => {
     // ----- CME
-    const [moduleScoreData, setModuleScoreData] = useState(moduleScoring(moduleMockData));
-    const [enrollmentData, setEnrollmentData] = useState(enrollmentDataAnalysis(enrollmentMockData));
+    const [moduleScoreData, setModuleScoreData] = useState((moduleMockData !== 'No data found') ? (moduleScoring(moduleMockData)) : 'No Module Data Found');
+    const [enrollmentData, setEnrollmentData] = useState((enrollmentMockData !== 'No data found') ? (enrollmentDataAnalysis(enrollmentMockData)) : 'No Enrollment Data Found');
 
     const title = "CE Data";
     

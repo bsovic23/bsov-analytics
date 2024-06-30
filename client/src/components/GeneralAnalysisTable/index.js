@@ -1,0 +1,35 @@
+import React from 'react';
+
+const GeneralAnalysisTable = ({ data }) => {
+  // Convert the data object to an array for easy mapping
+  const emailArray = Object.values(data);
+
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Date Access Total</th>
+          <th>First Contact</th>
+          <th>Last Contact</th>
+        </tr>
+      </thead>
+      <tbody>
+        {emailArray.map((item, index) => (
+          <tr key={index}>
+            <td>{item.email}</td>
+            <td>{item.firstName}</td>
+            <td>{item.lastName}</td>
+            <td>{item.dateAccessTotal}</td>
+            <td>{item.firstContact}</td>
+            <td>{item.lastContact}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+};
+
+export default GeneralAnalysisTable;

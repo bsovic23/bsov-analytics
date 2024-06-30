@@ -15,11 +15,16 @@ import {
 } from '../functions/affiniaFx';
 
 // Data Imports
-import { 
-    allPtData,
-    kitPtData,
-    medicationData,
-} from '../data/affinia';
+let allPtData, kitPtData, medicationData;
+try {
+    allPtData = require('../data/affinia').allPtData;
+    kitPtData = require('../data/affinia').kitPtData;
+    medicationData = require('../data/affinia').medicationData;
+} catch (error) {
+    allPtData = 'No data found';
+    kitPtData = 'No data found';
+    medicationData = 'No data found';
+}
 
 const Affinia = () => {
 
@@ -27,18 +32,21 @@ const Affinia = () => {
     
     const title = 'Affinia Analysis';
 
-    const [data1, setData1] = useState(mergeData(
+    const [data1, setData1] = useState(
+        (allPtData !== 'No data found' || kitPtData !== 'No data found' || medicationData !== 'No data found') ? 
+        (mergeData(
         allPtData, // All Cohort Participant data
         kitPtData, // Kit Return Cohort Participant data
         medicationData, // Medication
-    ));
-
+        )) : 'No Affinia Data Found'
+    );
+    
     // Analysis Numbers
-    const [outcomeMeasures, setOutcomeMeasures] = useState(functionOne(data1));
-    const [secondaryOutcomesPre, setSecondaryOutcomesPre] = useState(functionTwo(data1));
+    const [outcomeMeasures, setOutcomeMeasures] = useState((data1 !== 'No Affinia Data Found') ? functionOne(data1) : 'No Affinia Data Found');
+    const [secondaryOutcomesPre, setSecondaryOutcomesPre] = useState((data1 !== 'No Affinia Data Found') ? (functionTwo(data1)) : 'No Affinia Data Found');
     const [secondaryOutcomesPost, setSecondaryOutcomesPost] = useState('');
-    const [demographicsPre, setDemographicsPre] = useState(functionThree(data1));
-    const [andrewData, setAndrewData] = useState(andrewMeds(medicationData));
+    const [demographicsPre, setDemographicsPre] = useState((data1 !== 'No Affinia Data Found') ? (functionThree(data1)) : 'No Affinia Data Found');
+    const [andrewData, setAndrewData] = useState((medicationData !== 'No data found') ? (andrewMeds(medicationData)) : 'No Medication Data Found');
 
     const analysisButtons = [
         { id: 1, "name": "Full Clean DataSet", "data": data1 },

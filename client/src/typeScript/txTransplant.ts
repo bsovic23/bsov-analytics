@@ -36,43 +36,149 @@ export interface TxDataWaitList {
     // more
 }
 
-export interface ProfessionalSurvey {
-    healthProfessional: string;
-    professionalCategory: string;
-    q3_a: string;
-    q3_b: string;
-    q3_c: string;
-    q3_d: string;
-    q3_e: string;
-    q3_f: string;
-    q3_g: string;
-    q3_h: string;
-    q3_i: string;
-    q3_j: string;
-    q3_k: string;
+export interface PatientEducationSurvey {
+    id: number,
+    primaryConnection: string,
+    primaryConnectionOtherDesc: string,
+    primaryConnectionType: string,
+    scaleKidneyTransplantation: number,
+    scaleLivingDonation: number,
+    learnKidneyTransplant: string,
+    learnStopTransplant: string,
+    learnWaitlist: string,
+    learnShareStory: string,
+    learnCost: string,
+    learnTransplantLength: string,
+    learnLife: string,
+    learnOtherDesc: string,
+    challengeInformation: string,
+    challengeLanguage: string,
+    challengeRead: string,
+    challengeHelp: string,
+    challengeInternet: string,
+    challengeEducation: string,
+    challengeTransportation: string,
+    challengeOtherDesc: string,
+    enjoyLearnResponse: string,
+    enjoyLearnOtherDesc: string,
+    sourceER: string,
+    sourceFriend: string,
+    sourceGovernment: string,
+    sourceNews: string,
+    sourceCommunity: string,
+    sourceSocialMedia: string,
+    sourceReligion: string,
+    sourceMovie: string,
+    sourceWork: string,
+    sourceOtherDesc: string,
+}
+
+export interface HealthcareEducationSurvey {
+    id: number,
+    healthcareProfessional: Boolean,
+    professionalCategory: string,
+    sourceClinic: string,
+    sourceER: string,
+    sourceFriend: string,
+    sourceGovernment: string,
+    sourceNews: string,
+    sourceCommunity: string,
+    sourceSocialMedia: string,
+    sourceReligion: string,
+    sourceMovie: string,
+    sourceWork: string,
+    sourceOtherDesc: string,
+    barrierLanguage: string,
+    barrierReading: string,
+    barrierLiteracy: string,
+    barrierCulture: string,
+    barrierInternet: string,
+    barrierTransportation: string,
+    barrierOtherDesc: string,
+    miscAge: string,
+    miscBloodType: string,
+    miscLastResort: string,
+    miscDialysis: string,
+    miscRisky: string,
+    miscDeceased: string,
+    miscCure: string,
+    miscOtherDesc: string,
 }
 
 // -------
-// Professional Survey 
+// Clean Data To Use for analysis
 // -------
 
-export interface ProfessionalSurveyFinal {
-    healthProfessional: string;
-    professionalCategory: string;
-    trustedSources: Sources[];
+interface Learn {
+    learn: string
 }
 
-export interface Sources {
-    source: string;
+interface Challenge {
+    challenge: string
+}
+
+export interface PatientEducationDataClean {
+    primaryConnection: string,
+    primaryConnectionOtherDesc: string,
+    primaryConnectionType: string,
+    scaleKidneyTransplantation: number,
+    scaleLivingDonation: number,
+    learns: Learn[],
+    learnOtherDesc: string,
+    challenges: Challenge[],
+    challengeOtherDesc: string,
+    enjoyLearnResponse: string,
+    enjoyLearnOtherDesc: string,
+    sources: Source[],
+    sourceOtherDesc: string,
+}
+
+interface Source {
+    source: string
+}
+
+interface Barrier {
+    barrier: string
+}
+
+interface Misc {
+    misc: string
+}
+
+export interface HealthcareEducationDataClean {
+    healthProfessional: Boolean,
+    professionalCategory: string,
+    sources: Source[];
+    sourceOtherDesc: string,
+    barriers: Barrier[],
+    barrierOtherDesc: string,
+    miscs: Misc[],
+    miscOtherDesc: string,
 };
 
 
 // -------
-// Professional Survey Analysis
+// Counts
 // -------
+ 
+export interface PatientEducationCounts {
+    completedSurveys: number,
+    primaryConnectionCount: Record<string, number>,
+    primaryConnectionTypeCount: Record<string, number>,
+    scaleKidneyTransplantationCount: number,
+    scaleLivingDonationCount: number,
+    learnsCount: Record<string, number>,
+    challengesCount: Record<string, number>,
+    enjoyLearnResponseCount: Record<string, number>,
+    sourcesCount: Record<string, number>
+}
 
-export interface ProfessionalSurveyAnalysis {
-    healthProfessionalCount: Record<string, number>;
-    professionalCategoryCount: Record<string, number>;
+export interface HealthcareEducationCounts {
+    completedSurveys: number,
+    healthProfessionalCount: number,
+    professionalCategoryCount: Record<string, number>,
+    sourceCount: Record<string, number>,
+    barrierCount: Record<string, number>,
+    miscCount: Record<string, number>,
 }
 

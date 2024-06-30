@@ -11,6 +11,7 @@ import Salesforce from './pages/Salesforce';
 import Affinia from './pages/Affinia';
 import Ce from './pages/CE';
 import Pam from './pages/Pam';
+import TxTransplant from './pages/TxTransplant';
 
 const routes = [
   {path: "/", element: <Home />},
@@ -22,6 +23,7 @@ const routes = [
   {path: "/Affinia", element: <Affinia />},
   {path: "/Ce", element: <Ce />},
   {path: "/Pam", element: <Pam />},
+  {path: "/TxTransplant", element: <TxTransplant />},
 ];
 
 function App() {
