@@ -20,7 +20,6 @@ try {
 export const GeneralAnalysis = () => {
 
     //
-
     const [cleanList, setCleanList] = useState((klcEmailData !== 'No data found') ? klcEmailListFx(klcEmailData) : 'No KLC Email List Data found');
 
     //Page Variables

@@ -3,14 +3,14 @@
 
 export interface KlcEmailList {
     id: number,
-    dateRegister: string,
-    resourceName: string,
-    complete: boolean,
     firstName: string,
     lastName: string,
     email: string,
+    state: string,
+    country: string,
     member: boolean,
     dateAccess: string,
+    courseComplete: string,
 }
 
 export interface KlcEmailListClean {
@@ -18,7 +18,11 @@ export interface KlcEmailListClean {
         firstName: string,
         lastName: string,
         email: string,
+        state: string,
+        country: string,
+        member: boolean,
         dateAccessTotal: number,
+        coursesComplete: number,
         firstContact: string,
         lastContact: string,
         dates: { formattedDate: string }[];

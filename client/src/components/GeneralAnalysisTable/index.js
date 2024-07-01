@@ -11,7 +11,11 @@ const GeneralAnalysisTable = ({ data }) => {
           <th>Email</th>
           <th>First Name</th>
           <th>Last Name</th>
+          <th>State</th>
+          <th>Country</th>
+          <th>Member</th>
           <th>Date Access Total</th>
+          <th>Courses Complete</th>
           <th>First Contact</th>
           <th>Last Contact</th>
         </tr>
@@ -22,7 +26,11 @@ const GeneralAnalysisTable = ({ data }) => {
             <td>{item.email}</td>
             <td>{item.firstName}</td>
             <td>{item.lastName}</td>
+            <td>{item.state}</td>
+            <td>{item.country}</td>
+            <td>{item.member}</td>
             <td>{item.dateAccessTotal}</td>
+            <td>{item.coursesComplete}</td>
             <td>{item.firstContact}</td>
             <td>{item.lastContact}</td>
           </tr>
