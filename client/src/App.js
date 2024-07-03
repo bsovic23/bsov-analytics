@@ -12,6 +12,7 @@ import Affinia from './pages/Affinia';
 import Ce from './pages/CE';
 import Pam from './pages/Pam';
 import TxTransplant from './pages/TxTransplant';
+import Membership from './pages/Membership';
 
 const routes = [
   {path: "/", element: <Home />},
@@ -24,6 +25,7 @@ const routes = [
   {path: "/Ce", element: <Ce />},
   {path: "/Pam", element: <Pam />},
   {path: "/TxTransplant", element: <TxTransplant />},
+  {path: "/Membership", element: <Membership />},
 ];
 
 function App() {

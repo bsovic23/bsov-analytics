@@ -78,6 +78,13 @@ export const SidebarData = [
         description: "TX TRNASPLANT"
     },
     {
+        title: "Professional Membership",
+        icon: <AnalyticsIcon />,
+        link: "/Membership",
+        image: imageTwo,
+        description: "Professional Mmebership analysis and duplicate review of mmebers that need to be delete"
+    },
+    {
         title: "Information", 
         icon: <InfoIcon />,
         link: "/",

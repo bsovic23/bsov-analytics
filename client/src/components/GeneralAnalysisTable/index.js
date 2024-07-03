@@ -3,6 +3,7 @@ import React from 'react';
 const GeneralAnalysisTable = ({ data }) => {
   // Convert the data object to an array for easy mapping
   const emailArray = Object.values(data);
+  console.log(emailArray);
 
   return (
     <table>
@@ -28,7 +29,7 @@ const GeneralAnalysisTable = ({ data }) => {
             <td>{item.lastName}</td>
             <td>{item.state}</td>
             <td>{item.country}</td>
-            <td>{item.member}</td>
+            <td>{item.member ? 'Yes' : 'No'}</td>
             <td>{item.dateAccessTotal}</td>
             <td>{item.coursesComplete}</td>
             <td>{item.firstContact}</td>
