@@ -15,18 +15,11 @@ export const SidebarData = [
         description: 'Return Home'
     },
     {
-        title: "Data Dictionary Analytics", 
+        title: "BSOV-ANALYTICS",
         icon: <AnalyticsIcon />,
-        link: "/DataDictionary",
-        image: imageTwo,
-        description: 'Program identifies Ids that need to be deleted, merged, or edited'
-    },
-    {
-        title: "Registry Analytics", 
-        icon: <AnalyticsIcon />,
-        link: "/Registry",
+        link: "/",
         image: imageOne,
-        description: 'Analysis for Patient Registry'
+        description: 'Import your data and ask analytics questions'
     },
     {
         title: "General Analysis Analytics", 
@@ -34,13 +27,6 @@ export const SidebarData = [
         link: "/GeneralAnalysis",
         image: imageTwo,
         description: 'general analysis'
-    },
-    {
-        title: "Survey", 
-        icon: <AnalyticsIcon />,
-        link: "/Survey",
-        image: imageOne,
-        description: 'complete a survey for analysis requests'
     },
     {
         title: "Salesforce", 
@@ -64,13 +50,6 @@ export const SidebarData = [
         description: "CE"
     },
     {
-        title: "PAM",
-        icon: <AnalyticsIcon />,
-        link: "/Pam",
-        image: imageTwo,
-        description: "PAM"
-    },
-    {
         title: "TX Transplant",
         icon: <AnalyticsIcon />,
         link: "/TxTransplant",
@@ -83,6 +62,20 @@ export const SidebarData = [
         link: "/Membership",
         image: imageTwo,
         description: "Professional Mmebership analysis and duplicate review of mmebers that need to be delete"
+    },
+    {
+        title: "MO Pilot",
+        icon: <AnalyticsIcon />,
+        link: "/MoPilot",
+        image: imageTwo,
+        description: "MO Pilto project"
+    },
+    {
+        title: "Project Echo",
+        icon: <AnalyticsIcon />,
+        link: "/ProjectEcho",
+        image: imageTwo,
+        description: "Project Echo"
     },
     {
         title: "Information", 

@@ -72,6 +72,7 @@ export const patientSurveyCleanFx = (data: PatientEducationSurvey[]): PatientEdu
         ].filter(source => source !== undefined);
 
         const cleanedSurvey = {
+            language: survey.language,
             primaryConnection: survey.primaryConnection,
             primaryConnectionOtherDesc: survey.primaryConnectionOtherDesc || "",
             primaryConnectionType: survey.primaryConnectionType || "",

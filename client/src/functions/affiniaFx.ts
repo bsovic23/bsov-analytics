@@ -202,7 +202,13 @@ export const functionTwo = (data: PatientData[]): SecondaryOutcomesData => {
                     chronicDiseaseMgmt.bpControl['140/90-130/80'] ++;          
         } else if (health['BP Systolic Pre'] <= BP_SYS_NORMAL && health['BP Diastolic Pre'] <= BP_DIA_NORMAL) {
             chronicDiseaseMgmt.bpControl['<130/80'] ++;
-        } else {
+        } else if (health['BP Systolic Pre'] > BP_SYS_HIGH) {
+            chronicDiseaseMgmt.bpControl['>140/90'] ++;
+        } else if (health['BP Systolic Pre'] > BP_SYS_NORMAL) {
+            chronicDiseaseMgmt.bpControl['140/90-130/80'] ++;
+        } else if (health['BP Systolic Pre'] < BP_SYS_NORMAL) {
+            chronicDiseaseMgmt.bpControl['<130/80'] ++;
+        }else {
             console.log(health['BP Systolic Pre'], health['BP Diastolic Pre']);
             chronicDiseaseMgmt.bpControl['None of the above'] ++;
         }

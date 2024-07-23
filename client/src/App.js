@@ -13,6 +13,8 @@ import Ce from './pages/CE';
 import Pam from './pages/Pam';
 import TxTransplant from './pages/TxTransplant';
 import Membership from './pages/Membership';
+import MoPilot from './pages/moPilot';
+import ProjectEcho from './pages/ProjectEcho';
 
 const routes = [
   {path: "/", element: <Home />},
@@ -26,6 +28,8 @@ const routes = [
   {path: "/Pam", element: <Pam />},
   {path: "/TxTransplant", element: <TxTransplant />},
   {path: "/Membership", element: <Membership />},
+  {path: "/MoPilot", element: <MoPilot />},
+  {path: "/ProjectEcho", element: <ProjectEcho />},
 ];
 
 function App() {

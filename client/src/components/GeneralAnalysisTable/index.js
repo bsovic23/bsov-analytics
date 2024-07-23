@@ -12,13 +12,14 @@ const GeneralAnalysisTable = ({ data }) => {
           <th>Email</th>
           <th>First Name</th>
           <th>Last Name</th>
-          <th>State</th>
-          <th>Country</th>
           <th>Member</th>
-          <th>Date Access Total</th>
           <th>Courses Complete</th>
-          <th>First Contact</th>
-          <th>Last Contact</th>
+          <th>situationshipA</th>
+          <th>situationshipB</th>
+          <th>Course Names Completed</th>
+          <th>Course Numbers Completed</th>
+          <th>Course Names Registered</th>
+          <th>Course Numbers Registered</th>
         </tr>
       </thead>
       <tbody>
@@ -27,13 +28,14 @@ const GeneralAnalysisTable = ({ data }) => {
             <td>{item.email}</td>
             <td>{item.firstName}</td>
             <td>{item.lastName}</td>
-            <td>{item.state}</td>
-            <td>{item.country}</td>
             <td>{item.member ? 'Yes' : 'No'}</td>
-            <td>{item.dateAccessTotal}</td>
             <td>{item.coursesComplete}</td>
-            <td>{item.firstContact}</td>
-            <td>{item.lastContact}</td>
+            <td>{item.situationA ? 'Yes' : 'No'}</td>
+            <td>{item.situationB ? 'Yes' : 'No'}</td>
+            <td>{item.courseNameComplete.map(course => course.course).join(', ')}</td>
+            <td>{item.courseIdComplete.map(course => course.course).join(', ')}</td>
+            <td>{item.courseNameRegister.map(course => course.course).join(', ')}</td>
+            <td>{item.courseIdRegister.map(course => course.course).join(', ')}</td>
           </tr>
         ))}
       </tbody>

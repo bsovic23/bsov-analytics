@@ -38,6 +38,7 @@ export interface TxDataWaitList {
 
 export interface PatientEducationSurvey {
     id: number,
+    language: string,
     primaryConnection: string,
     primaryConnectionOtherDesc: string,
     primaryConnectionType: string,
@@ -118,6 +119,7 @@ interface Challenge {
 }
 
 export interface PatientEducationDataClean {
+    language: string,
     primaryConnection: string,
     primaryConnectionOtherDesc: string,
     primaryConnectionType: string,
