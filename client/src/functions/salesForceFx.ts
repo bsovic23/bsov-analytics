@@ -7,6 +7,8 @@ import {
     MatchedPx
 } from '../typeScript/salesForce';
 
+/*
+
 export const dupsFunction = (data1: WildApricotdata[], data2: SalesForceData[]) => {
     let wildApricotIds: { id: string; sfId: string; sfIdRecent: string }[] = [];
     let salesForceIds: { id: string; contactId: string }[] = [];
@@ -71,4 +73,6 @@ export const dupsFunction = (data1: WildApricotdata[], data2: SalesForceData[]) 
 
     return sortedMatchedPx;
 };
+
+*/
 

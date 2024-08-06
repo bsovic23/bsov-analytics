@@ -15,6 +15,7 @@ import TxTransplant from './pages/TxTransplant';
 import Membership from './pages/Membership';
 import MoPilot from './pages/moPilot';
 import ProjectEcho from './pages/ProjectEcho';
+import PracticeCards from './pages/PracticeCards';
 
 const routes = [
   {path: "/", element: <Home />},
@@ -30,6 +31,7 @@ const routes = [
   {path: "/Membership", element: <Membership />},
   {path: "/MoPilot", element: <MoPilot />},
   {path: "/ProjectEcho", element: <ProjectEcho />},
+  {path: "/PracticeCards", element: <PracticeCards />},
 ];
 
 function App() {

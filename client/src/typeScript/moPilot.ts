@@ -180,6 +180,8 @@ export interface MoPilotCountAnalytics {
         q9: Record<string, number>,
         q10: Record<string, number>,
     },
+    labsOutsideRangeCount: Record<string, number>,
+    medsDosedInappropriateCount: number,
     egfrIndividualsCount: number,
     egfrTotal: number,
     uacrIndividualsCount: number,

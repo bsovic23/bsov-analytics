@@ -68,7 +68,7 @@ export const SidebarData = [
         icon: <AnalyticsIcon />,
         link: "/MoPilot",
         image: imageTwo,
-        description: "MO Pilto project"
+        description: "MO Pilot project"
     },
     {
         title: "Project Echo",
@@ -76,6 +76,13 @@ export const SidebarData = [
         link: "/ProjectEcho",
         image: imageTwo,
         description: "Project Echo"
+    },
+    {
+        title: "PRACTICE CARDS",
+        icon: <AnalyticsIcon />,
+        link: "/PracticeCards",
+        image: imageTwo,
+        description: "Practice Cards View Here"
     },
     {
         title: "Information", 

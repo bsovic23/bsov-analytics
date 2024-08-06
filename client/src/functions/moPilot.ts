@@ -70,7 +70,7 @@ export const moPilotDataCleanUp = (initial: MoPilotInitial[], followUp: MoPilotF
                 medsCountDosedInapp: 0,
                 medsCountDiscontinued: 0,
             };
-        }
+        } else console.log(identifier);
     }
 
     // Follow Survey CleanUp + Push to Final Data
@@ -150,6 +150,8 @@ export const finalDataAnalysisFx = (data: MoPilotAllData) => {
             q9: {},
             q10: {},
         },
+        labsOutsideRangeCount: {},
+        medsDosedInappropriateCount: 0,
         egfrIndividualsCount: 0,
         egfrTotal: 0,
         uacrIndividualsCount: 0,
@@ -169,7 +171,8 @@ export const finalDataAnalysisFx = (data: MoPilotAllData) => {
 
         const {age, race, ethnicity, insurance, primaryCare, chronicDiseases,
             pharmacyReferral, initialLocation, followUpLocation, initialSdohComplete,
-            followUpSdohComplete, initialSurvey, followUpSurvey, egfr, uacr,
+            followUpSdohComplete, initialSurvey, followUpSurvey, egfr, uacr, labResultsOutsideRange,
+            medsCountDosedInapp
         } = obj;
 
         finalData.individuals += 1;
@@ -240,6 +243,16 @@ export const finalDataAnalysisFx = (data: MoPilotAllData) => {
             });
         });
 
+        // Labs Outside Range
+        if (labResultsOutsideRange) {
+            finalData.labsOutsideRangeCount[labResultsOutsideRange] = (finalData.labsOutsideRangeCount[labResultsOutsideRange] || 0) + 1; 
+        }
+
+        // Meds Dosed Inappropriately
+        if (medsCountDosedInapp) {
+            finalData.medsDosedInappropriateCount += medsCountDosedInapp;
+        };
+
         // Egfr 
         if (egfr !== 0) {
             finalData.egfrIndividualsCount += 1;
@@ -261,18 +274,23 @@ export const finalDataAnalysisFx = (data: MoPilotAllData) => {
 // ------------- Counts ----------- //
 
 export const surveyCounts = (initial: MoPilotInitial[], followUp: MoPilotFollowUp[]) => {
-    let counts = {
-        initialSurveyCount: 0,
-        followUpSurveyCount: 0,
-        initialSiteCount: {} as Record<string, number>,
-        followUpSiteCount: {} as Record<string, number>,
-        completeSiteCount: {} as Record<string, number>,
-    }
-
     // Track identifiers to determine complete surveys
     const initialIdentifiers = new Set<string>();
     const followUpIdentifiers = new Set<string>();
     const completeIdentifiers = new Set<string>();
+
+    let counts = {
+        initialSurveyCount: 0,
+        initualUniqueSurveyCount: 0,  // Moved this after identifier processing
+        followUpSurveyCount: 0,
+        followUpUniqueSurveyCount: 0, // Moved this after identifier processing
+        initialSiteCount: {} as Record<string, number>,
+        followUpSiteCount: {} as Record<string, number>,
+        completeSiteCount: {} as Record<string, number>,
+    };
+
+    // Array to hold ids and sites for identifiers in follow-up but not in initial
+    const missingInInitial = [] as { id: string, site: string }[];
 
     // Process Initial Surveys
     for (const obj of initial) {
@@ -290,6 +308,11 @@ export const surveyCounts = (initial: MoPilotInitial[], followUp: MoPilotFollowU
         counts.followUpSurveyCount++;
         counts.followUpSiteCount[location] = (counts.followUpSiteCount[location] || 0) + 1;
         followUpIdentifiers.add(identifier);
+
+        // Check if this identifier is not in initialIdentifiers
+        if (!initialIdentifiers.has(identifier)) {
+            missingInInitial.push({ id: identifier, site: location });
+        }
     }
 
     // Determine complete surveys
@@ -307,5 +330,9 @@ export const surveyCounts = (initial: MoPilotInitial[], followUp: MoPilotFollowU
         }
     }
 
-    return counts;
+    // Calculate the unique survey counts
+    counts.initualUniqueSurveyCount = initialIdentifiers.size;
+    counts.followUpUniqueSurveyCount = followUpIdentifiers.size;
+
+    return { counts, missingInInitial };
 };

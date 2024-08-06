@@ -2,7 +2,16 @@
 // Project Echo Analysis
 // -------------------------------------------
 
-import { SurveyScores, ParticipantInformation, CleanData, Scores, DemographicAnalysis } from "../typeScript/projectEcho";
+import { 
+    SurveyScores, 
+    ParticipantInformation,
+    PercInformation,
+    PercEvaluation,
+    CleanData, 
+    Scores, 
+    DemographicAnalysis,
+    PercAnalysis, 
+} from "../typeScript/projectEcho";
 
 // Clean Participant Infromation
 
@@ -86,7 +95,7 @@ export const cleanDataFx = (
 
 
 
-// Counts of Participant Information
+// ----- Counts of Participant Information -----
 
 export const analysisOne = (data: CleanData[]): DemographicAnalysis => {
     let results: DemographicAnalysis = {
@@ -135,3 +144,122 @@ export const analysisOne = (data: CleanData[]): DemographicAnalysis => {
 
     return results;
 };
+
+// ----- PERC Project ECHO Analysis -----
+
+export const percAnalysisFx = (data: PercInformation[]): PercAnalysis => {
+    let finalData: PercAnalysis = {
+        profession: {},
+        city: {},
+        state: {},
+        country: {},
+        ageCount: 0,
+        ageTotal: 0,
+        member: { true: 0, false: 0 },
+        moduleEnrollCount: {},
+        moduleCompleteCount: {}
+    };
+    
+    for (const obj of data) {
+        const { module, profession, city, state, country, age, member, enroll, complete } = obj;
+
+        // Profession
+        if (profession) {
+            finalData.profession[profession] = (finalData.profession[profession] || 0) + 1;
+        }
+
+        // City
+        if (city) {
+            finalData.city[city] = (finalData.city[city] || 0) + 1;
+        }
+
+        // State
+        if (state) {
+            finalData.state[state] = (finalData.state[state] || 0) + 1;
+        }
+
+        // Country
+        if (country) {
+            finalData.country[country] = (finalData.country[country] || 0) + 1;
+        }
+
+        // Age
+        if (age) {
+            finalData.ageCount += 1;
+            finalData.ageTotal += age;
+        }
+
+        // Member
+        if (member) {
+            finalData.member.true += 1;
+        } else {
+            finalData.member.false += 1;
+        }
+
+        // Module Enrollment
+        if (enroll) {
+            finalData.moduleEnrollCount[module] = (finalData.moduleEnrollCount[module] || 0) + 1;
+        }
+
+        // Module Complete Count
+        if (complete) {
+            finalData.moduleCompleteCount[module] = (finalData.moduleCompleteCount[module] || 0) + 1;
+        }
+    }
+
+    return finalData;
+};
+
+
+// ----- PERC Project ECHO Evaluation Analysis -----
+
+
+export const analyzeVariables = (
+    data: PercEvaluation[], 
+    variables: Array<keyof PercEvaluation>
+) => {
+    const finalData: Record<string, Record<string, number>> = {};
+
+    for (const variable of variables) {
+        finalData[variable as string] = {};
+    }
+
+    for (const entry of data) {
+        for (const variable of variables) {
+            // Check if the variable exists in the entry
+            if (variable in entry) {
+                let value = entry[variable];
+                
+                // Convert boolean values to strings
+                if (typeof value === 'boolean') {
+                    value = value.toString();
+                }
+
+                if (typeof value === 'string') {
+                    finalData[variable as string][value] = (finalData[variable as string][value] || 0) + 1;
+                }
+            }
+        }
+    }
+
+    return finalData;
+}
+
+
+export const analyzeEvalData = (data: PercEvaluation[]) => {
+    let finalData = {
+        improveCompetenceMe: 0,
+    };
+
+    // improveCompetence
+    for (const obj of data) {
+
+        const { improveCompetenceMe } = obj;
+
+        if (improveCompetenceMe) {
+            finalData.improveCompetenceMe ++;
+        }
+    }
+
+    return finalData;
+}

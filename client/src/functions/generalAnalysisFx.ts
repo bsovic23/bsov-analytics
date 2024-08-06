@@ -15,6 +15,7 @@ import { KlcEmailList,
 
 
 // == KLC Email List Clean Up == 
+/*
 
 export const klcEmailListFx = (data: KlcEmailList[]): KlcEmailListClean => {
   let cleanKlcList: KlcEmailListClean = {};
@@ -124,19 +125,82 @@ export const list715fx = (data: Katey715[] ): Katey715Clean => {
 
     return finalData;  
 }
+*/
 
 // == KLC Cleanup == 
 
-export const salesforceKLCFx = (enrollData: EnrollmentReport718[], regisData: RegistrationReport718[] ) => {
-  let cleanDataFinal: CleanedList718 = {};
+const raceEthnicityMap: { [key: string]: string } = {
+  '1': 'American Indian or Alaska Native',
+  '2': 'Asian',
+  '3': 'Black or African American',
+  '4': 'Hispanic or Latino',
+  '5': 'Native Hawaiian or Other Pacific Islander',
+  '6': 'White',
+  '7': 'Prefer not to answer'
+};
 
-  for (const obj of enrollData) {
-    let uniqueIdentifier = 'insert unique identifier of course-firstname-lastname';
+const convertRaceEthnicity = (codes: string): string => {
+  // Split the input string by commas, spaces, or brackets, filter out empty values, and map to descriptions
+  return codes
+    .split(/[\[\], ]+/)
+    .filter(code => code) // Remove empty strings
+    .map(code => raceEthnicityMap[code])
+    .filter(Boolean) // Remove undefined values in case of invalid codes
+    .join(', ');
+};
 
-    if (!uniqueIdentifier) {
-      
-    }
-  };
+export const salesforceKLCFx = (regisData: RegistrationReport718[], enrollData: EnrollmentReport718[]) => {
+  const cleanedList: CleanedList718 = {};
+  const enrollmentMap: { [key: string]: EnrollmentReport718 } = {};
 
-  return cleanDataFinal;
-}
+  // Populate the hash map with enrollData
+  enrollData.forEach(enrollment => {
+      const enrollIdentifier = `${enrollment['Resource Name']}-${enrollment.Email}`;
+      enrollmentMap[enrollIdentifier] = enrollment;
+  });
+
+  regisData.forEach(registration => {
+      const regIdentifier = `${registration['Course Name']}-${registration.Email}`;
+      const enrollment = enrollmentMap[regIdentifier];
+
+      if (enrollment) {
+          const uniqueIdentifier = regIdentifier;
+
+          cleanedList[uniqueIdentifier] = {
+              uniqueIdentifier: uniqueIdentifier,
+              'First Name': enrollment['First Name'],
+              'Last Name': enrollment['Last Name'],
+              Email: enrollment.Email,
+              City: enrollment.City,
+              Country: enrollment.Country,
+              'Course Name': registration['Course Name'],
+              'Course Id': parseInt(enrollment['Course Id']),
+              Complete: enrollment.Complete,
+              'Address 1': enrollment['Address 1'],
+              'Address 2': enrollment['Address 2'],
+              State: enrollment.State,
+              'Postal Code': enrollment['Postal Code'],
+              Member: enrollment.Member,
+              'Completion Date': enrollment['Date Registered'], // Assuming 'Date Registered' is used as 'Completion Date'
+              'Registration Date': enrollment['Date Registered'],
+              'Preferred Language': registration['Preferred Language'],
+              'What best describes you?': registration['What best describes you?'],
+              'What is your current connection to kidney disease?': registration['What is your current connection to kidney disease?'],
+              'If you are a kidney patient, do you know the stage/type of your disease?': registration['If you are a kidney patient, do you know the stage/type of your disease?'],
+              'If you know the cause of your kidney disease, please note it below:': registration['If you know the cause of your kidney disease, please note it below:'],
+              'What type of dialysis treatment are you receiving?': registration['What type of dialysis treatment are you receiving?'],
+              'What type of transplant did you receive?': registration['What type of transplant did you receive?'],
+              'What is your transplant status?': registration['What is your transplant status?'],
+              'Have you received any other treatment for your kidney disease in the past?': registration['Have you received any other treatment for your kidney disease in the past?'],
+              'Name of transplant center:': registration['Name of transplant center:'],
+              'Date of transplant:': registration['Date of transplant:'],
+              'Which gender do you identify with?': registration['Which gender do you identify with?'],
+              'What is the highest grade or year of school that you have completed?': registration['What is the highest grade or year of school that you have completed?'],
+              'What is your current employment status?': registration['What is your current employment status?'],
+              'How would you describe your race or ethnicity? Please select all that apply': convertRaceEthnicity(registration['How would you describe your race or ethnicity? Please select all that apply']),
+          };
+      }
+  });
+
+  return cleanedList;
+};

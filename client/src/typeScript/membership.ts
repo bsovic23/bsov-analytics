@@ -18,6 +18,10 @@ export interface WildApricotData {
     'Renewal date since last changed': string,
 }
 
+export interface WildApricotPrevContacts {
+    id: string;
+}
+
 // -------------------------------------------
 // Wild Apricot Function Outputs
 // -------------------------------------------
@@ -34,15 +38,16 @@ export interface WildApricotDups {
 // Wild Apricot 30 day Membership Lapse Output
 
 export interface WildApricotMembershipLapsed {
-    [userId: number]: {
-        firstName: string,
-        lastName: string,
-        email: string,
-        phone: string,
-        membershipStatus: string,
-        memberSince: string,
-        renewalData: string,
-        renewalDateLastChange: string,
-        daysLapsed: number,
-    }
+    userId: number,
+    firstName: string,
+    lastName: string,
+    email: string,
+    phone: string,
+    membershipEnabled: string,
+    membershipLevel: string,
+    membershipStatus: string,
+    memberSince: string,
+    renewalDue: string,
+    renewalDateLastChange: string,
+    daysLapsed: number,
 }
