@@ -140,3 +140,20 @@ export interface CleanedList718 {
         'How would you describe your race or ethnicity? Please select all that apply': string,
     }
 }
+
+
+// Megan Analysis
+
+export interface MeganAnalysis {
+    site: string,
+    age: number,
+    diabetes: boolean,
+    hypertension: boolean,
+    dia_htn_both: boolean,
+    dia_htn_one: boolean,
+    egfr_last12: boolean,
+    recent_egfr: number,
+    uacr_last12: boolean,
+    recent_uacr: number,
+    no_ckd: boolean,
+}

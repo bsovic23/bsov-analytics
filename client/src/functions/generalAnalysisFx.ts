@@ -2,13 +2,18 @@
 //  General Analysis/Cleanup Functions
 // ========================================================================================================================
 
-import { KlcEmailList, 
+import { 
+  // KLC
+  KlcEmailList, 
   KlcEmailListClean,
   Katey715,
   Katey715Clean,
   EnrollmentReport718,
   RegistrationReport718,
-  CleanedList718
+  CleanedList718,
+
+  // Megan
+  MeganAnalysis,
 } from "../typeScript/generalAnalysis";
 
 // ===== KLC ==============================================================================================================
@@ -203,4 +208,130 @@ export const salesforceKLCFx = (regisData: RegistrationReport718[], enrollData: 
   });
 
   return cleanedList;
+};
+
+
+// == Megan Analysis == 
+
+export const analysisMegan = (data: MeganAnalysis[]) => {
+  let finalCounts: any = {
+    form1_numerator: 0,
+    form1_denominator: 0,
+    form2_numerator: 0,
+    form2_denominator: 0,
+    form3_numerator: 0,
+    form3_denominator: 0,
+    form4_numerator: 0,
+    form4_denominator: 0,
+    form5: 0,
+    form6: 0,
+    form7: 0,
+    form8: 0,
+    sites: {}
+  };
+
+  for (const obj of data) {
+    const { site, age, diabetes, hypertension, dia_htn_one, dia_htn_both, egfr_last12, recent_egfr, uacr_last12, recent_uacr, no_ckd } = obj;
+
+    // Ensure the site is tracked in finalCounts.sites
+    if (!finalCounts.sites[site]) {
+      finalCounts.sites[site] = {
+        form1_numerator: 0,
+        form1_denominator: 0,
+        form2_numerator: 0,
+        form2_denominator: 0,
+        form3_numerator: 0,
+        form3_denominator: 0,
+        form4_numerator: 0,
+        form4_denominator: 0,
+        form1_percentage: 0,
+        form2_percentage: 0,
+        form3_percentage: 0,
+        form4_percentage: 0,
+      };
+    }
+
+    // FORM 1
+    if (age > 17 && age < 85 && !no_ckd) {
+      finalCounts.form1_numerator += 1;
+      finalCounts.sites[site].form1_numerator += 1;
+    }
+    if (age > 17 && age < 85 && !no_ckd && recent_egfr < 60) {
+      finalCounts.form1_denominator += 1;
+      finalCounts.sites[site].form1_denominator += 1;
+    }
+
+    // FORM 2
+    if (age > 17 && age < 85 && recent_egfr < 60 && uacr_last12) {
+      finalCounts.form2_numerator += 1;
+      finalCounts.sites[site].form2_numerator += 1;
+    }
+    if (age > 17 && age < 85 && recent_egfr < 60) {
+      finalCounts.form2_denominator += 1;
+      finalCounts.sites[site].form2_denominator += 1;
+    }
+
+    // FORM 3
+    if (age > 17 && age < 85 && (dia_htn_both || dia_htn_one) && (uacr_last12 && egfr_last12)) {
+      finalCounts.form3_numerator += 1;
+      finalCounts.sites[site].form3_numerator += 1;
+    }
+    if (age > 17 && age < 85 && (dia_htn_both || dia_htn_one)) {
+      finalCounts.form3_denominator += 1;
+      finalCounts.sites[site].form3_denominator += 1;
+    }
+
+    // FORM 4
+    if (age > 17 && age < 85 && diabetes && (uacr_last12 && egfr_last12)) {
+      finalCounts.form4_numerator += 1;
+      finalCounts.sites[site].form4_numerator += 1;
+    }
+    if (age > 17 && age < 85 && diabetes) {
+      finalCounts.form4_denominator += 1;
+      finalCounts.sites[site].form4_denominator += 1;
+    }
+
+    // FORM 5
+    if (age > 17 && age < 85 && recent_egfr < 60) {
+      finalCounts.form5 += 1;
+    }
+
+    // FORM 6
+    if (age > 17 && age < 85 && (dia_htn_both || dia_htn_one)) {
+      finalCounts.form6 += 1;
+    }
+
+    // FORM 7
+    if (age > 17 && age < 85 && diabetes) {
+      finalCounts.form7 += 1;
+    }
+
+    // FORM 8
+    if (age > 17 && age < 85 && !no_ckd) {
+      finalCounts.form8 += 1;
+    }
+  }
+
+  // Calculate percentages for each site
+  for (const site in finalCounts.sites) {
+    const siteData = finalCounts.sites[site];
+
+    siteData.form1_percentage = siteData.form1_denominator > 0
+      ? (siteData.form1_numerator / siteData.form1_denominator) * 100
+      : 0;
+
+    siteData.form2_percentage = siteData.form2_denominator > 0
+      ? (siteData.form2_numerator / siteData.form2_denominator) * 100
+      : 0;
+
+    siteData.form3_percentage = siteData.form3_denominator > 0
+      ? (siteData.form3_numerator / siteData.form3_denominator) * 100
+      : 0;
+
+    siteData.form4_percentage = siteData.form4_denominator > 0
+      ? (siteData.form4_numerator / siteData.form4_denominator) * 100
+      : 0;
+  }
+
+  return finalCounts;
 };
