@@ -6,7 +6,8 @@ import Page from '../components/Page';
 // Function Imports
 import { 
     wildApricotDupsFx,
-    wildApricotMemberLapseFx
+    wildApricotMemberLapseFx,
+    wildApricotYearAnalysis
 } from '../functions/membershipFx';
 
 // Data Imports
@@ -24,7 +25,7 @@ export const Membership = () => {
     // Variables
     const [dups, setDups] = useState((wildApricotData !== 'No data found') ? (wildApricotDupsFx(wildApricotData)) : 'No Wild Apricot Data');
     const [lapsedData, setLapsedData] = useState((wildApricotData !== 'No data found') ? (wildApricotMemberLapseFx(wildApricotData)) : 'No Wild Apricot Data');
-   
+    const [trends, setTrends] = useState((wildApricotData !== 'No data found') ? (wildApricotYearAnalysis(wildApricotData)) : 'No Wild Apricot Data');
 
     //Page Variables
     const pageTitle = 'Membership Analysis';
@@ -32,6 +33,7 @@ export const Membership = () => {
     const analysisButtons = [
         {id: 1, "name": "Wild Apricot Dups", "data": dups},
         {id: 2, "name": "Wild Apricot Lapsed Members", "data": lapsedData},
+        {id: 3, "name": "Wild Apricot Year Trends", "data": trends},
     ];
     
     return(
