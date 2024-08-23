@@ -44,6 +44,54 @@ export interface MedicationData {
     medType: string;
 };
 
+export interface PostInterventionData {
+    mrn: number,
+    tab1_test: string,
+    tab1_resultDate: string,
+    result: string,
+    tab1_testSendOutDate: string,
+    tab2_bpDate: string,
+    tab2_bdResult: string,
+    tab2_bpSys: number,
+    tab2_bpDia: number,
+    tab2_a1cDate: string,
+    tab2_a1cValue: number,
+    tab5_financialClass: string,
+    tab6_zip: string,
+};
+
+export interface PostFollowUpData {
+    mrn: number,
+    followUpApt: string,
+    followUpApt_kept: string,
+    followUpApt_reschedule: string,
+    followUpApt_reschedule_kept: string,
+    followUpTestOrdered: string,
+    testTypeOrdered: string,
+    followUpTestComplete: string,
+    followUpTestResults: string,
+}
+
+export interface postUACR {
+    mrn: number,
+    tab3_uacrDate: string,
+    tab3_uacrValue: number,
+}
+
+export interface postEGFR {
+    mrn: number,
+    tab4_egfrDate: string,
+    tab4_egfrValue: string,
+}
+
+export interface MergedData {
+    mrn: number;
+    mostRecentUacrDate?: string;
+    mostRecentUacrValue: number | null;
+    mostRecentEgfrDate?: string;
+    mostRecentEgfrValue: number | null;
+}
+
 // --------------
 // Cleaned Up Data
 // --------------

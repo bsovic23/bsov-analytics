@@ -51,5 +51,7 @@ export interface WildApricotMembershipLapsed {
     memberSince: string,
     renewalDue: string,
     renewalDateLastChange: string,
-    daysLapsed: number,
 }
+
+
+

@@ -4,6 +4,13 @@ import {
     KitPtData, 
     MedicationData, 
 
+    postUACR,
+    postEGFR,
+    MergedData,
+
+    PostInterventionData,
+    PostFollowUpData,
+
     // Clean Data Interface
     PatientData,
     Demographics,
@@ -269,4 +276,187 @@ export const functionThree = (data: PatientData[]): DemographicsOutcomes => {
     };
 
     return demographics
+};
+
+
+// Post Intervention Analysis
+
+export const postInterventionFxOne = (data: PostInterventionData[]) => {
+
+    let postInterventionOutcomes = {
+        chronicDiseaseMgmt: {
+            a1cControl: {
+                '>9%': 0,
+                '7-9%': 0,
+                '<7%': 0,
+                'Not Found': 0,
+            },
+            bpControl: {
+                '>140/90': 0,
+                '140/90-130/80': 0,
+                '<130/80': 0,
+                'None of the above': 0
+            }
+        }
+    };
+
+    const BP_SYS_HIGH = 140;
+    const BP_DIA_HIGH = 90;
+
+    const BP_SYS_NORMAL = 130;
+    const BP_DIA_NORMAL = 80;
+
+    const { chronicDiseaseMgmt } = postInterventionOutcomes;
+
+    for (const obj of data) {
+
+        const { tab2_a1cValue, tab2_bpSys, tab2_bpDia } = obj;
+
+        // Chronic Disease Management - A1C
+        if (tab2_a1cValue > 9) {
+            chronicDiseaseMgmt.a1cControl['>9%'] ++;
+        } else if (tab2_a1cValue >= 7) {
+            chronicDiseaseMgmt.a1cControl['7-9%'] ++;
+        } else if (tab2_a1cValue < 7) {
+            chronicDiseaseMgmt.a1cControl['<7%'] ++;
+        } else {
+            chronicDiseaseMgmt.a1cControl['Not Found'] ++;
+        }
+
+        // Chronic Disease Management - Bloop Pressure
+        if (tab2_bpSys > BP_SYS_HIGH && tab2_bpDia > BP_DIA_HIGH) {
+            chronicDiseaseMgmt.bpControl['>140/90'] ++;
+        } else if ((tab2_bpSys <= BP_SYS_HIGH && tab2_bpSys > BP_SYS_NORMAL) && 
+                    (tab2_bpSys <= BP_DIA_HIGH && tab2_bpDia > BP_DIA_NORMAL)) {
+                    chronicDiseaseMgmt.bpControl['140/90-130/80'] ++;          
+        } else if (tab2_bpSys <= BP_SYS_NORMAL && tab2_bpDia <= BP_DIA_NORMAL) {
+            chronicDiseaseMgmt.bpControl['<130/80'] ++;
+        } else if (tab2_bpSys > BP_SYS_HIGH) {
+            chronicDiseaseMgmt.bpControl['>140/90'] ++;
+        } else if (tab2_bpSys > BP_SYS_NORMAL) {
+            chronicDiseaseMgmt.bpControl['140/90-130/80'] ++;
+        } else if (tab2_bpSys < BP_SYS_NORMAL) {
+            chronicDiseaseMgmt.bpControl['<130/80'] ++;
+        } else {
+            console.log(tab2_bpSys, tab2_bpDia);
+            chronicDiseaseMgmt.bpControl['None of the above'] ++;
+        }
+    };
+
+    return postInterventionOutcomes;
+};
+
+
+
+
+
+/// UACR EGFR ANALYSIS DELETE AFTER EXPORT
+/*
+export const getMostRecentRecords = (uacrData: postUACR[], egfrData: postEGFR[]): MergedData[] => {
+    const result: { [key: number]: MergedData } = {};
+
+    // Process UACR data
+    uacrData.forEach(record => {
+        const currentMrn = record.mrn;
+        const uacrDate = new Date(record.tab3_uacrDate);
+
+        if (!result[currentMrn]) {
+            result[currentMrn] = {
+                mrn: currentMrn,
+                mostRecentUacrDate: record.tab3_uacrDate,
+                mostRecentUacrValue: record.tab3_uacrValue,
+            };
+        } else if (uacrDate > new Date(result[currentMrn].mostRecentUacrDate || '1970-01-01')) {
+            result[currentMrn].mostRecentUacrDate = record.tab3_uacrDate;
+            result[currentMrn].mostRecentUacrValue = record.tab3_uacrValue;
+        }
+    });
+
+    // Process eGFR data
+    egfrData.forEach(record => {
+        const currentMrn = record.mrn;
+        const egfrDate = new Date(record.tab4_egfrDate);
+
+        if (!result[currentMrn]) {
+            result[currentMrn] = {
+                mrn: currentMrn,
+                mostRecentEgfrDate: record.tab4_egfrDate,
+                mostRecentEgfrValue: record.tab4_egfrValue,
+            };
+        } else if (egfrDate > new Date(result[currentMrn].mostRecentEgfrDate || '1970-01-01')) {
+            result[currentMrn].mostRecentEgfrDate = record.tab4_egfrDate;
+            result[currentMrn].mostRecentEgfrValue = record.tab4_egfrValue;
+        }
+    });
+
+    return Object.values(result);
+};
+*/
+
+export const postLabAnalysis = (data: MergedData[]) => {
+
+    let finalData = {
+        G1: 0,
+        G2: 0,
+        G3a: 0,
+        G3b: 0,
+        G4: 0,
+        G5: 0,
+        MissingOrIncomplete: 0
+    };
+
+    for (const obj of data) {
+        
+        const { mostRecentEgfrValue, mostRecentUacrValue } = obj;
+
+        if (mostRecentEgfrValue === null && mostRecentUacrValue === null) {
+            finalData.MissingOrIncomplete++;
+            continue;
+        }
+
+        if (mostRecentEgfrValue !== null && mostRecentEgfrValue >= 90 && mostRecentUacrValue !== null && mostRecentUacrValue > 30) {
+            finalData.G1++;
+        } else if (mostRecentEgfrValue !== null && mostRecentEgfrValue >= 60 && mostRecentEgfrValue < 90 && mostRecentUacrValue !== null && mostRecentUacrValue > 30) {
+            finalData.G2++;
+        } else if (mostRecentEgfrValue !== null && mostRecentEgfrValue >= 45 && mostRecentEgfrValue < 60) {
+            finalData.G3a++;
+        } else if (mostRecentEgfrValue !== null && mostRecentEgfrValue >= 30 && mostRecentEgfrValue < 45) {
+            finalData.G3b++;
+        } else if (mostRecentEgfrValue !== null && mostRecentEgfrValue >= 15 && mostRecentEgfrValue < 30) {
+            finalData.G4++;
+        } else if (mostRecentEgfrValue !== null && mostRecentEgfrValue < 15) {
+            finalData.G5++;
+        } else {
+            finalData.MissingOrIncomplete++;
+        }
+    }
+
+    return finalData;
+};
+
+
+export const postFollowUpFx = (data: PostFollowUpData[]) => {
+
+    let finalData = {
+        followUpAptComplete: 0,
+        uacrTestComplete: 0,
+    };
+
+    for (const obj of data) {
+        if (!obj) continue;  // Skip if obj is undefined or null
+
+        const { followUpApt_kept, testTypeOrdered } = obj;
+
+        // Check if follow-up appointment was completed
+        if (followUpApt_kept === "Yes") {
+            finalData.followUpAptComplete++;
+        }
+
+        // Check if "Microalbumin" is in the follow-up tests ordered
+        if (followUpApt_kept === "Yes" && testTypeOrdered && testTypeOrdered.includes("Microalbumin")) {
+            finalData.uacrTestComplete++;
+        }
+    }
+
+    return finalData;
 };

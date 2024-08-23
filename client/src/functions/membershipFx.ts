@@ -4,11 +4,12 @@
 
 //  Interface Imports
 
-import { WildApricotData, WildApricotPrevContacts, WildApricotDups, WildApricotMembershipLapsed } from '../typeScript/membership'
+import { WildApricotData, WildApricotDups, WildApricotMembershipLapsed } from '../typeScript/membership'
 import { WildApricotdata } from '../typeScript/salesForce';
 
 // ------ Wild Apricot Duplicates -------
 
+/*
 export const wildApricotDupsFx = (data: WildApricotData[]): WildApricotDups => {
     let wildApricotDataClean: WildApricotDups = {};
 
@@ -36,19 +37,16 @@ export const wildApricotDupsFx = (data: WildApricotData[]): WildApricotDups => {
 
     return dupReviews;
 };
+*/
+// ------ Wild Apricot Lapsed Members Renewal -------
 
-// ------- Wild Apricot Lapsed Renewal ------
-
-export const wildApricotMemberLapseFx = (data: WildApricotData[], prevContacts: WildApricotPrevContacts[]): WildApricotMembershipLapsed[] => {
-
+export const wildApricotMemberLapseFx = (
+    data: WildApricotData[], 
+    monthChosen: number, 
+    yearChosen: number
+): WildApricotMembershipLapsed[] => {
     let membersLapsed: WildApricotMembershipLapsed[] = [];
 
-    const daysSinceFx = (renewalDue: string, today: string): number => {
-        const renewalDate = new Date(renewalDue);
-        const currentDate = new Date(today);
-        return Math.floor((currentDate.getTime() - renewalDate.getTime()) / (1000 * 60 * 60 * 24));
-    };
-    
     for (const obj of data) {
         const { 
             "User ID": userId, 
@@ -65,9 +63,15 @@ export const wildApricotMemberLapseFx = (data: WildApricotData[], prevContacts: 
             "Renewal date since last changed": renewalDateLastChange,
         } = obj;
 
-        const daysLapsed = daysSinceFx(renewalDue, new Date().toISOString().split('T')[0]);
+        const renewalDate = new Date(renewalDue);
+        const renewalMonth = renewalDate.getMonth() + 1; // getMonth returns 0-11, so +1
+        const renewalYear = renewalDate.getFullYear();
 
-        if (membershipStatus === 'Lapsed' && daysLapsed > 0 && daysLapsed < 31) {
+        if (
+            membershipStatus === 'Lapsed' &&
+            renewalMonth === monthChosen &&
+            renewalYear === yearChosen
+        ) {
             membersLapsed.push({
                 userId: userId,
                 firstName: firstName,
@@ -81,10 +85,9 @@ export const wildApricotMemberLapseFx = (data: WildApricotData[], prevContacts: 
                 memberSince: memberSince,
                 renewalDue: renewalDue,
                 renewalDateLastChange: renewalDateLastChange,
-                daysLapsed: daysLapsed,
             });
         }
-    };
+    }
 
     return membersLapsed;
 };
@@ -224,3 +227,32 @@ export const wildApricotYearAnalysis = (data: WildApricotData[]) => {
 
     return finalData;
 };
+
+
+// Retention Rate
+
+export function calculateRetention(data: WildApricotData[], years: number[]) {
+    const retention = years.reduce((acc, year) => {
+        acc[year] = { numerator: 0, denominator: 0 };
+        return acc;
+    }, {} as Record<number, { numerator: number, denominator: number }>);
+
+    data.forEach(member => {
+        const memberSinceYear = new Date(member['Member since']).getFullYear();
+        const renewalDueYear = new Date(member['Renewal due']).getFullYear();
+        const membershipStatus = member['Membership status'];
+
+        years.forEach(year => {
+            if (year >= memberSinceYear) {
+                if (year < renewalDueYear || (year === renewalDueYear && membershipStatus === 'Active')) {
+                    // Member retained for this year
+                    retention[year].numerator += 1;
+                }
+                // Add to the denominator for each year the member is considered
+                retention[year].denominator += 1;
+            }
+        });
+    });
+
+    return retention;
+}
