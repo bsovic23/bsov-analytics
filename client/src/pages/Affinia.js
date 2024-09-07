@@ -4,7 +4,12 @@ import React, { useState } from 'react';
 import Page from '../components/Page';
 import GeneralAnalysisTable from '../components/GeneralAnalysisTable';
 
+// ==================================================================================
+// Affinia Analysis
+// ==================================================================================
+
 // Function Imports
+
 import { 
     mergeData,
 
@@ -22,6 +27,7 @@ import {
 } from '../functions/affiniaFx';
 
 // Data Imports
+
 let allPtData, kitPtData, medicationData, postAptPtData, postUACR, postEGFR, postAllPtData, postBothLabs ;
 try {
     allPtData = require('../data/affinia').allPtData;
@@ -42,8 +48,6 @@ try {
 
     postUACR = 'No data found';
     postEGFR = 'No data found';
-
-    postInterventionData = 'No data found';
 
     postBothLabs = 'No data found';
 

@@ -15,7 +15,12 @@ import TxTransplant from './pages/TxTransplant';
 import Membership from './pages/Membership';
 import MoPilot from './pages/moPilot';
 import ProjectEcho from './pages/ProjectEcho';
-import PracticeCards from './pages/PracticeCards';
+import BsovAnalytics from './pages/BsovAnalytics';
+
+// Bsov Analytics
+import GoogleAnalyticsPage from './pages/BsovAnalyticsPages/GoogleAnalytics';
+import GeniallyAnalyticsPage from './pages/BsovAnalyticsPages/GeniallyAnalytics';
+import YouTubeAnalyticsPage from './pages/BsovAnalyticsPages/YouTubeAnalytics'
 
 const routes = [
   {path: "/", element: <Home />},
@@ -31,7 +36,11 @@ const routes = [
   {path: "/Membership", element: <Membership />},
   {path: "/MoPilot", element: <MoPilot />},
   {path: "/ProjectEcho", element: <ProjectEcho />},
-  {path: "/PracticeCards", element: <PracticeCards />},
+  {path: "/BsovAnalytics", element: <BsovAnalytics />},
+  // Bsov Analytics
+  {path: "/GoogleAnalyticsPage", element: <GoogleAnalyticsPage />},
+  {path: "/GeniallyAnalyticsPage", element: <GeniallyAnalyticsPage />},
+  {path: "/YouTubeAnalyticsPage", element: <YouTubeAnalyticsPage />},
 ];
 
 function App() {

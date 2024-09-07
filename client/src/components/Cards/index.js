@@ -1,6 +1,6 @@
 // Cards
-
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export const Cards = ({ cards }) => {
     return (
@@ -11,7 +11,7 @@ export const Cards = ({ cards }) => {
                     <div className="card-body">
                         <h5 className="card-title">{card.title}</h5>
                         <p className="card-text">{card.text}</p>
-                        <a href={card.link} className="btn btn-primary">Click to See Analysis</a>
+                        <Link to={card.link} className="btn btn-primary">Click to See Analysis</Link>
                     </div>
                 </div>
             ))}

@@ -78,9 +78,9 @@ export const SidebarData = [
         description: "Project Echo"
     },
     {
-        title: "PRACTICE CARDS",
+        title: "BSOV ANALYTICS",
         icon: <AnalyticsIcon />,
-        link: "/PracticeCards",
+        link: "/BsovAnalytics",
         image: imageTwo,
         description: "Practice Cards View Here"
     },

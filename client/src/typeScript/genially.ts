@@ -9,7 +9,3 @@ export interface Genially {
     questionsComplete: string,
     questionsCorrect: string,
 };
-
-export interface GeniallyAnalysis {
-    topicCount: Record<string, number>,
-}
