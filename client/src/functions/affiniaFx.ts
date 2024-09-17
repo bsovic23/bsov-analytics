@@ -1,15 +1,26 @@
 import {
-    // Raw Data Interface 
+
+    // Pre + Post ALL Study MRN
+    Mrn,
+
+    // Includes Pre and Post Med Data
+    MedicationData,
+
+    // Raw Data Interface - Pre Intervention
     AllPtData, 
     KitPtData, 
-    MedicationData, 
 
-    postUACR,
-    postEGFR,
-    MergedData,
+    // Raw Data Interface - Post Intervention
+    PostInterventionResults,
+    PostInterventionBP,
+    PostInterventionEgfr,
+    PostInterventionUacr,
+    PostInterventionInsurance,
 
-    PostInterventionData,
-    PostFollowUpData,
+    // Raw Data Interface - Post Abnormal Intervention
+    PostInterventionAbnVisit,
+    PostInterventionAbnEGFR,
+    PostInterventionAbnUACR,
 
     // Clean Data Interface
     PatientData,
@@ -20,6 +31,7 @@ import {
 
     // Outcome Measures
     OutcomeMeasures,
+    CKDStage,
 
     // Secondary Outcomes Interface
     SecondaryOutcomesData,
@@ -32,24 +44,17 @@ import {
 // CLEAN UP DATASET AFFINIA FX
 // =======================================================================
 
-export const mergeData = (allPtData:AllPtData[], kitPtData:KitPtData[], medicationData:MedicationData[]) => {
+// ------------------------
+// Pre Intervention Data CleanUp
+// ------------------------
+
+export const mergeData = (allPtData:AllPtData[], kitPtData:KitPtData[]) => {
     let finalData: Record<number, any> = {};
 
     // Set() is javascript collection of unique values, so ensures only one unique MRN passed through
     let uniqueIds = new Set<number>();
     allPtData.forEach((item) => uniqueIds.add(item.mrn));
     kitPtData.forEach((item) => uniqueIds.add(item.mrn));
-    medicationData.forEach((item) => uniqueIds.add(item.mrn));
-
-    // Set default data + kit return = false
-    uniqueIds.forEach((identifier) => {
-        finalData[identifier] = {
-            kitReturned: false,
-            demographics: {},
-            healthConditions: {},
-            medications: [],
-        }
-    });
 
     // DATA SET 1
     // All Pt Data - all cohort demographics (even if didnt return kit)
@@ -97,22 +102,93 @@ export const mergeData = (allPtData:AllPtData[], kitPtData:KitPtData[], medicati
         }
     });
 
-    // DATA SET 3
-    // Tab 3 = All Pt Medications
-    medicationData.forEach((item) => {
-        let identifier = item.mrn;
-        let medicationData = {
-            'Start Date': item.medDate ? new Date(item.medDate).toLocaleDateString('en-US') : '',
-            'Med Name': item.medName || '',
-            'Med Type': item.medType || '',
-        }
-
-        finalData[identifier]['medications'].push(medicationData);
-    });
-
     return finalData; 
 };
 
+
+// ------------------------
+// Post Intervention Data CleanUp
+// ------------------------
+
+export const mergePostData = (
+    results: PostInterventionResults[],
+    bloodPressure: PostInterventionBP[],
+    egfr: PostInterventionEgfr[],
+    uacr: PostInterventionUacr[],
+    insurance: PostInterventionInsurance[],
+) => {
+    let finalData: Record<number, any> = {};
+
+    let uniqueIds = new Set<number>();
+    results.forEach((item) => uniqueIds.add(item.mrn));
+    bloodPressure.forEach((item) => uniqueIds.add(item.mrn));
+    egfr.forEach((item) => uniqueIds.add(item.mrn));
+    uacr.forEach((item) => uniqueIds.add(item.mrn));
+    insurance.forEach((item) => uniqueIds.add(item.mrn));
+
+    // Set default data + kit return = false
+    uniqueIds.forEach((identifier) => {
+        finalData[identifier] = {
+            testResult: '',
+            uacrData: '',
+            uacrResult: '',
+            egfrDate: '',
+            egfrResult: '',
+            a1cResult: '',
+            bpSysResult: '',
+            bpDiaResult: '',
+            insurance: '',
+        }
+    });
+
+    // FILLING IN DATA
+
+    for (const obj of results) {
+        finalData[obj.mrn].testResult = obj.result;
+    };
+
+    for (const obj of bloodPressure) {
+        const { mrn, post_sys, post_dia, post_a1c } = obj;
+
+        finalData[mrn].bpSysResult = post_sys;
+        finalData[mrn].bpDiaResult = post_dia;
+        finalData[mrn].a1cResult = post_a1c;
+    };
+
+    for (const obj of egfr) {
+        const { mrn, post_egfrDate, post_egfrValue } = obj;
+    
+        const existingDate = finalData[mrn].egfrDate ? new Date(finalData[mrn].egfrDate) : null;
+        const currentDate = new Date(post_egfrDate);
+    
+        if (!existingDate || currentDate > existingDate) {
+            finalData[mrn].egfrDate = post_egfrDate;
+            finalData[mrn].egfrResult = post_egfrValue;
+        }
+    }
+
+    for (const obj of uacr) {
+        const { mrn, post_uacrDate, post_uacrValue } = obj;
+    
+        const existingDate = finalData[mrn].uacrDate ? new Date(finalData[mrn].uacrDate) : null;
+        const currentDate = new Date(post_uacrDate);
+    
+        if (!existingDate || currentDate > existingDate) {
+            finalData[mrn].uacrDate = post_uacrDate;
+            finalData[mrn].uacrResult = post_uacrValue;
+        }
+    }
+
+    for (const obj of insurance) {
+        finalData[obj.mrn].insurance = obj.insuranceClass;
+    };
+
+
+    return finalData;
+};
+
+
+//  ANDREW CLEAN UP ANALYSIS
 
 export const andrewMeds = (data: MedicationData[]) => {
     let medCount: MedicationReview = {
@@ -139,16 +215,98 @@ Table of contents:
 
 Function pre2: Medications sorted correctly analysis for ANDREW
 
-Function 1: Demographics analysis
+Function 1: Outcome Measures - Post Intervention Measure
 Function 2: Medication analysis
 Function 3: Demographic Data Points analysis
 */
 
-export const functionOne = (data: PatientData[]): OutcomeMeasures => {
-    return 'hello world function 1';
+export const functionOne = (data: Record<number, any>): OutcomeMeasures => {
+    let postData: OutcomeMeasures = {
+        resultCategory: {},
+        followUpCompleted: 0,
+        followUpCompletedNo: 0,
+        followUpUACRCompleted: 0,
+        followUpUACRCompletedNo: 0,
+        followUpEGFRCompleted: 0,
+        followUpEGFRCompletedNo: 0,
+        followUpBothCompleted: 0,
+        followUpBothCompletedNo: 0,
+        ckdStage: {
+            g1: 0,
+            g2: 0,
+            g3a: 0,
+            g3b: 0,
+            g4: 0,
+            g5: 0,
+            missing: 0,
+            incomplete: 0,
+        },
+    };
+
+    for (const mrn in data) {
+        const obj = data[mrn];
+
+         // Update CKD stages based on eGFR results
+         if (obj.egfrResult) {
+            const egfrValue = obj.egfrResult;
+            const uacrValue = obj.uacrResult;
+
+            if (egfrValue >= 90 && uacrValue >30) postData.ckdStage.g1 += 1;
+            else if (egfrValue >= 60 && uacrValue > 30) postData.ckdStage.g2 += 1;
+            else if (egfrValue >= 45 && egfrValue < 60) postData.ckdStage.g3a += 1;
+            else if (egfrValue >= 30 && egfrValue < 44) postData.ckdStage.g3b += 1;
+            else if (egfrValue >= 15 && egfrValue < 30) postData.ckdStage.g4 += 1;
+            else if (egfrValue < 15) postData.ckdStage.g5 += 1;
+            } else {
+                postData.ckdStage.missing += 1;
+            }
+
+        // Only process records with a testResult
+        if (obj.testResult) {
+            // Check for completed follow-ups based on availability of eGFR and UACR data
+            const egfrCompleted = obj.egfrResult !== '';
+            const uacrCompleted = obj.uacrResult !== '';
+
+            if (egfrCompleted) {
+                postData.followUpEGFRCompleted += 1;
+            } else {
+                postData.followUpEGFRCompletedNo += 1;
+            }
+
+            if (uacrCompleted) {
+                postData.followUpUACRCompleted += 1;
+            } else {
+                postData.followUpUACRCompletedNo += 1;
+            }
+
+            // Check if both UACR and eGFR are completed
+            if (egfrCompleted && uacrCompleted) {
+                postData.followUpBothCompleted += 1;
+            } else {
+                postData.followUpBothCompletedNo += 1;
+            }
+
+            // Populate resultCategory
+            const result = obj.testResult;
+            if (result) {
+                postData.resultCategory[result] = (postData.resultCategory[result] || 0) + 1;
+            }
+        } else {
+            // Increment followUpCompletedNo if there is no testResult
+            postData.followUpCompletedNo += 1;
+        }
+    }
+
+    // Update total counts for follow-up completion
+    postData.followUpCompleted = postData.followUpEGFRCompleted + postData.followUpUACRCompleted - postData.followUpBothCompleted;
+    postData.followUpBothCompletedNo = postData.followUpEGFRCompletedNo + postData.followUpUACRCompletedNo - postData.followUpBothCompleted;
+
+    return postData;
 };
 
-export const functionTwo = (data: PatientData[]): SecondaryOutcomesData => {
+
+
+export const functionTwoPre = (data: PatientData[]): SecondaryOutcomesData => {
 
     let secondaryOutcomesData: SecondaryOutcomesData = {
         medCategoryCount: {},
@@ -181,15 +339,6 @@ export const functionTwo = (data: PatientData[]): SecondaryOutcomesData => {
 
         const health = obj.healthConditions;
 
-        // Medications
-        const meds = obj.medications;
-
-        for (const obj of meds) {
-            let medType = obj['Med Type'];
-
-            secondaryOutcomesData.medCategoryCount[medType] = (secondaryOutcomesData.medCategoryCount[medType] || 0) +1;
-        }
-
         // Chronic Disease Management - A1C
         if (health['A1C Result Pre'] > 9) {
             chronicDiseaseMgmt.a1cControl['>9%'] ++;
@@ -220,6 +369,84 @@ export const functionTwo = (data: PatientData[]): SecondaryOutcomesData => {
             chronicDiseaseMgmt.bpControl['None of the above'] ++;
         }
     };
+
+    return secondaryOutcomesData;
+};
+
+
+export const functionTwoPost = (data: Record<number, any>): SecondaryOutcomesData => {
+
+    let secondaryOutcomesData: SecondaryOutcomesData = {
+        medCategoryCount: {},
+        chronicDiseaseMgmt: {
+            a1cControl: {
+                '>9%': 0,
+                '7-9%': 0,
+                '<7%': 0,
+                'Not Found': 0,
+            },
+            bpControl: {
+                '>140/90': 0,
+                '140/90-130/80': 0,
+                '<130/80': 0,
+                'None of the above': 0
+            }
+        }
+    };
+
+    const BP_SYS_HIGH = 140;
+    const BP_DIA_HIGH = 90;
+
+    const BP_SYS_NORMAL = 130;
+    const BP_DIA_NORMAL = 80;
+
+    const { chronicDiseaseMgmt } = secondaryOutcomesData;
+
+    for (const mrn in data) {
+        let obj = data[mrn];
+
+        const a1cResult = obj.a1cResult;
+        const bpSysResult = obj.bpSysResult;
+        const bpDiaResult = obj.bpDiaResult;
+
+        // Chronic Disease Management - A1C
+        if (a1cResult > 9) {
+            chronicDiseaseMgmt.a1cControl['>9%']++;
+        } else if (a1cResult >= 7) {
+            chronicDiseaseMgmt.a1cControl['7-9%']++;
+        } else if (a1cResult < 7) {
+            chronicDiseaseMgmt.a1cControl['<7%']++;
+        } else {
+            chronicDiseaseMgmt.a1cControl['Not Found']++;
+        }
+
+        // Chronic Disease Management - Blood Pressure
+        if (bpSysResult === BP_SYS_NORMAL && bpDiaResult > BP_DIA_NORMAL && bpDiaResult <= BP_DIA_HIGH) {
+            // Systolic is exactly 130, and diastolic is between 80 and 90
+            chronicDiseaseMgmt.bpControl['140/90-130/80']++;
+        } else if (bpSysResult > BP_SYS_HIGH && bpDiaResult > BP_DIA_HIGH) {
+            // Both systolic and diastolic are higher than the high thresholds
+            chronicDiseaseMgmt.bpControl['>140/90']++;
+        } else if ((bpSysResult <= BP_SYS_HIGH && bpSysResult > BP_SYS_NORMAL) &&
+                   (bpDiaResult <= BP_DIA_HIGH && bpDiaResult > BP_DIA_NORMAL)) {
+            // Both systolic and diastolic fall between high and normal ranges
+            chronicDiseaseMgmt.bpControl['140/90-130/80']++;
+        } else if (bpSysResult <= BP_SYS_NORMAL && bpDiaResult <= BP_DIA_NORMAL) {
+            // Both systolic and diastolic are at or below normal
+            chronicDiseaseMgmt.bpControl['<130/80']++;
+        } else if (bpSysResult > BP_SYS_HIGH) {
+            // Only systolic is above the high threshold
+            chronicDiseaseMgmt.bpControl['>140/90']++;
+        } else if (bpSysResult >= BP_SYS_NORMAL) {
+            // Only systolic is between the normal and high thresholds
+            chronicDiseaseMgmt.bpControl['140/90-130/80']++;
+        } else if (bpSysResult < BP_SYS_NORMAL && bpDiaResult <= BP_DIA_HIGH && bpDiaResult > BP_DIA_NORMAL) {
+            // Special case: systolic is below normal, but diastolic is between normal and high
+            chronicDiseaseMgmt.bpControl['140/90-130/80']++;
+        } else {
+            chronicDiseaseMgmt.bpControl['None of the above']++;
+        }
+    }
 
     return secondaryOutcomesData;
 };
@@ -279,11 +506,16 @@ export const functionThree = (data: PatientData[]): DemographicsOutcomes => {
 };
 
 
-// Post Intervention Analysis
 
-export const postInterventionFxOne = (data: PostInterventionData[]) => {
 
-    let postInterventionOutcomes = {
+
+// =======================================================================
+// Double Check Functions
+// =======================================================================
+
+export const functionLabs = (data: PostInterventionBP[]) => {
+    let secondaryOutcomesData: SecondaryOutcomesData = {
+        medCategoryCount: {},
         chronicDiseaseMgmt: {
             a1cControl: {
                 '>9%': 0,
@@ -306,157 +538,154 @@ export const postInterventionFxOne = (data: PostInterventionData[]) => {
     const BP_SYS_NORMAL = 130;
     const BP_DIA_NORMAL = 80;
 
-    const { chronicDiseaseMgmt } = postInterventionOutcomes;
+    const { chronicDiseaseMgmt } = secondaryOutcomesData;
 
-    for (const obj of data) {
-
-        const { tab2_a1cValue, tab2_bpSys, tab2_bpDia } = obj;
+    data.forEach(obj => {
+        const a1cResult = obj.post_a1c;
+        const bpSysResult = obj.post_sys;
+        const bpDiaResult = obj.post_dia;
 
         // Chronic Disease Management - A1C
-        if (tab2_a1cValue > 9) {
-            chronicDiseaseMgmt.a1cControl['>9%'] ++;
-        } else if (tab2_a1cValue >= 7) {
-            chronicDiseaseMgmt.a1cControl['7-9%'] ++;
-        } else if (tab2_a1cValue < 7) {
-            chronicDiseaseMgmt.a1cControl['<7%'] ++;
+        if (a1cResult > 9) {
+            chronicDiseaseMgmt.a1cControl['>9%']++;
+        } else if (a1cResult >= 7) {
+            chronicDiseaseMgmt.a1cControl['7-9%']++;
+        } else if (a1cResult < 7) {
+            chronicDiseaseMgmt.a1cControl['<7%']++;
         } else {
-            chronicDiseaseMgmt.a1cControl['Not Found'] ++;
+            chronicDiseaseMgmt.a1cControl['Not Found']++;
         }
 
-        // Chronic Disease Management - Bloop Pressure
-        if (tab2_bpSys > BP_SYS_HIGH && tab2_bpDia > BP_DIA_HIGH) {
-            chronicDiseaseMgmt.bpControl['>140/90'] ++;
-        } else if ((tab2_bpSys <= BP_SYS_HIGH && tab2_bpSys > BP_SYS_NORMAL) && 
-                    (tab2_bpSys <= BP_DIA_HIGH && tab2_bpDia > BP_DIA_NORMAL)) {
-                    chronicDiseaseMgmt.bpControl['140/90-130/80'] ++;          
-        } else if (tab2_bpSys <= BP_SYS_NORMAL && tab2_bpDia <= BP_DIA_NORMAL) {
-            chronicDiseaseMgmt.bpControl['<130/80'] ++;
-        } else if (tab2_bpSys > BP_SYS_HIGH) {
-            chronicDiseaseMgmt.bpControl['>140/90'] ++;
-        } else if (tab2_bpSys > BP_SYS_NORMAL) {
-            chronicDiseaseMgmt.bpControl['140/90-130/80'] ++;
-        } else if (tab2_bpSys < BP_SYS_NORMAL) {
-            chronicDiseaseMgmt.bpControl['<130/80'] ++;
+        // Chronic Disease Management - Blood Pressure
+        if (bpSysResult > BP_SYS_HIGH || bpDiaResult > BP_DIA_HIGH) {
+            // Any value above the high threshold
+            chronicDiseaseMgmt.bpControl['>140/90']++;
+        } else if (bpSysResult === BP_SYS_NORMAL && bpDiaResult > BP_DIA_NORMAL && bpDiaResult <= BP_DIA_HIGH) {
+            // Systolic is exactly 130, and diastolic is between 80 and 90
+            chronicDiseaseMgmt.bpControl['140/90-130/80']++;
+        } else if (bpSysResult <= BP_SYS_HIGH && bpSysResult > BP_SYS_NORMAL && 
+                   bpDiaResult <= BP_DIA_HIGH && bpDiaResult > BP_DIA_NORMAL) {
+            // Both systolic and diastolic fall between high and normal ranges
+            chronicDiseaseMgmt.bpControl['140/90-130/80']++;
+        } else if (bpSysResult <= BP_SYS_NORMAL && bpDiaResult <= BP_DIA_NORMAL) {
+            // Both systolic and diastolic are at or below normal
+            chronicDiseaseMgmt.bpControl['<130/80']++;
+        } else if (bpSysResult > BP_SYS_NORMAL && bpSysResult <= BP_SYS_HIGH) {
+            // Systolic is between normal and high, diastolic is either above normal or within the high range
+            chronicDiseaseMgmt.bpControl['140/90-130/80']++;
         } else {
-            console.log(tab2_bpSys, tab2_bpDia);
-            chronicDiseaseMgmt.bpControl['None of the above'] ++;
-        }
-    };
-
-    return postInterventionOutcomes;
-};
-
-
-
-
-
-/// UACR EGFR ANALYSIS DELETE AFTER EXPORT
-/*
-export const getMostRecentRecords = (uacrData: postUACR[], egfrData: postEGFR[]): MergedData[] => {
-    const result: { [key: number]: MergedData } = {};
-
-    // Process UACR data
-    uacrData.forEach(record => {
-        const currentMrn = record.mrn;
-        const uacrDate = new Date(record.tab3_uacrDate);
-
-        if (!result[currentMrn]) {
-            result[currentMrn] = {
-                mrn: currentMrn,
-                mostRecentUacrDate: record.tab3_uacrDate,
-                mostRecentUacrValue: record.tab3_uacrValue,
-            };
-        } else if (uacrDate > new Date(result[currentMrn].mostRecentUacrDate || '1970-01-01')) {
-            result[currentMrn].mostRecentUacrDate = record.tab3_uacrDate;
-            result[currentMrn].mostRecentUacrValue = record.tab3_uacrValue;
+            // For cases that do not fit into the above categories
+            if (bpSysResult > BP_SYS_HIGH) {
+                chronicDiseaseMgmt.bpControl['>140/90']++;
+            } else if (bpSysResult <= BP_SYS_NORMAL) {
+                chronicDiseaseMgmt.bpControl['<130/80']++;
+            } else {
+                chronicDiseaseMgmt.bpControl['None of the above']++;
+            }
         }
     });
 
-    // Process eGFR data
-    egfrData.forEach(record => {
-        const currentMrn = record.mrn;
-        const egfrDate = new Date(record.tab4_egfrDate);
+    return secondaryOutcomesData;
+};
 
-        if (!result[currentMrn]) {
-            result[currentMrn] = {
-                mrn: currentMrn,
-                mostRecentEgfrDate: record.tab4_egfrDate,
-                mostRecentEgfrValue: record.tab4_egfrValue,
+
+export const followUpAnalysis = (
+    visitsData: PostInterventionAbnVisit[], 
+    uacrData: PostInterventionAbnUACR[], 
+    egfrData: PostInterventionAbnEGFR[]
+) => {
+    let finalData: { [mrn: string]: any } = {};
+
+    // Initialize counters
+    let followUpCompleteCount = 0;
+    let followUpNotCompleteCount = 0;
+    let uacrYesCount = 0;
+    let egfrYesCount = 0;
+    let bothTestsCount = 0;
+
+    // Process visitsData
+    for (const visit of visitsData) {
+        const { mrn, followUpCompleted } = visit;
+
+        if (!finalData[mrn]) {
+            finalData[mrn] = {
+                followUpCompleted: followUpCompleted || null,
+                uacr: null,
+                egfr: null,
             };
-        } else if (egfrDate > new Date(result[currentMrn].mostRecentEgfrDate || '1970-01-01')) {
-            result[currentMrn].mostRecentEgfrDate = record.tab4_egfrDate;
-            result[currentMrn].mostRecentEgfrValue = record.tab4_egfrValue;
-        }
-    });
-
-    return Object.values(result);
-};
-*/
-
-export const postLabAnalysis = (data: MergedData[]) => {
-
-    let finalData = {
-        G1: 0,
-        G2: 0,
-        G3a: 0,
-        G3b: 0,
-        G4: 0,
-        G5: 0,
-        MissingOrIncomplete: 0
-    };
-
-    for (const obj of data) {
-        
-        const { mostRecentEgfrValue, mostRecentUacrValue } = obj;
-
-        if (mostRecentEgfrValue === null && mostRecentUacrValue === null) {
-            finalData.MissingOrIncomplete++;
-            continue;
-        }
-
-        if (mostRecentEgfrValue !== null && mostRecentEgfrValue >= 90 && mostRecentUacrValue !== null && mostRecentUacrValue > 30) {
-            finalData.G1++;
-        } else if (mostRecentEgfrValue !== null && mostRecentEgfrValue >= 60 && mostRecentEgfrValue < 90 && mostRecentUacrValue !== null && mostRecentUacrValue > 30) {
-            finalData.G2++;
-        } else if (mostRecentEgfrValue !== null && mostRecentEgfrValue >= 45 && mostRecentEgfrValue < 60) {
-            finalData.G3a++;
-        } else if (mostRecentEgfrValue !== null && mostRecentEgfrValue >= 30 && mostRecentEgfrValue < 45) {
-            finalData.G3b++;
-        } else if (mostRecentEgfrValue !== null && mostRecentEgfrValue >= 15 && mostRecentEgfrValue < 30) {
-            finalData.G4++;
-        } else if (mostRecentEgfrValue !== null && mostRecentEgfrValue < 15) {
-            finalData.G5++;
         } else {
-            finalData.MissingOrIncomplete++;
+            finalData[mrn].followUpCompleted = followUpCompleted || finalData[mrn].followUpCompleted;
+        }
+
+        // Count follow-up completion
+        if (followUpCompleted?.toLowerCase() === "yes") {
+            followUpCompleteCount++;
+        } else if (followUpCompleted?.toLowerCase() === "no") {
+            followUpNotCompleteCount++;
         }
     }
 
-    return finalData;
-};
+    // Process uacrData: Find most recent UACR for each MRN
+    for (const uacr of uacrData) {
+        const { mrn, followUpUACRDate, followUpUACRValue } = uacr;
+        const uacrDate = new Date(followUpUACRDate);
 
+        if (!finalData[mrn]) {
+            finalData[mrn] = {
+                followUpCompleted: null,
+                uacr: { date: uacrDate, value: followUpUACRValue },
+                egfr: null,
+            };
+        } else {
+            if (!finalData[mrn].uacr || uacrDate > finalData[mrn].uacr.date) {
+                finalData[mrn].uacr = { date: uacrDate, value: followUpUACRValue };
+            }
+        }
 
-export const postFollowUpFx = (data: PostFollowUpData[]) => {
+        // Count UACR presence
+        if (followUpUACRValue) {
+            uacrYesCount++;
+        }
+    }
 
-    let finalData = {
-        followUpAptComplete: 0,
-        uacrTestComplete: 0,
+    // Process egfrData: Find most recent eGFR for each MRN
+    for (const egfr of egfrData) {
+        const { mrn, followUpEGFRDate, followUpEGFRValue } = egfr;
+        const egfrDate = new Date(followUpEGFRDate);
+
+        if (!finalData[mrn]) {
+            finalData[mrn] = {
+                followUpCompleted: null,
+                uacr: null,
+                egfr: { date: egfrDate, value: followUpEGFRValue },
+            };
+        } else {
+            if (!finalData[mrn].egfr || egfrDate > finalData[mrn].egfr.date) {
+                finalData[mrn].egfr = { date: egfrDate, value: followUpEGFRValue };
+            }
+        }
+
+        // Count eGFR presence
+        if (followUpEGFRValue) {
+            egfrYesCount++;
+        }
+    }
+
+    // Count cases where both UACR and eGFR are present for the same MRN
+    for (const mrn in finalData) {
+        if (finalData[mrn].uacr && finalData[mrn].egfr) {
+            bothTestsCount++;
+        }
+    }
+
+    // Return finalData and the counts
+    return {
+        counts: {
+            followUpCompleteCount,
+            followUpNotCompleteCount,
+            uacrYesCount,
+            egfrYesCount,
+            bothTestsCount
+        }
     };
-
-    for (const obj of data) {
-        if (!obj) continue;  // Skip if obj is undefined or null
-
-        const { followUpApt_kept, testTypeOrdered } = obj;
-
-        // Check if follow-up appointment was completed
-        if (followUpApt_kept === "Yes") {
-            finalData.followUpAptComplete++;
-        }
-
-        // Check if "Microalbumin" is in the follow-up tests ordered
-        if (followUpApt_kept === "Yes" && testTypeOrdered && testTypeOrdered.includes("Microalbumin")) {
-            finalData.uacrTestComplete++;
-        }
-    }
-
-    return finalData;
 };

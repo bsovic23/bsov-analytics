@@ -2,6 +2,22 @@
 // Raw Data
 // --------------
 
+// RAW PRE + POST ALL MRN 
+
+export interface Mrn {
+    mrn: number
+}
+
+// RAW PRE + POST ALL MEDICATION DATA
+
+export interface MedicationData {
+    mrn: number;
+    medType: string;
+    medName: string;
+};
+
+// RAW PRE INTERVENTION
+
 export interface AllPtData {
     mrn: number,
     gender: string,
@@ -37,59 +53,56 @@ export interface KitPtData {
     htn_bp_yn_pre: string;
 };
 
-export interface MedicationData {
-    mrn: number;
-    medDate: string;
-    medName: string;
-    medType: string;
-};
 
-export interface PostInterventionData {
+// RAW POST INTERVENTION
+
+export interface PostInterventionResults {
     mrn: number,
-    tab1_test: string,
-    tab1_resultDate: string,
     result: string,
-    tab1_testSendOutDate: string,
-    tab2_bpDate: string,
-    tab2_bdResult: string,
-    tab2_bpSys: number,
-    tab2_bpDia: number,
-    tab2_a1cDate: string,
-    tab2_a1cValue: number,
-    tab5_financialClass: string,
-    tab6_zip: string,
-};
-
-export interface PostFollowUpData {
-    mrn: number,
-    followUpApt: string,
-    followUpApt_kept: string,
-    followUpApt_reschedule: string,
-    followUpApt_reschedule_kept: string,
-    followUpTestOrdered: string,
-    testTypeOrdered: string,
-    followUpTestComplete: string,
-    followUpTestResults: string,
+    testDate: string,
 }
 
-export interface postUACR {
+export interface PostInterventionBP {
     mrn: number,
-    tab3_uacrDate: string,
-    tab3_uacrValue: number,
+    post_sys: number,
+    post_dia: number,
+    post_a1c: number,
 }
 
-export interface postEGFR {
+export interface PostInterventionEgfr {
     mrn: number,
-    tab4_egfrDate: string,
-    tab4_egfrValue: string,
+    post_egfrDate: string,
+    post_egfrValue: number,
 }
 
-export interface MergedData {
-    mrn: number;
-    mostRecentUacrDate?: string;
-    mostRecentUacrValue: number | null;
-    mostRecentEgfrDate?: string;
-    mostRecentEgfrValue: number | null;
+export interface PostInterventionUacr {
+    mrn: number,
+    post_uacrDate: string,
+    post_uacrValue: number
+}
+
+export interface PostInterventionInsurance {
+    mrn: number,
+    insuranceClass: string,
+}
+
+// RAW POST ABRONAL INTERVENTION
+
+export interface PostInterventionAbnVisit {
+    mrn: number,
+    followUpCompleted: string,
+}
+
+export interface PostInterventionAbnEGFR {
+    mrn: number,
+    followUpEGFRDate: string,
+    followUpEGFRValue: number,
+}
+
+export interface PostInterventionAbnUACR {
+    mrn: number,
+    followUpUACRDate: string,
+    followUpUACRValue: number,
 }
 
 // --------------
@@ -100,7 +113,6 @@ export interface PatientData {
     kitReturned: boolean;
     demographics: Demographics;
     healthConditions: HealthConditions;
-    medications: Medication[];
 }
 
 export interface Demographics {
@@ -132,13 +144,38 @@ export interface MedicationReview {
     'medAnalysis': Record<string, number>;
 }
 
+
+export interface PostPatientData {
+
+};
+
 // --------------
 // Outcome Measures
 // --------------
 
 export interface OutcomeMeasures {
-
+    resultCategory: Record<string, number>,
+    followUpCompleted: number,
+    followUpCompletedNo: number,
+    followUpUACRCompleted: number,
+    followUpUACRCompletedNo: number,
+    followUpEGFRCompleted: number,
+    followUpEGFRCompletedNo: number,
+    followUpBothCompleted: number,
+    followUpBothCompletedNo: number,
+    ckdStage: CKDStage;
 };
+
+export interface CKDStage {
+    g1: 0,
+    g2: 0,
+    g3a: 0,
+    g3b: 0,
+    g4: 0,
+    g5: 0,
+    missing: 0,
+    incomplete: 0,
+}
 
 // --------------
 // Secondary Outcomes

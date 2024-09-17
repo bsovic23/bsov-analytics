@@ -12,11 +12,13 @@ import GeneralAnalysisTable from '../components/GeneralAnalysisTable';
 
 import { 
     mergeData,
+    mergePostData,
 
     andrewMeds,
 
     functionOne,
-    functionTwo,
+    functionTwoPre,
+    functionTwoPost,
     functionThree, 
 
     getMostRecentRecords,
@@ -24,34 +26,60 @@ import {
 
     postLabAnalysis,
     postFollowUpFx,
+
+    // double check fx
+    followUpAnalysis,
+    functionLabs,
 } from '../functions/affiniaFx';
 
 // Data Imports
 
-let allPtData, kitPtData, medicationData, postAptPtData, postUACR, postEGFR, postAllPtData, postBothLabs ;
+let
+uniqueMrn, 
+medicationData,
+allPtData, 
+kitPtData, 
+postInterventionResults, 
+postInterventionBP,
+postInterventionEgfr,
+postInterventionUacr,
+postInterventionInsurance,
+postInterventionAbnVisit,
+postInterventionAbnEGFR,
+postInterventionAbnUACR;
+
 try {
-    allPtData = require('../data/affinia').allPtData;
-    kitPtData = require('../data/affinia').kitPtData;
+    uniqueMrn = require('../data/affinia').uniqueMrn;
     medicationData = require('../data/affinia').medicationData;
 
-    postUACR = require('../data/affinia').postUACR;
-    postEGFR = require('../data/affinia').postEGFR;
+    allPtData = require('../data/affinia').allPtData;
+    kitPtData = require('../data/affinia').kitPtData;
 
-    postAllPtData = require('../data/affinia').postAllPtData;
+    postInterventionResults = require('../data/affinia').postInterventionResults;
+    postInterventionBP = require('../data/affinia').postInterventionBP;
+    postInterventionEgfr = require('../data/affinia').postInterventionEgfr;
+    postInterventionUacr = require('../data/affinia').postInterventionUacr;
+    postInterventionInsurance = require('../data/affinia').postInterventionInsurance;
 
-    postBothLabs = require('../data/affinia').postBothLabs;
-    postAptPtData = require('../data/affinia').postAptPtData;
+    postInterventionAbnVisit = require('../data/affinia').postInterventionAbnVisit;
+    postInterventionAbnEGFR = require('../data/affinia').postInterventionAbnEGFR;
+    postInterventionAbnUACR = require('../data/affinia').postInterventionAbnUACR;
 } catch (error) {
-    allPtData = 'No data found';
-    kitPtData = 'No data found';
+    uniqueMrn = 'No data found';
     medicationData = 'No data found';
 
-    postUACR = 'No data found';
-    postEGFR = 'No data found';
+    allPtData = 'No data found';
+    kitPtData = 'No data found';
 
-    postBothLabs = 'No data found';
+    postInterventionResults= 'No data found'; 
+    postInterventionBP = 'No data found';
+    postInterventionEgfr = 'No data found';
+    postInterventionUacr = 'No data found';
+    postInterventionInsurance = 'No data found';
 
-    postAptPtData = 'No data found';
+    postInterventionAbnVisit = 'No data found';
+    postInterventionAbnEGFR = 'No data found';
+    postInterventionAbnUACR = 'No data found';
 }
 
 const Affinia = () => {
@@ -60,45 +88,57 @@ const Affinia = () => {
     
     const title = 'Affinia Analysis';
 
-    /*
+    // PRE INTERVENTION CLEANED DATA SET
+
     const [data1, setData1] = useState(
-        (allPtData !== 'No data found' || kitPtData !== 'No data found' || medicationData !== 'No data found') ? 
+        (allPtData !== 'No data found' || kitPtData !== 'No data found') ? 
         (mergeData(
         allPtData, // All Cohort Participant data
         kitPtData, // Kit Return Cohort Participant data
-        medicationData, // Medication
         )) : 'No Affinia Data Found'
     );
+
     
-    // Analysis Numbers
-    // Pre Intervention
-    const [outcomeMeasures, setOutcomeMeasures] = useState((data1 !== 'No Affinia Data Found') ? functionOne(data1) : 'No Affinia Data Found');
-    const [secondaryOutcomesPre, setSecondaryOutcomesPre] = useState((data1 !== 'No Affinia Data Found') ? (functionTwo(data1)) : 'No Affinia Data Found');
-    const [secondaryOutcomesPost, setSecondaryOutcomesPost] = useState('');
+    // POST INTERVENTION CLEANED DATA SET
+
+    const [data2, setData2] = useState(
+        (postInterventionResults !== 'No data found' || postInterventionBP !== 'No data found' || postInterventionEgfr !== 'No data found' || postInterventionUacr !== 'No data found' || postInterventionInsurance !== 'No data found') ? 
+        (mergePostData(
+            postInterventionResults,
+            postInterventionBP,
+            postInterventionEgfr,
+            postInterventionUacr,
+            postInterventionInsurance,
+        )) : 'No Post Affinia Data Found'
+    );
+    
+    // ----- Analysis Numbers
+
+    const [outcomeMeasures, setOutcomeMeasures] = useState((data2 !== 'No Affinia Data Found') ? functionOne(data2) : 'No Post Affinia Data Found');
+    const [secondaryOutcomesPre, setSecondaryOutcomesPre] = useState((data1 !== 'No Affinia Data Found') ? (functionTwoPre(data1)) : 'No Affinia Data Found');
+    const [secondaryOutcomesPost, setSecondaryOutcomesPost] = useState((data2 !== 'No Affinia Data Found') ? (functionTwoPost(data2)) : 'No Affinia Data Found');
     const [demographicsPre, setDemographicsPre] = useState((data1 !== 'No Affinia Data Found') ? (functionThree(data1)) : 'No Affinia Data Found');
     const [andrewData, setAndrewData] = useState((medicationData !== 'No data found') ? (andrewMeds(medicationData)) : 'No Medication Data Found');
 
-    */
-
-    // Post Intervention
-    // const [egfruacr, setEgfruacr] = useState((postEGFR !== 'No Affinia Data Found') ? getMostRecentRecords(postUACR, postEGFR) : 'No Affinia uarcr egfr Data Found');
-    // const [postOne, setPostOne] = useState(postInterventionFxOne(postAllPtData))
-    const [postTwo, setPostTwo] = useState(postLabAnalysis(postBothLabs));
-    const [postThree, setPostThree] = useState(postFollowUpFx(postAptPtData));
+    // ----- Double Check Analysis
+    const [labs, setLabs] = useState((postInterventionBP !== 'No Affinia Data Found') ? functionLabs(postInterventionBP) : 'No Post Affinia Data Found');
+    const [followUpOutput, setFollowUpOutput] = useState((postInterventionAbnVisit !== 'No data found' || postInterventionAbnUACR !== 'No Data found' || postInterventionAbnEGFR !== 'No Data Found') ? (followUpAnalysis(postInterventionAbnVisit, postInterventionAbnUACR, postInterventionAbnEGFR)) : 'No follow up Data Found');
+    // -----------------
+    // ANALYSIS BUTTONS
+    // -----------------
 
     const analysisButtons = [
-        /*
-        { id: 1, "name": "Full Clean DataSet", "data": data1 },
+        { id: 0, "name": "Full Clean DataSet - PRE", "data": data1 },
+        { id: 1, "name": "Full Clean DataSet - POST", "data": data2 },
         { id: 2, "name": "Section 1: Outcome Measures Post", "data": outcomeMeasures },
         { id: 3, "name": "Section 2: Secondary Outcomes Pre", "data": secondaryOutcomesPre },
         { id: 4, "name": "Section 2: Secondary Outcomes Post", "data": secondaryOutcomesPost },
         { id: 5, "name": "Section 3: Demographic Data Points Pre", "data": demographicsPre },
-        { id: 6, "name": "Andrew Meds", "data": andrewData },
-         */
-        // { id: 7, "name": "EGFR UACR data", "data": egfruacr },
-        // { id: 8, "name": "Post Intervention Data", "data": postOne },
-        { id: 9, "name": "Lab Analysis", "data": postTwo },
-        { id: 10, "name": "Follow Up Analysis", "data": postThree }
+        
+        { id: 50, "name": "Double Check: Post Labs", "data": labs },
+        { id: 51, "name": "Double Check: Follow Up Data", "data": followUpOutput },
+        
+        { id: 99, "name": "Andrew Meds Review", "data": andrewData },
     ];
 
     return(
