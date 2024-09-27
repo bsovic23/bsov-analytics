@@ -5,11 +5,9 @@
 //  Interface Imports
 
 import { WildApricotData, WildApricotDups, WildApricotMembershipLapsed } from '../typeScript/membership'
-import { WildApricotdata } from '../typeScript/salesForce';
 
 // ------ Wild Apricot Duplicates -------
 
-/*
 export const wildApricotDupsFx = (data: WildApricotData[]): WildApricotDups => {
     let wildApricotDataClean: WildApricotDups = {};
 
@@ -37,7 +35,7 @@ export const wildApricotDupsFx = (data: WildApricotData[]): WildApricotDups => {
 
     return dupReviews;
 };
-*/
+
 // ------ Wild Apricot Lapsed Members Renewal -------
 
 export const wildApricotMemberLapseFx = (
@@ -94,56 +92,43 @@ export const wildApricotMemberLapseFx = (
 
 // ------- Wild Apricot Y/Y Analysis ------
 
-export const wildApricotYearAnalysis = (data: WildApricotData[]) => {
+export const wildApricotFiscalYearAnalysis = (data: WildApricotData[]) => {
     let finalData: Record<string, any> = {
         total: {
             memberActiveByYear: {
-                yearPre2000: 0,
-                year2000_2005: 0,
-                year2010_2015: 0,
-                year2015_2019: 0,
-                year2020: 0,
-                year2021: 0,
-                year2022: 0,
-                year2023: 0,
-                year2024: 0
+                FY21: 0,
+                FY22: 0,
+                FY23: 0,
+                FY24: 0,
+                FY25: 0
             },
             memberJoinedYear: {
-                yearPre2000: 0,
-                year2000_2005: 0,
-                year2010_2015: 0,
-                year2015_2019: 0,
-                year2020: 0,
-                year2021: 0,
-                year2022: 0,
-                year2023: 0,
-                year2024: 0
+                FY21: 0,
+                FY22: 0,
+                FY23: 0,
+                FY24: 0,
+                FY25: 0
             },
             lapsedYear: {
-                yearPre2000: 0,
-                year2000_2005: 0,
-                year2010_2015: 0,
-                year2015_2019: 0,
-                year2020: 0,
-                year2021: 0,
-                year2022: 0,
-                year2023: 0,
-                year2024: 0
+                FY21: 0,
+                FY22: 0,
+                FY23: 0,
+                FY24: 0,
+                FY25: 0
             },
         }
     };
 
-    const getYearCategory = (year: number): keyof typeof finalData['total']['memberActiveByYear'] | undefined => {
-        if (year < 2000) return 'yearPre2000';
-        if (year <= 2005) return 'year2000_2005';
-        if (year <= 2015) return 'year2010_2015';
-        if (year <= 2019) return 'year2015_2019';
-        if (year === 2020) return 'year2020';
-        if (year === 2021) return 'year2021';
-        if (year === 2022) return 'year2022';
-        if (year === 2023) return 'year2023';
-        if (year === 2024) return 'year2024';
-        return undefined; // Handle any unexpected years
+    const getFiscalYear = (date: Date): keyof typeof finalData['total']['memberActiveByYear'] | undefined => {
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1; // getMonth() returns 0-based month, so adding 1
+
+        if (year === 2020 && month >= 5 || year === 2021 && month <= 4) return 'FY21';
+        if (year === 2021 && month >= 5 || year === 2022 && month <= 4) return 'FY22';
+        if (year === 2022 && month >= 5 || year === 2023 && month <= 4) return 'FY23';
+        if (year === 2023 && month >= 5 || year === 2024 && month <= 4) return 'FY24';
+        if (year === 2024 && month >= 5) return 'FY25';
+        return undefined;
     };
 
     for (const obj of data) {
@@ -155,72 +140,60 @@ export const wildApricotYearAnalysis = (data: WildApricotData[]) => {
         } = obj;
 
         // Parse dates
-        const memberSinceYear = new Date(memberSince).getFullYear();
-        const renewalDueYear = renewalDue ? new Date(renewalDue).getFullYear() : null;
+        const memberSinceDate = new Date(memberSince);
+        const renewalDueDate = renewalDue ? new Date(renewalDue) : null;
 
         // Ensure there's a category for this professionalCategory in finalData
         if (!finalData[professionalCategory]) {
             finalData[professionalCategory] = {
                 memberActiveByYear: {
-                    yearPre2000: 0,
-                    year2000_2005: 0,
-                    year2010_2015: 0,
-                    year2015_2019: 0,
-                    year2020: 0,
-                    year2021: 0,
-                    year2022: 0,
-                    year2023: 0,
-                    year2024: 0
+                    FY21: 0,
+                    FY22: 0,
+                    FY23: 0,
+                    FY24: 0,
+                    FY25: 0
                 },
                 memberJoinedYear: {
-                    yearPre2000: 0,
-                    year2000_2005: 0,
-                    year2010_2015: 0,
-                    year2015_2019: 0,
-                    year2020: 0,
-                    year2021: 0,
-                    year2022: 0,
-                    year2023: 0,
-                    year2024: 0
+                    FY21: 0,
+                    FY22: 0,
+                    FY23: 0,
+                    FY24: 0,
+                    FY25: 0
                 },
                 lapsedYear: {
-                    yearPre2000: 0,
-                    year2000_2005: 0,
-                    year2010_2015: 0,
-                    year2015_2019: 0,
-                    year2020: 0,
-                    year2021: 0,
-                    year2022: 0,
-                    year2023: 0,
-                    year2024: 0
+                    FY21: 0,
+                    FY22: 0,
+                    FY23: 0,
+                    FY24: 0,
+                    FY25: 0
                 }
             };
         }
 
         // Member Joined Year
-        const joinedCategory = getYearCategory(memberSinceYear);
-        if (joinedCategory) {
-            finalData.total.memberJoinedYear[joinedCategory]++;
-            finalData[professionalCategory].memberJoinedYear[joinedCategory]++;
+        const joinedFiscalYear = getFiscalYear(memberSinceDate);
+        if (joinedFiscalYear) {
+            finalData.total.memberJoinedYear[joinedFiscalYear]++;
+            finalData[professionalCategory].memberJoinedYear[joinedFiscalYear]++;
         }
 
         // Member Active By Year
         if (membershipStatus === 'Active') {
-            for (let year = memberSinceYear; year <= 2024; year++) {
-                const activeCategory = getYearCategory(year);
-                if (activeCategory) {
-                    finalData.total.memberActiveByYear[activeCategory]++;
-                    finalData[professionalCategory].memberActiveByYear[activeCategory]++;
+            for (let year = memberSinceDate.getFullYear(); year <= 2024; year++) {
+                const activeFiscalYear = getFiscalYear(new Date(year, memberSinceDate.getMonth(), memberSinceDate.getDate()));
+                if (activeFiscalYear) {
+                    finalData.total.memberActiveByYear[activeFiscalYear]++;
+                    finalData[professionalCategory].memberActiveByYear[activeFiscalYear]++;
                 }
             }
         }
 
         // Lapsed Year
-        if (membershipStatus === 'Lapsed' && renewalDueYear) {
-            const lapsedCategory = getYearCategory(renewalDueYear);
-            if (lapsedCategory) {
-                finalData.total.lapsedYear[lapsedCategory]++;
-                finalData[professionalCategory].lapsedYear[lapsedCategory]++;
+        if (membershipStatus === 'Lapsed' && renewalDueDate) {
+            const lapsedFiscalYear = getFiscalYear(renewalDueDate);
+            if (lapsedFiscalYear) {
+                finalData.total.lapsedYear[lapsedFiscalYear]++;
+                finalData[professionalCategory].lapsedYear[lapsedFiscalYear]++;
             }
         }
     }
@@ -231,28 +204,50 @@ export const wildApricotYearAnalysis = (data: WildApricotData[]) => {
 
 // Retention Rate
 
-export function calculateRetention(data: WildApricotData[], years: number[]) {
-    const retention = years.reduce((acc, year) => {
+export function calculateFiscalYearRetention(data: WildApricotData[], fiscalYears: string[]) {
+    const retention = fiscalYears.reduce((acc, year) => {
         acc[year] = { numerator: 0, denominator: 0 };
         return acc;
-    }, {} as Record<number, { numerator: number, denominator: number }>);
+    }, {} as Record<string, { numerator: number, denominator: number }>);
+
+    const getFiscalYear = (date: Date): string | undefined => {
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1; // getMonth() returns 0-based month
+
+        if (year === 2020 && month >= 5 || year === 2021 && month <= 4) return 'FY21';
+        if (year === 2021 && month >= 5 || year === 2022 && month <= 4) return 'FY22';
+        if (year === 2022 && month >= 5 || year === 2023 && month <= 4) return 'FY23';
+        if (year === 2023 && month >= 5 || year === 2024 && month <= 4) return 'FY24';
+        if (year === 2024 && month >= 5) return 'FY25';
+        return undefined;
+    };
 
     data.forEach(member => {
-        const memberSinceYear = new Date(member['Member since']).getFullYear();
-        const renewalDueYear = new Date(member['Renewal due']).getFullYear();
+        const memberSinceDate = new Date(member['Member since']);
+        const renewalDueDate = new Date(member['Renewal due']);
         const membershipStatus = member['Membership status'];
 
-        years.forEach(year => {
-            if (year >= memberSinceYear) {
-                if (year < renewalDueYear || (year === renewalDueYear && membershipStatus === 'Active')) {
-                    // Member retained for this year
-                    retention[year].numerator += 1;
+        fiscalYears.forEach(fiscalYear => {
+            const memberFiscalYear = getFiscalYear(memberSinceDate);
+            const renewalFiscalYear = getFiscalYear(renewalDueDate);
+
+            if (memberFiscalYear && fiscalYear >= memberFiscalYear) {
+                if (!renewalFiscalYear || fiscalYear < renewalFiscalYear || (fiscalYear === renewalFiscalYear && membershipStatus === 'Active')) {
+                    // Member retained for this fiscal year
+                    retention[fiscalYear].numerator += 1;
                 }
-                // Add to the denominator for each year the member is considered
-                retention[year].denominator += 1;
+                // Add to the denominator for each fiscal year the member is considered
+                retention[fiscalYear].denominator += 1;
             }
         });
     });
 
     return retention;
 }
+
+
+// WILD APRICOT MEMBERSHIP NEW
+
+export const wildApricotRetentionNew = (data: WildApricotData[]) => {
+
+};

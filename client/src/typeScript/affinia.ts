@@ -1,25 +1,35 @@
-// --------------
-// Raw Data
-// --------------
+// ====================================================
+// Raw Data Imports
+// ====================================================
 
-// RAW PRE + POST ALL MRN 
+// --------------------------------
+// RAW All Pt - Pre and Post imports
+// --------------------------------
 
-export interface Mrn {
+// All Pt MRN in study
+
+export interface AllMrn {
     mrn: number
 }
 
-// RAW PRE + POST ALL MEDICATION DATA
+// All Pt Meds - Pre clean/combo in SAS
 
-export interface MedicationData {
-    mrn: number;
-    medType: string;
-    medName: string;
+export interface AllMedicationData {
+    mrn: number,
+    medType: string,
+    medStartDate: string,
+    medStopDate: string,
 };
 
-// RAW PRE INTERVENTION
+// --------------------------------
+// RAW Pre Intervention 
+// --------------------------------
 
-export interface AllPtData {
+// Pre Intervention kit return + no kit return data - Pre clean/combo in SAS
+
+export interface PreInterventionData {
     mrn: number,
+    kitReturned: boolean,
     gender: string,
     race: string,
     ethnicity: string,
@@ -27,7 +37,7 @@ export interface AllPtData {
     a1c_date_pre: string,
     a1c_result_pre: number,
     bp_date_pre: string,
-    bp_result_pre: number,
+    bp_result_pre: string,
     bp_systolic_pre: number,
     bp_diastolic_pre: number,
     dm_yn_pre: string,
@@ -35,79 +45,80 @@ export interface AllPtData {
     htn_bp_yn_pre: string,
 };
 
-export interface KitPtData {
-    mrn: number;
-    kit_return: boolean;
-    gender: string;
-    race: string;
-    ethnicity: string;
-    language: string;
-    a1c_date_pre: string;
-    a1c_result_pre: number;
-    bp_date_pre: string;
-    bp_result_pre: number;
-    bp_systolic_pre: number;
-    bp_diastolic_pre: number;
-    dm_yn_pre: string;
-    htn_yn_pre: string;
-    htn_bp_yn_pre: string;
-};
+// --------------------------------
+// RAW Post Intervention 
+// --------------------------------
 
+// Post Intervention all post + follow Up data Pre clean/combo in SAS
 
-// RAW POST INTERVENTION
-
-export interface PostInterventionResults {
+export interface PostInterventionData {
     mrn: number,
-    result: string,
-    testDate: string,
-}
-
-export interface PostInterventionBP {
-    mrn: number,
+    testResult: string,
+    post_a1cDate: string,
+    post_a1c: number,
+    post_bpDate: string,
     post_sys: number,
     post_dia: number,
-    post_a1c: number,
-}
-
-export interface PostInterventionEgfr {
-    mrn: number,
-    post_egfrDate: string,
-    post_egfrValue: number,
-}
-
-export interface PostInterventionUacr {
-    mrn: number,
     post_uacrDate: string,
-    post_uacrValue: number
+    post_uacr: number,
+    eGFRDate: string,
+    eGFRValue: number,
 }
 
-export interface PostInterventionInsurance {
+export interface PostFollowUpInterventionData {
     mrn: number,
-    insuranceClass: string,
-}
-
-// RAW POST ABRONAL INTERVENTION
-
-export interface PostInterventionAbnVisit {
-    mrn: number,
+    visitDate: string,
     followUpCompleted: string,
-}
-
-export interface PostInterventionAbnEGFR {
-    mrn: number,
-    followUpEGFRDate: string,
+    followUpTestOrdered: string,
+    followUpTestComplete: string,
     followUpEGFRValue: number,
-}
-
-export interface PostInterventionAbnUACR {
-    mrn: number,
-    followUpUACRDate: string,
     followUpUACRValue: number,
 }
 
-// --------------
-// Cleaned Up Data
-// --------------
+// --------------------------------
+// RAW Survey Monkey 
+// --------------------------------
+
+export interface SurveyMonkey {
+    profession: string,
+    practiceYears: string,
+    awareProgram: string,
+    satisfaction: string,
+    programAppropriate: string,
+    distributionImpact: string,
+    influeceWorkflows: string,
+    influeceGuideline: string,
+    influencePrevalence: string,
+    influenceCkdPrevention: string,
+    influenceCkdCare: string,
+    influenceDetection: string,
+    influenceDiscussion: string,
+    influenceEngagement: string,
+    influenceNoImpact: string,
+    agreeDiagnosis: string,
+    agreeDistribution: string,
+    agreeImproved: string,
+    agreeEffective: string,
+    agreeCommunication: string,
+    agreeOvercome: string,
+    agreeTime: string,
+    agreeAdherence: string,
+    statementOvertesting: string,
+    statementDifficult: string,
+    statementTime: string,
+    statementQuick: string,
+    statementInterpret: string,
+    statementDiscuss: string,
+    utilizeFuture: string,
+}
+
+// ====================================================
+// Clean Data Outputs
+// ====================================================
+
+// --------------------------------
+// Clean Pre Intervention 
+// --------------------------------
 
 export interface PatientData {
     kitReturned: boolean;
@@ -123,46 +134,27 @@ export interface Demographics {
 };
 
 export interface HealthConditions {
-    'A1C Date Pre': Date;
-    'A1C Result Pre': number;
-    'BP Date Pre': Date;
-    'BP Result Pre': number;
-    'BP Systolic Pre': number;
-    'BP Diastolic Pre': number;
+    'A1C Date Pre': string;
+    'A1C Result Pre': number | null;
+    'BP Date Pre': string;
+    'BP Systolic Pre': number | null;
+    'BP Diastolic Pre': number | null;
     'Hypertension': string;
     'Diabetes': string;
     'Both Hypertension and Diabetes': string;
-}
-
-export interface Medication {
-    'Start Date': string;
-    'Med Name': string;
-    'Med Type': string;
-}
-
-export interface MedicationReview {
-    'medAnalysis': Record<string, number>;
-}
-
-
-export interface PostPatientData {
-
 };
 
-// --------------
-// Outcome Measures
-// --------------
+
+// ====================================================
+// Table Analysis
+// ====================================================
+
+// --------------------------------
+// Table - Outcome Measures
+// --------------------------------
 
 export interface OutcomeMeasures {
     resultCategory: Record<string, number>,
-    followUpCompleted: number,
-    followUpCompletedNo: number,
-    followUpUACRCompleted: number,
-    followUpUACRCompletedNo: number,
-    followUpEGFRCompleted: number,
-    followUpEGFRCompletedNo: number,
-    followUpBothCompleted: number,
-    followUpBothCompletedNo: number,
     ckdStage: CKDStage;
 };
 
@@ -173,33 +165,56 @@ export interface CKDStage {
     g3b: 0,
     g4: 0,
     g5: 0,
-    missing: 0,
-    incomplete: 0,
+    g1NoUacr: 0,
+    g2NoUacr: 0,
+    missingEgfr: 0,
 }
 
-// --------------
-// Secondary Outcomes
-// --------------
+export interface OutcomeMeasuresFollowUp {
+    followUpCompleted: number,
+    followUpCompletedNo: number,
+    followUpUACRCompleted: number,
+    followUpUACRCompletedNo: number,
+    followUpEGFRCompleted: number,
+    followUpEGFRCompletedNo: number,
+    followUpBothCompleted: number,
+    followUpBothCompletedNo: number,
+}
 
-export interface SecondaryOutcomesData {
-    medCategoryCount: Record<string, number>;
-    chronicDiseaseMgmt: {
-        a1cControl: Record<string, number>;
+// --------------------------------
+// Table - Secondary Outcomes
+// --------------------------------
+
+export interface SecondaryOutcomesDataPre {
+    chronicDiseaseMgmtPre: {
+        a1cControl: Record<string, number>,
         bpControl: Record<string, number>
     }
 }
 
-// --------------
-// Demographic Outcomes
-// --------------
+export interface SecondaryOutcomesDataPost {
+    chronicDiseaseMgmtPost: {
+        a1cControl: Record<string, number>,
+        bpControl: Record<string, number>
+    }
+}
+
+export interface MedicationAnalysis {
+    preMedCount: Record<string, number>,
+    postMedCount: Record<string, number>
+}
+
+// --------------------------------
+// Table - Demographic Outcomes
+// --------------------------------
 
 export interface DemographicsOutcomes {
-    'diabetes only': number;
-    'hypertension only': number;
-    'diabetes and hypertension': number;
-    'neither diabetes or hypertension': number;
-    gender: Record<string, number>;
-    race: Record<string, number>;
-    ethnicity: Record<string, number>;
-    language: Record<string, number>;
+    'diabetes only': number,
+    'hypertension only': number,
+    'diabetes and hypertension': number,
+    'neither diabetes or hypertension': number,
+    gender: Record<string, number>,
+    race: Record<string, number>,
+    ethnicity: Record<string, number>,
+    language: Record<string, number>,
 };

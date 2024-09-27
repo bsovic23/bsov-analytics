@@ -1,9 +1,8 @@
 import React from 'react';
 
 const GeneralAnalysisTable = ({ data }) => {
-  const dataArray = Object.values(data);
-
-  const headers = Object.keys(dataArray[0] || {});
+  // Assuming data is now an array of objects, directly map over it
+  const headers = data.length > 0 ? Object.keys(data[0]) : [];
 
   const renderCellValue = (value) => {
     if (typeof value === 'boolean') {
@@ -22,7 +21,7 @@ const GeneralAnalysisTable = ({ data }) => {
         </tr>
       </thead>
       <tbody>
-        {dataArray.map((item, rowIndex) => (
+        {data.map((item, rowIndex) => (
           <tr key={rowIndex}>
             {headers.map((header, colIndex) => (
               <td key={colIndex}>{renderCellValue(item[header])}</td>
