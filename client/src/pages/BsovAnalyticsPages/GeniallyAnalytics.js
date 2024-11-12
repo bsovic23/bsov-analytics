@@ -20,7 +20,7 @@ import {
 
 let geniallyAnalyticsData;
 try {
-    geniallyAnalyticsData = require('../../data/bsovAnalytics').geniallyAnalyticsData;
+    geniallyAnalyticsData = require('../../data/bsovAnalytics/geniallyData').geniallyAnalyticsData;
 } catch (error) {
     console.error('Genially Data not available', error);
 }
@@ -31,10 +31,6 @@ try {
 
 const GeniallyAnalyticsPage = () => {
     const [analysisResult, setAnalysisResult] = useState(null);
-
-    if(!geniallyAnalyticsData) {
-        return <div>Data not avaialble. Please check for the data import</div>
-    };
 
     const handleAnalyze = (analysisFx) => {
         const result = analysisFx(geniallyAnalyticsData);
@@ -55,7 +51,7 @@ const GeniallyAnalyticsPage = () => {
     ];
 
     return (
-        <section>
+        <section id='genially-page' className='analytics-page'>
             <BsovAnalyticsComponent
                 pageTitle={"Genially Analytics"}
                 analysisInformation={"Information about the Genially Analytics"}

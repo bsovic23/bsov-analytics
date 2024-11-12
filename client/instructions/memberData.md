@@ -1,30 +1,29 @@
 Jordan Membership Data
 
-Data Location: 
-1. CaseHippo
-2. Zoom (survey pulls)
-3. Wild Apricot
-4. SalesForce
-
 Analysis
+
 -----------------------------
-1. Wild Apricot
+1. Analysis Idea Updates Future
+-----------------------------
+
+* Financial Analysis -> How much is a member spending, repeat memeber course enroll, etc
+* Incorporate SalesForce Data (if there are variables that are not in wild apricot but can assist)
+
+-----------------------------
+2. Wild Apricot Membership Analysis
 -----------------------------
 
 * 10th of every month -> Analysis of members who are late/no response on email
-* Financial Analysis -> How much is a member spending, repeat memeber course enroll, etc
-* Dup cleanup of wild apricot members
-* Membership length -> 1,2,3 year etc ... length
-* Trends using cleaned up salesforce data + wild apricot data
+* 1st of every mont -> Dup cleanup of wild apricot members
 
 -----------------------------
-2. Project Echo
+3. Wild Apricot Membership Updates
 -----------------------------
 
-* Use the spreadsheet dashboard and look at trends among the data
-
------------------------------
-3. Zoom / Casehippo
------------------------------
-
-* If new data collection methods for project echo not good, create cleanup/fast analysis methods
+* Add the variables used for each of the data tabs
+* Determine List of undefined professions
+* Lapsed members by year add the graphs
+* Q/Q Fiscal year analysis rather than the 3 month intervals for a calendar year
+* active year join broken down by count per month and profession
+* add extra row to the last login to store historical counts (since each month someone can update their last login)
+* Updated profile analysis (month count maybe?)

@@ -16,30 +16,48 @@ const BarChart = ({ data }) => {
         return <p>No data available for the chart.</p>;
     }
 
-    const labels = Object.keys(data);
-    const values = Object.values(data);
+    // Convert data into an array of { label, value } objects
+    const chartData = Object.keys(data).map((key) => ({
+        label: key,
+        value: data[key],
+    }));
+
+    // Sort the data by value in descending order
+    const sortedData = chartData.sort((a, b) => b.value - a.value);
+
+    // Slice the top 20 items if there are more than 20
+    const topData = sortedData.length > 20 ? sortedData.slice(0, 20) : sortedData;
+
+    // Separate the labels and values for the chart
+    const labels = topData.map(item => item.label);
+    const values = topData.map(item => item.value);
 
     return (
-        <div>
-            <Bar
-                data={{
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: "Items",
-                            data: values,
-                            backgroundColor: "blue",
-                        }
-                    ]
-                }}
-                options={{
-                    scales: {
-                        y: {
-                            beginAtZero: true,
+        <div id="chart-container">
+            <div className="chart-wrapper">
+                <Bar
+                    className="bar-chart"
+                    data={{
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: "Items",
+                                data: values,
+                                backgroundColor: "blue",
+                            }
+                        ]
+                    }}
+                    options={{
+                        responsive: true,
+                        maintainAspectRatio: false, // Prevent the chart from shrinking too much
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                            },
                         },
-                    },
-                }}
-            />
+                    }}
+                />
+            </div>
         </div>
     );
 };

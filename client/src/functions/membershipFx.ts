@@ -6,6 +6,10 @@
 
 import { WildApricotData, WildApricotDups, WildApricotMembershipLapsed } from '../typeScript/membership'
 
+// =======================================================================================================================================
+// Wild Apricot Repeated Clean Up Reports
+// =======================================================================================================================================
+
 // ------ Wild Apricot Duplicates -------
 
 export const wildApricotDupsFx = (data: WildApricotData[]): WildApricotDups => {
@@ -90,7 +94,9 @@ export const wildApricotMemberLapseFx = (
     return membersLapsed;
 };
 
-// ------- Wild Apricot Y/Y Analysis ------
+// =======================================================================================================================================
+// Wild Apricot Analysis
+// =======================================================================================================================================
 
 export const wildApricotFiscalYearAnalysis = (data: WildApricotData[]) => {
     let finalData: Record<string, any> = {
@@ -179,7 +185,7 @@ export const wildApricotFiscalYearAnalysis = (data: WildApricotData[]) => {
 
         // Member Active By Year
         if (membershipStatus === 'Active') {
-            for (let year = memberSinceDate.getFullYear(); year <= 2024; year++) {
+            for (let year = memberSinceDate.getFullYear(); year <= 2025; year++) {
                 const activeFiscalYear = getFiscalYear(new Date(year, memberSinceDate.getMonth(), memberSinceDate.getDate()));
                 if (activeFiscalYear) {
                     finalData.total.memberActiveByYear[activeFiscalYear]++;
@@ -188,12 +194,18 @@ export const wildApricotFiscalYearAnalysis = (data: WildApricotData[]) => {
             }
         }
 
-        // Lapsed Year
+        // Lapsed Year (only if more than 1 year has passed since renewalDueDate)
         if (membershipStatus === 'Lapsed' && renewalDueDate) {
-            const lapsedFiscalYear = getFiscalYear(renewalDueDate);
-            if (lapsedFiscalYear) {
-                finalData.total.lapsedYear[lapsedFiscalYear]++;
-                finalData[professionalCategory].lapsedYear[lapsedFiscalYear]++;
+            const today = new Date('2024-10-27');
+            const oneYearAgo = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
+
+            // Only count as lapsed if renewalDueDate was more than one year ago
+            if (renewalDueDate <= oneYearAgo) {
+                const lapsedFiscalYear = getFiscalYear(renewalDueDate);
+                if (lapsedFiscalYear) {
+                    finalData.total.lapsedYear[lapsedFiscalYear]++;
+                    finalData[professionalCategory].lapsedYear[lapsedFiscalYear]++;
+                }
             }
         }
     }
@@ -246,8 +258,90 @@ export function calculateFiscalYearRetention(data: WildApricotData[], fiscalYear
 }
 
 
-// WILD APRICOT MEMBERSHIP NEW
+// WILD APRICOT Last Clicked
 
-export const wildApricotRetentionNew = (data: WildApricotData[]) => {
+export const newFunctions = (data: WildApricotData[]) => {
+    let finalData: Record<string, any> = {
+        paidMemberships: 0,
+        nonPaidMemberships: 0,
+        activityByMonth2024: {
+            January: 0,
+            February: 0,
+            March: 0,
+            April: 0,
+            May: 0,
+            June: 0,
+            July: 0,
+            August: 0,
+            September: 0,
+            October: 0,
+            November: 0,
+            December: 0
+        }
+    };
 
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    for (const obj of data) {
+        const { 
+            "Professional Category": professionalCategory, 
+            "Last login": lastLogin
+        } = obj;
+
+        // Count paid vs. non-paid memberships
+        if (professionalCategory === "Student" || professionalCategory === "Fellow" || professionalCategory === "Resident") {
+            finalData.nonPaidMemberships++;
+        } else {
+            finalData.paidMemberships++;
+        }
+
+        // Count activity by month for 2024
+        if (lastLogin) {
+            const lastLoginDate = new Date(lastLogin);
+            const year = lastLoginDate.getFullYear();
+            const month = lastLoginDate.getMonth(); // getMonth() is 0-based
+
+            if (year === 2024) {
+                const monthName = months[month]; // Get month name from the array
+                finalData.activityByMonth2024[monthName]++;
+            }
+        }
+    }
+
+    return finalData;
 };
+
+export const quarterAnalysis = (data: WildApricotData[]) => {
+    let finalData = {
+        'Q1 (Jan-Mar)': 0,
+        'Q2 (Apr-Jun)': 0,
+        'Q3 (Jul-Sep)': 0,
+        'Q4 (Oct-Dec)': 0,
+    };
+
+    for (const obj of data) {
+        const { "Member since": memberSince } = obj;
+
+        // Convert the "Member since" date to a JavaScript Date object
+        const memberSinceDate = new Date(memberSince);
+
+        // Extract the year and month
+        const year = memberSinceDate.getFullYear();
+        const month = memberSinceDate.getMonth() + 1; // Months are 0-based, so +1
+
+        // Only count if the year is 2024
+        if (year === 2024) {
+            if (month >= 1 && month <= 3) {
+                finalData['Q1 (Jan-Mar)'] += 1;
+            } else if (month >= 4 && month <= 6) {
+                finalData['Q2 (Apr-Jun)'] += 1;
+            } else if (month >= 7 && month <= 9) {
+                finalData['Q3 (Jul-Sep)'] += 1;
+            } else if (month >= 10 && month <= 12) {
+                finalData['Q4 (Oct-Dec)'] += 1;
+            }
+        }
+    }
+
+    return finalData;
+}

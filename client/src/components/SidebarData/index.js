@@ -15,13 +15,6 @@ export const SidebarData = [
         description: 'Return Home'
     },
     {
-        title: "BSOV-ANALYTICS",
-        icon: <AnalyticsIcon />,
-        link: "/",
-        image: imageOne,
-        description: 'Import your data and ask analytics questions'
-    },
-    {
         title: "General Analysis Analytics", 
         icon: <AnalyticsIcon />,
         link: "/GeneralAnalysis",
@@ -78,7 +71,7 @@ export const SidebarData = [
         description: "Project Echo"
     },
     {
-        title: "BSOV ANALYTICS",
+        title: "BSOV ANALYTICS V4.4.1",
         icon: <AnalyticsIcon />,
         link: "/BsovAnalytics",
         image: imageTwo,

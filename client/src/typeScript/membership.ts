@@ -11,6 +11,7 @@ export interface WildApricotData {
     'Email': string,
     'Phone': string,
     'Professional Category': string,
+    'Last login': string,
     'Membership enabled': string,
     'Membership level': string,
     'Membership status': string,

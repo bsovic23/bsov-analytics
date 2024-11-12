@@ -13,14 +13,15 @@ import BarChart from '../../components/BsovAnalyticsCharts';
 
 import {
     youtubeTopicCountFx,
-    youtubeTop10Fx
+    youtubeTop10Fx,
+    youtubeViewsByFiscalYearFx
 } from '../../functions/youtubeAnalyticsFx';
 
 // Data Import
 
 let youtubeAnalyticsData;
 try {
-    youtubeAnalyticsData = require('../../data/bsovAnalytics').youtubeAnalyticsData;
+    youtubeAnalyticsData = require('../../data/bsovAnalytics/youtubeData').youtubeAnalyticsData;
 } catch (error) {
     console.error('Youtube Data not available', error);
 }
@@ -47,6 +48,11 @@ const YouTubeAnalyticsPage = () => {
             id: 2, 
             title: "Top 10 YouTube Videos by Views", 
             data: () => youtubeTop10Fx(youtubeAnalyticsData, "Views")  // Another example function
+        },
+        { 
+            id: 2, 
+            title: "Views By Fiscal Year", 
+            data: () => youtubeViewsByFiscalYearFx(youtubeAnalyticsData, "Views")  // Another example function
         }
     ];
 

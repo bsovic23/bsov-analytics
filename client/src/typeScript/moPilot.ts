@@ -187,3 +187,27 @@ export interface MoPilotCountAnalytics {
     uacrIndividualsCount: number,
     uacrTotal: number,
 }
+
+
+export interface MoMissingFollowUp {
+    [site: string]: {
+        identifier: string;
+        submissionDate: string;
+    }[];
+}
+
+export interface MoSiteDemographics {
+    [site: string]: {
+        initialCount: number,
+        zips: Record<number, number>,
+        race: Record<string, number>,
+        ethnicity: Record<string, number>,
+        insurance: Record<string, number>,
+        primaryCare: Record<string, number>,
+        chronicDiseases: Record<string, number>,
+        pharmacyReferral: Record<string, number>,
+        ageCount: number,
+        ageTotal: number,
+    };
+}
+

@@ -18,9 +18,13 @@ import ProjectEcho from './pages/ProjectEcho';
 import BsovAnalytics from './pages/BsovAnalytics';
 
 // Bsov Analytics
+import DataBot from './pages/BsovAnalyticsPages/DataBot';
+import NkfAnalyticsPage from './pages/BsovAnalyticsPages/NkfAnalytics';
+
 import GoogleAnalyticsPage from './pages/BsovAnalyticsPages/GoogleAnalytics';
 import GeniallyAnalyticsPage from './pages/BsovAnalyticsPages/GeniallyAnalytics';
-import YouTubeAnalyticsPage from './pages/BsovAnalyticsPages/YouTubeAnalytics'
+import YouTubeAnalyticsPage from './pages/BsovAnalyticsPages/YouTubeAnalytics';
+import CaseHippoAnalyticsPage from './pages/BsovAnalyticsPages/CaseHippoAnalytics';
 
 const routes = [
   {path: "/", element: <Home />},
@@ -38,9 +42,13 @@ const routes = [
   {path: "/ProjectEcho", element: <ProjectEcho />},
   {path: "/BsovAnalytics", element: <BsovAnalytics />},
   // Bsov Analytics
+  {path: "/DataBot", element: <DataBot />},
+  {path: "/NkfAnalyticsPage", element: <NkfAnalyticsPage />},
+
   {path: "/GoogleAnalyticsPage", element: <GoogleAnalyticsPage />},
   {path: "/GeniallyAnalyticsPage", element: <GeniallyAnalyticsPage />},
   {path: "/YouTubeAnalyticsPage", element: <YouTubeAnalyticsPage />},
+  {path: "/CaseHippoAnalyticsPage", element: <CaseHippoAnalyticsPage />},
 ];
 
 function App() {

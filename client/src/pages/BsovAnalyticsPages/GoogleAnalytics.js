@@ -21,7 +21,7 @@ import {
 
 let googleAnalyticsMappingData;
 try {
-    googleAnalyticsMappingData = require('../../data/bsovAnalytics');
+    googleAnalyticsMappingData = require('../../data/bsovAnalytics/googleAnalyticsMappingData').googleAnalyticsMappingData;
 } catch (error) {
     console.error('Google Analytics Data not available', error);
 }

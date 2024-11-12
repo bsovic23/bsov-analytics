@@ -10,6 +10,8 @@ import {
     MoPilotAllData, // Initial + Follow Up Data Combined Clean
 
     MoPilotCountAnalytics, // Final Count Analytics
+    MoMissingFollowUp, // Missing Follow Up Survey
+    MoSiteDemographics, // Zip Code Analysis Count
 } from "../typeScript/moPilot";
 
 
@@ -281,9 +283,9 @@ export const surveyCounts = (initial: MoPilotInitial[], followUp: MoPilotFollowU
 
     let counts = {
         initialSurveyCount: 0,
-        initualUniqueSurveyCount: 0,  // Moved this after identifier processing
+        initualUniqueSurveyCount: 0,  
         followUpSurveyCount: 0,
-        followUpUniqueSurveyCount: 0, // Moved this after identifier processing
+        followUpUniqueSurveyCount: 0,
         initialSiteCount: {} as Record<string, number>,
         followUpSiteCount: {} as Record<string, number>,
         completeSiteCount: {} as Record<string, number>,
@@ -335,4 +337,122 @@ export const surveyCounts = (initial: MoPilotInitial[], followUp: MoPilotFollowU
     counts.followUpUniqueSurveyCount = followUpIdentifiers.size;
 
     return { counts, missingInInitial };
+};
+
+
+
+// ------------- Counts ----------- //
+
+export const missingFollowUp = (
+    initial: MoPilotInitial[], 
+    followUp: MoPilotFollowUp[]
+): MoMissingFollowUp => {
+    const followUpUnique = new Set(followUp.map(fu => fu.identifier)); // Create a set of identifiers from followUp
+    let missing: MoMissingFollowUp = {};  // Initialize as an empty object
+
+    // Define the cutoff date for 3 months (July 1, 2024)
+    const cutoffDate = new Date('2024-07-01');
+
+    for (const obj of initial) {
+        const { submissionDate, location, identifier } = obj;
+
+        // Convert submissionDate to a Date object
+        const submission = new Date(submissionDate);
+
+        // Check if identifier is missing from followUp and the submission date is after the cutoff
+        if (!followUpUnique.has(identifier) && submission >= cutoffDate) {
+            // Initialize array for the location if it doesn't exist
+            if (!missing[location]) {
+                missing[location] = [];
+            }
+            // Push the missing record to the array for that location
+            missing[location].push({
+                identifier,
+                submissionDate
+            });
+        }
+    }
+
+    return missing;
+};
+
+
+export const moSiteDemographicsFx = (initialData: MoPilotInitial[]) => {
+    let siteDemData: MoSiteDemographics = {};
+
+    for (const obj of initialData) {
+        const { location, age, zipcode, race, ethnicity, insurance, primaryCare, chronicDiseases, pharmacyReferral } = obj;
+
+        if (!siteDemData[location]) {
+            siteDemData[location] = {
+                initialCount: 0,
+                zips: {},
+                race: {},
+                ethnicity: {},
+                insurance: {},
+                primaryCare: {},
+                chronicDiseases: {},
+                pharmacyReferral: {},
+                ageCount: 0,
+                ageTotal: 0,
+            };
+        }
+
+        siteDemData[location].initialCount += 1;
+
+        // Zipcode
+        if (zipcode in siteDemData[location].zips) {
+            siteDemData[location].zips[zipcode] += 1;
+        } else {
+            siteDemData[location].zips[zipcode] = 1;
+        }
+
+        // Race
+        if (race in siteDemData[location].race) {
+            siteDemData[location].race[race] += 1;
+        } else {
+            siteDemData[location].race[race] = 1;
+        }
+
+        // Ethnicity
+        if (ethnicity in siteDemData[location].ethnicity) {
+            siteDemData[location].ethnicity[ethnicity] += 1;
+        } else {
+            siteDemData[location].ethnicity[ethnicity] = 1;
+        }
+
+        // Insurance
+        if (insurance in siteDemData[location].insurance) {
+            siteDemData[location].insurance[insurance] += 1;
+        } else {
+            siteDemData[location].insurance[insurance] = 1;
+        }
+
+        // Primary Care
+        if (primaryCare in siteDemData[location].primaryCare) {
+            siteDemData[location].primaryCare[primaryCare] += 1;
+        } else {
+            siteDemData[location].primaryCare[primaryCare] = 1;
+        }
+
+        // Chronic Diseases
+        if (chronicDiseases in siteDemData[location].chronicDiseases) {
+            siteDemData[location].chronicDiseases[chronicDiseases] += 1;
+        } else {
+            siteDemData[location].chronicDiseases[chronicDiseases] = 1;
+        }
+
+        // Pharmacy Referral
+        if (pharmacyReferral in siteDemData[location].pharmacyReferral) {
+            siteDemData[location].pharmacyReferral[pharmacyReferral] += 1;
+        } else {
+            siteDemData[location].pharmacyReferral[pharmacyReferral] = 1;
+        }
+
+        // Update age count and total age for averaging
+        siteDemData[location].ageCount += 1;
+        siteDemData[location].ageTotal += parseInt(age, 10);
+    }
+
+    return siteDemData;
 };

@@ -418,8 +418,210 @@ export const functionTwoPost = (data: PostInterventionData[]): SecondaryOutcomes
 };
 
 // -----------------------------------------------------------------------------------------------------------------------------------------------
-// Function 1 - 
+// Function NORMAL AND ABNORAL BP /A1C 
 // -----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+export const functionBpA1cFx = (preData: PreInterventionData[], postData: PostInterventionData[]) => {
+    let preDataOutputNormal = {
+        chronicDiseaseMgmtPost: {
+            a1cControl: {
+                '>9%': 0,
+                '7-9%': 0,
+                '<7%': 0,
+                'Not Found': 0,
+            },
+            bpControl: {
+                '>140/90': 0,
+                '140/90-130/80': 0,
+                '<130/80': 0,
+                'None of the above': 0,
+            },
+        },
+    };
+
+    let preDataOutputAbnormal = {
+        chronicDiseaseMgmtPost: {
+            a1cControl: {
+                '>9%': 0,
+                '7-9%': 0,
+                '<7%': 0,
+                'Not Found': 0,
+            },
+            bpControl: {
+                '>140/90': 0,
+                '140/90-130/80': 0,
+                '<130/80': 0,
+                'None of the above': 0,
+            },
+        },
+    };
+
+    let postDataOutputNormal = {
+        chronicDiseaseMgmtPost: {
+            a1cControl: {
+                '>9%': 0,
+                '7-9%': 0,
+                '<7%': 0,
+                'Not Found': 0,
+            },
+            bpControl: {
+                '>140/90': 0,
+                '140/90-130/80': 0,
+                '<130/80': 0,
+                'None of the above': 0,
+            },
+        },
+    };
+
+    let postDataOutputAbnormal = {
+        chronicDiseaseMgmtPost: {
+            a1cControl: {
+                '>9%': 0,
+                '7-9%': 0,
+                '<7%': 0,
+                'Not Found': 0,
+            },
+            bpControl: {
+                '>140/90': 0,
+                '140/90-130/80': 0,
+                '<130/80': 0,
+                'None of the above': 0,
+            },
+        },
+    };
+
+    const BP_SYS_HIGH = 140;
+    const BP_DIA_HIGH = 90;
+    const BP_SYS_NORMAL = 130;
+    const BP_DIA_NORMAL = 80;
+
+    const preRangeUp = new Date("02/01/2022");
+    const preRangeDown = new Date("07/01/2023");
+
+    const postRangeUp = new Date("08/15/2023");
+    const postRangeDown = new Date("06/30/2024");
+
+    const isInPreRange = (dateStr: string) => {
+        const date = new Date(dateStr);
+        return date >= preRangeUp && date <= preRangeDown;
+    };
+
+    const isInPostRange = (dateStr: string) => {
+        const date = new Date(dateStr);
+        return date >= postRangeUp && date <= postRangeDown;
+    };
+
+    for (const postObj of postData) {
+        const mrn = postObj.mrn;
+        const testResult = postObj.testResult;
+
+        const preObj = preData.find(p => p.mrn === mrn);
+
+        if (preObj) {
+            if (isInPreRange(preObj.a1c_date_pre)) {
+                if (testResult === "Normal") {
+                    if (preObj.a1c_result_pre > 9) {
+                        preDataOutputNormal.chronicDiseaseMgmtPost.a1cControl['>9%']++;
+                    } else if (preObj.a1c_result_pre >= 7) {
+                        preDataOutputNormal.chronicDiseaseMgmtPost.a1cControl['7-9%']++;
+                    } else if (preObj.a1c_result_pre < 7) {
+                        preDataOutputNormal.chronicDiseaseMgmtPost.a1cControl['<7%']++;
+                    } else {
+                        preDataOutputNormal.chronicDiseaseMgmtPost.a1cControl['Not Found']++;
+                    }
+                } else if (testResult === "High Abnormal" || testResult === "Abnormal") {
+                    if (preObj.a1c_result_pre > 9) {
+                        preDataOutputAbnormal.chronicDiseaseMgmtPost.a1cControl['>9%']++;
+                    } else if (preObj.a1c_result_pre >= 7) {
+                        preDataOutputAbnormal.chronicDiseaseMgmtPost.a1cControl['7-9%']++;
+                    } else if (preObj.a1c_result_pre < 7) {
+                        preDataOutputAbnormal.chronicDiseaseMgmtPost.a1cControl['<7%']++;
+                    } else {
+                        preDataOutputAbnormal.chronicDiseaseMgmtPost.a1cControl['Not Found']++;
+                    }
+                }
+            }
+
+            if (isInPreRange(preObj.bp_date_pre)) {
+                if (testResult === "Normal") {
+                    if (preObj.bp_systolic_pre > BP_SYS_HIGH || preObj.bp_diastolic_pre > BP_DIA_HIGH) {
+                        preDataOutputNormal.chronicDiseaseMgmtPost.bpControl['>140/90']++;
+                    } else if (preObj.bp_systolic_pre <= BP_SYS_NORMAL && preObj.bp_diastolic_pre <= BP_DIA_NORMAL) {
+                        preDataOutputNormal.chronicDiseaseMgmtPost.bpControl['<130/80']++;
+                    } else {
+                        preDataOutputNormal.chronicDiseaseMgmtPost.bpControl['140/90-130/80']++;
+                    }
+                } else if (testResult === "High Abnormal" || testResult === "Abnormal") {
+                    if (preObj.bp_systolic_pre > BP_SYS_HIGH || preObj.bp_diastolic_pre > BP_DIA_HIGH) {
+                        preDataOutputAbnormal.chronicDiseaseMgmtPost.bpControl['>140/90']++;
+                    } else if (preObj.bp_systolic_pre <= BP_SYS_NORMAL && preObj.bp_diastolic_pre <= BP_DIA_NORMAL) {
+                        preDataOutputAbnormal.chronicDiseaseMgmtPost.bpControl['<130/80']++;
+                    } else {
+                        preDataOutputAbnormal.chronicDiseaseMgmtPost.bpControl['140/90-130/80']++;
+                    }
+                }
+            }
+        }
+
+        if (isInPostRange(postObj.post_a1cDate)) {
+            if (testResult === "Normal") {
+                if (postObj.post_a1c > 9) {
+                    postDataOutputNormal.chronicDiseaseMgmtPost.a1cControl['>9%']++;
+                } else if (postObj.post_a1c >= 7) {
+                    postDataOutputNormal.chronicDiseaseMgmtPost.a1cControl['7-9%']++;
+                } else if (postObj.post_a1c < 7) {
+                    postDataOutputNormal.chronicDiseaseMgmtPost.a1cControl['<7%']++;
+                } else {
+                    postDataOutputNormal.chronicDiseaseMgmtPost.a1cControl['Not Found']++;
+                }
+            } else if (testResult === "High Abnormal" || testResult === "Abnormal") {
+                if (postObj.post_a1c > 9) {
+                    postDataOutputAbnormal.chronicDiseaseMgmtPost.a1cControl['>9%']++;
+                } else if (postObj.post_a1c >= 7) {
+                    postDataOutputAbnormal.chronicDiseaseMgmtPost.a1cControl['7-9%']++;
+                } else if (postObj.post_a1c < 7) {
+                    postDataOutputAbnormal.chronicDiseaseMgmtPost.a1cControl['<7%']++;
+                } else {
+                    postDataOutputAbnormal.chronicDiseaseMgmtPost.a1cControl['Not Found']++;
+                }
+            }
+        }
+
+        if (isInPostRange(postObj.post_bpDate)) {
+            if (testResult === "Normal") {
+                if (postObj.post_sys > BP_SYS_HIGH || postObj.post_dia > BP_DIA_HIGH) {
+                    postDataOutputNormal.chronicDiseaseMgmtPost.bpControl['>140/90']++;
+                } else if (postObj.post_sys <= BP_SYS_NORMAL && postObj.post_dia <= BP_DIA_NORMAL) {
+                    postDataOutputNormal.chronicDiseaseMgmtPost.bpControl['<130/80']++;
+                } else {
+                    postDataOutputNormal.chronicDiseaseMgmtPost.bpControl['140/90-130/80']++;
+                }
+            } else if (testResult === "High Abnormal" || testResult === "Abnormal") {
+                if (postObj.post_sys > BP_SYS_HIGH || postObj.post_dia > BP_DIA_HIGH) {
+                    postDataOutputAbnormal.chronicDiseaseMgmtPost.bpControl['>140/90']++;
+                } else if (postObj.post_sys <= BP_SYS_NORMAL && postObj.post_dia <= BP_DIA_NORMAL) {
+                    postDataOutputAbnormal.chronicDiseaseMgmtPost.bpControl['<130/80']++;
+                } else {
+                    postDataOutputAbnormal.chronicDiseaseMgmtPost.bpControl['140/90-130/80']++;
+                }
+            }
+        }
+    }
+
+    return {
+        preDataOutputNormal,
+        preDataOutputAbnormal,
+        postDataOutputNormal,
+        postDataOutputAbnormal,
+    };
+};
+
+// -----------------------------------------------------------------------------------------------------------------------------------------------
+// Function - Medication Analaysis
+// -----------------------------------------------------------------------------------------------------------------------------------------------
+
+// Original Medication Analysis
 
 export const medicationCountAnalysis = (medicationData: AllMedicationData[]): MedicationAnalysis => {
     let finalData: MedicationAnalysis = {
@@ -428,35 +630,139 @@ export const medicationCountAnalysis = (medicationData: AllMedicationData[]): Me
     };
 
     // Define pre and post periods
-    const preStart = new Date('February 1, 2021').getTime();
+    const preStart = new Date('February 1, 2022').getTime();
     const preEnd = new Date('July 30, 2023').getTime();
+
     const postStart = new Date('August 15, 2023').getTime();
     const postEnd = new Date('June 30, 2024').getTime();
-    const currentDate = new Date('September 27, 2024').getTime();
 
+    const currentDate = new Date('October 26, 2024').getTime();
+
+    // Loop through each medication record
     for (const obj of medicationData) {
         const { medType, medStartDate, medStopDate } = obj;
 
         // Parse the start and stop dates
         const startDate = new Date(medStartDate).getTime();
-        let stopDate = medStopDate === 'still on medication'
-            ? currentDate  // If still on medication, use current date (September 27, 2024)
+        let stopDate = medStopDate === 'Still on medication'
+            ? currentDate  // If still on medication, use the current date
             : new Date(medStopDate).getTime();
 
-        // Function to check if a medication period overlaps with a time period
-        const isActiveDuringPeriod = (periodStart: number, periodEnd: number) =>
-            (startDate <= periodEnd && startDate >= periodStart) || // started within the period
-            (stopDate <= periodEnd && stopDate >= periodStart) || // stopped within the period
-            (startDate < periodStart && stopDate > periodEnd); // ongoing throughout the entire period
+        // Verify that dates are valid
+        if (isNaN(startDate) || isNaN(stopDate)) {
+            console.error(`Invalid date for medication: ${medType}, start: ${medStartDate}, stop: ${medStopDate}`);
+            continue;  // Skip this medication if dates are invalid
+        }
 
-        // Check if medication falls within the pre period
+        // Function to check if a medication is active during a period
+        const isActiveDuringPeriod = (periodStart: number, periodEnd: number) =>
+            (startDate <= periodEnd && stopDate >= periodStart); // Check for overlap or full containment
+
+        // Check if medication is active during the pre period
         if (isActiveDuringPeriod(preStart, preEnd)) {
             finalData.preMedCount[medType] = (finalData.preMedCount[medType] || 0) + 1;
         }
 
-        // Check if medication falls within the post period
+        // Check if medication is active during the post period
         if (isActiveDuringPeriod(postStart, postEnd)) {
             finalData.postMedCount[medType] = (finalData.postMedCount[medType] || 0) + 1;
+        }
+    }
+
+    return finalData;
+};
+
+// New Medication Analysis
+export const medicationCountAnalysisFxNew = (medicationData: AllMedicationData[], testResultData: PostInterventionData[]) => {
+    let finalData = {
+        normalCount: 0,
+        abnormalCount: 0,
+        preNormal: {} as Record<string, number>,
+        postNormal: {} as Record<string, number>,
+        preAbnormal: {} as Record<string, number>,
+        postAbnormal: {} as Record<string, number>,
+    };
+
+    // Define pre and post periods
+    const preStart = new Date('February 1, 2022').getTime();
+    const preEnd = new Date('July 30, 2023').getTime();
+
+    const postStart = new Date('August 15, 2023').getTime();
+    const postEnd = new Date('June 30, 2024').getTime();
+
+    const currentDate = new Date('October 26, 2024').getTime();
+
+    // Function
+    for (const obj of testResultData) {
+        const { mrn, testResult } = obj;
+
+        if (testResult === "Normal") {
+            finalData.normalCount ++;
+            const filteredMedication = medicationData.filter(med => med.mrn === mrn);
+
+            for (const med of filteredMedication) {  // Changed loop variable to med
+                const { medType, medStartDate, medStopDate } = med;
+
+                // Parse the start and stop dates
+                const startDate = new Date(medStartDate).getTime();
+                let stopDate = medStopDate === 'Still on medication'
+                    ? currentDate  // If still on medication, use the current date
+                    : new Date(medStopDate).getTime();
+
+                // Verify that dates are valid
+                if (isNaN(startDate) || isNaN(stopDate)) {
+                    console.error(`Invalid date for medication: ${medType}, start: ${medStartDate}, stop: ${medStopDate}`);
+                    continue;  // Skip this medication if dates are invalid
+                }
+
+                // Function to check if a medication is active during a period
+                const isActiveDuringPeriod = (periodStart: number, periodEnd: number) =>
+                    (startDate <= periodEnd && stopDate >= periodStart); // Check for overlap or full containment
+
+                // Check if medication is active during the pre period
+                if (isActiveDuringPeriod(preStart, preEnd)) {
+                    finalData.preNormal[medType] = (finalData.preNormal[medType] || 0) + 1;
+                }
+
+                // Check if medication is active during the post period
+                if (isActiveDuringPeriod(postStart, postEnd)) {
+                    finalData.postNormal[medType] = (finalData.postNormal[medType] || 0) + 1;
+                }
+            }
+
+        } else if (testResult === "High Abnormal" || testResult === "Abnormal") {
+            finalData.abnormalCount ++;
+            const filteredMedication = medicationData.filter(med => med.mrn === mrn);
+
+            for (const med of filteredMedication) {  // Changed loop variable to med
+                const { medType, medStartDate, medStopDate } = med;
+
+                // Parse the start and stop dates
+                const startDate = new Date(medStartDate).getTime();
+                let stopDate = medStopDate === 'Still on medication'
+                    ? currentDate  // If still on medication, use the current date
+                    : new Date(medStopDate).getTime();
+
+                // Verify that dates are valid
+                if (isNaN(startDate) || isNaN(stopDate)) {
+                    console.error(`Invalid date for medication: ${medType}, start: ${medStartDate}, stop: ${medStopDate}`);
+                    continue;  // Skip this medication if dates are invalid
+                }
+
+                // Function to check if a medication is active during a period
+                const isActiveDuringPeriod = (periodStart: number, periodEnd: number) =>
+                    (startDate <= periodEnd && stopDate >= periodStart); // Check for overlap or full containment
+
+                // Check if medication is active during the pre period
+                if (isActiveDuringPeriod(preStart, preEnd)) {
+                    finalData.preAbnormal[medType] = (finalData.preAbnormal[medType] || 0) + 1;
+                }
+
+                // Check if medication is active during the post period
+                if (isActiveDuringPeriod(postStart, postEnd)) {
+                    finalData.postAbnormal[medType] = (finalData.postAbnormal[medType] || 0) + 1;
+                }
+            }
         }
     }
 
