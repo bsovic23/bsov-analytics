@@ -78,6 +78,13 @@ export const SidebarData = [
         description: "Practice Cards View Here"
     },
     {
+        title: "Patient Portal",
+        icon: <AnalyticsIcon />,
+        link: "/PatientPortal",
+        image: imageTwo,
+        description: "Practice Cards View Here"
+    },
+    {
         title: "Information", 
         icon: <InfoIcon />,
         link: "/",

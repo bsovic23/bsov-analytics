@@ -4,15 +4,15 @@ import React, { useState } from 'react';
 import Page from '../components/Page';
 
 // Function Imports
-import { moPilotDataCleanUp, finalDataAnalysisFx, surveyCounts, missingFollowUp, moSiteDemographicsFx } from '../functions/moPilot';
+import { moPilotDataCleanUp, finalDataAnalysisFx, surveyCounts, missingFollowUp, moSiteDemographicsFx, moSiteLabs } from '../functions/moPilot';
 
 // Data Imports
 let initialData;
 let followUpData;
 
 try {
-    initialData = require('../data/moData').initialData;
-    followUpData = require('../data/moData').followUpData;
+    initialData = require('../data/moPilot').initialData;
+    followUpData = require('../data/moPilot').followUpData;
 } catch (error) {
     initialData = 'No data found';
     followUpData = 'No data found';
@@ -31,6 +31,7 @@ const MoPilot = () => {
     const [data3, setData3] = useState((initialData !== 'No data found' && followUpData !== 'No data found') ? (surveyCounts(initialData, followUpData)) : 'No Initial or Follow up data found');
     const [data4, setData4] = useState((initialData !== 'No data found' && followUpData !== 'No data found') ? (missingFollowUp(initialData, followUpData)) : 'No Initial or Follow up data found');
     const [data5, setData5] = useState((initialData !== 'No data found') ? (moSiteDemographicsFx(initialData)) : 'No Initial or Follow up data found');
+    const [data6, setData6] = useState((followUpData !== 'No data found') ? (moSiteLabs(followUpData)) : 'No Follow up data found');
 
     const analysisButtons = [
         { id: 1, "name": "Output", "data": data },
@@ -38,6 +39,7 @@ const MoPilot = () => {
         { id: 3, "name": "Site complete", "data": data3 },
         { id: 4, "name": "Missing Follow Up", "data": data4 },
         { id: 5, "name": "Demographics by site", "data": data5 },
+        { id: 6, "name": "Labs by site", "data": data6 },
     ];
 
     return(

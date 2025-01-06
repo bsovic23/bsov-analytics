@@ -6,6 +6,7 @@ import {
     // All Pt
     AllMrn,
     AllMedicationData,
+    AllZipInsurance,
 
     // Pre Intervention
     PreInterventionData,
@@ -142,6 +143,17 @@ export const functionOne = (data: PostInterventionData[]): OutcomeMeasures => {
             g2NoUacr: 0,
             missingEgfr: 0,
         },
+        mrns: {
+            g1: [],
+            g2: [],
+            g3a: [],
+            g3b: [],
+            g4: [],
+            g5: [],
+            g1NoUacr: [],
+            g2NoUacr: [],
+            missingEgfr: [],
+        },
     };
 
     const rangeUp = new Date("08/15/2023");
@@ -158,24 +170,121 @@ export const functionOne = (data: PostInterventionData[]): OutcomeMeasures => {
         const uacrValue = obj.post_uacr;
         const uacrDate = new Date(obj.post_uacrDate);
 
-       
         // Check for missing eGFR value
         if (egfrValue === null || egfrValue === undefined) {
             postData.ckdStage.missingEgfr += 1;
+            postData.mrns.missingEgfr.push(String(obj.mrn));  // Convert mrn to string
         } else {
             // Evaluate eGFR and UACR values only if eGFR is present
-            if (egfrValue >= 90 && uacrValue > 30 && egfrDate >= rangeUp && egfrDate <= rangeDown && uacrDate >= rangeUp && uacrDate <= rangeDown) postData.ckdStage.g1 += 1;
-            else if (egfrValue >= 60 && uacrValue > 30 && egfrDate >= rangeUp && egfrDate <= rangeDown && uacrDate >= rangeUp && uacrDate <= rangeDown) postData.ckdStage.g2 += 1;
-            else if (egfrValue >= 45 && egfrValue < 60 && egfrDate >= rangeUp && egfrDate <= rangeDown) postData.ckdStage.g3a += 1;
-            else if (egfrValue >= 30 && egfrValue < 45 && egfrDate >= rangeUp && egfrDate <= rangeDown) postData.ckdStage.g3b += 1;
-            else if (egfrValue >= 15 && egfrValue < 30 && egfrDate >= rangeUp && egfrDate <= rangeDown) postData.ckdStage.g4 += 1;
-            else if (egfrValue < 15 && egfrDate >= rangeUp && egfrDate <= rangeDown) postData.ckdStage.g5 += 1;
-            else if (egfrValue >= 90 && egfrDate >= rangeUp && egfrDate <= rangeDown) postData.ckdStage.g1NoUacr += 1;
-            else if (egfrValue >= 60 && egfrDate >= rangeUp && egfrDate <= rangeDown) postData.ckdStage.g2NoUacr += 1;
+            if (egfrValue >= 90 && uacrValue > 30 && egfrDate >= rangeUp && egfrDate <= rangeDown && uacrDate >= rangeUp && uacrDate <= rangeDown) {
+                postData.ckdStage.g1 += 1;
+                postData.mrns.g1.push(String(obj.mrn));  // Convert mrn to string
+            } else if (egfrValue >= 60 && uacrValue > 30 && egfrDate >= rangeUp && egfrDate <= rangeDown && uacrDate >= rangeUp && uacrDate <= rangeDown) {
+                postData.ckdStage.g2 += 1;
+                postData.mrns.g2.push(String(obj.mrn));  // Convert mrn to string
+            } else if (egfrValue >= 45 && egfrValue < 60 && egfrDate >= rangeUp && egfrDate <= rangeDown) {
+                postData.ckdStage.g3a += 1;
+                postData.mrns.g3a.push(String(obj.mrn));  // Convert mrn to string
+            } else if (egfrValue >= 30 && egfrValue < 45 && egfrDate >= rangeUp && egfrDate <= rangeDown) {
+                postData.ckdStage.g3b += 1;
+                postData.mrns.g3b.push(String(obj.mrn));  // Convert mrn to string
+            } else if (egfrValue >= 15 && egfrValue < 30 && egfrDate >= rangeUp && egfrDate <= rangeDown) {
+                postData.ckdStage.g4 += 1;
+                postData.mrns.g4.push(String(obj.mrn));  // Convert mrn to string
+            } else if (egfrValue < 15 && egfrDate >= rangeUp && egfrDate <= rangeDown) {
+                postData.ckdStage.g5 += 1;
+                postData.mrns.g5.push(String(obj.mrn));  // Convert mrn to string
+            } else if (egfrValue >= 90 && egfrDate >= rangeUp && egfrDate <= rangeDown) {
+                postData.ckdStage.g1NoUacr += 1;
+                postData.mrns.g1NoUacr.push(String(obj.mrn));  // Convert mrn to string
+            } else if (egfrValue >= 60 && egfrDate >= rangeUp && egfrDate <= rangeDown) {
+                postData.ckdStage.g2NoUacr += 1;
+                postData.mrns.g2NoUacr.push(String(obj.mrn));  // Convert mrn to string
+            }
         }
-
     }
 
+    return postData;
+};
+
+
+export const functionOneFollowUpOnly = (data: PostFollowUpInterventionData[]): OutcomeMeasures => {
+    let postData: OutcomeMeasures = {
+        resultCategory: {},
+        ckdStage: {
+            g1: 0,
+            g2: 0,
+            g3a: 0,
+            g3b: 0,
+            g4: 0,
+            g5: 0,
+            g1NoUacr: 0,
+            g2NoUacr: 0,
+            missingEgfr: 0,
+        },
+        mrns: {
+            g1: [],
+            g2: [],
+            g3a: [],
+            g3b: [],
+            g4: [],
+            g5: [],
+            g1NoUacr: [],
+            g2NoUacr: [],
+            missingEgfr: [],
+        },
+    };
+
+    let under30yesEGFR = 0;
+
+    for (const obj of data) {
+        
+        // ckdStage
+        const egfrValue = obj.followUpEGFRValue;
+        const uacrValue = obj.followUpUACRValue;
+
+        // Check for missing eGFR value
+        if (egfrValue === null || egfrValue === undefined) {
+            postData.ckdStage.missingEgfr += 1;
+            postData.mrns.missingEgfr.push(String(obj.mrn)); // Convert mrn to string
+            // Check UACR < 30 even if eGFR is missing
+            if (uacrValue !== null && uacrValue !== undefined && uacrValue < 30) {
+                under30yesEGFR += 1;
+            }
+        } else {
+            // Evaluate eGFR and UACR values only if eGFR is present
+            if (egfrValue >= 90 && uacrValue > 30) {
+                postData.ckdStage.g1 += 1;
+                postData.mrns.g1.push(String(obj.mrn));
+            } else if (egfrValue >= 60 && uacrValue > 30) {
+                postData.ckdStage.g2 += 1;
+                postData.mrns.g2.push(String(obj.mrn));
+            } else if (egfrValue >= 45 && egfrValue < 60) {
+                postData.ckdStage.g3a += 1;
+                postData.mrns.g3a.push(String(obj.mrn));
+            } else if (egfrValue >= 30 && egfrValue < 45) {
+                postData.ckdStage.g3b += 1;
+                postData.mrns.g3b.push(String(obj.mrn));
+            } else if (egfrValue >= 15 && egfrValue < 30) {
+                postData.ckdStage.g4 += 1;
+                postData.mrns.g4.push(String(obj.mrn));
+            } else if (egfrValue < 15) {
+                postData.ckdStage.g5 += 1;
+                postData.mrns.g5.push(String(obj.mrn));
+            } else if (egfrValue >= 90) {
+                postData.ckdStage.g1NoUacr += 1;
+                postData.mrns.g1NoUacr.push(String(obj.mrn));
+            } else if (egfrValue >= 60) {
+                postData.ckdStage.g2NoUacr += 1;
+                postData.mrns.g2NoUacr.push(String(obj.mrn));
+            }
+        
+            // Check UACR < 30 when eGFR is present
+            if (uacrValue !== null && uacrValue !== undefined && uacrValue < 30) {
+                under30yesEGFR += 1;
+            }
+        }
+    }
     return postData;
 };
 
@@ -183,7 +292,9 @@ export const functionOne = (data: PostInterventionData[]): OutcomeMeasures => {
 // Function 2 - 
 // -----------------------------------------------------------------------------------------------------------------------------------------------
 
-export const functionOneFollowUp = (data: PostFollowUpInterventionData[]): OutcomeMeasuresFollowUp => {
+export const functionOneFollowUp = (
+    data: PostFollowUpInterventionData[]
+): { finalData: OutcomeMeasuresFollowUp; breReviewData: { bOne: number[]; bTwo: number[] } } => {
     let finalData: OutcomeMeasuresFollowUp = {
         followUpCompleted: 0,
         followUpCompletedNo: 0,
@@ -193,10 +304,15 @@ export const functionOneFollowUp = (data: PostFollowUpInterventionData[]): Outco
         followUpEGFRCompletedNo: 0,
         followUpBothCompleted: 0,
         followUpBothCompletedNo: 0,
-    }
+    };
+    
+    let breReviewData = {
+        bOne: [] as number[],
+        bTwo: [] as number[],
+    };
 
     for (const obj of data) {
-        const { followUpCompleted, followUpTestOrdered, followUpTestComplete, followUpEGFRValue, followUpUACRValue } = obj;
+        const { mrn, followUpCompleted, followUpTestOrdered, followUpTestComplete, followUpEGFRValue, followUpUACRValue } = obj;
 
         // Follow Up Scheduled and Completed VS follow up and cancel
         if (followUpCompleted === 'Yes') {
@@ -223,6 +339,30 @@ export const functionOneFollowUp = (data: PostFollowUpInterventionData[]): Outco
             }
         }
 
+        // Bre Review
+
+        if (followUpCompleted === 'Yes') {
+            // bOne
+            if (
+                followUpEGFRValue !== null &&
+                followUpEGFRValue !== undefined &&
+                (followUpUACRValue === null || followUpUACRValue === undefined)
+            ) {
+                breReviewData.bOne.push(mrn);
+            }
+
+            // bTwo
+            if (
+                followUpUACRValue !== null &&
+                followUpUACRValue !== undefined &&
+                (followUpEGFRValue === null || followUpEGFRValue === undefined)
+            ) {
+                breReviewData.bTwo.push(mrn);
+            }
+        }
+
+    
+
         // Follow Up Complete + EGFR + UACR    VS     Follow Up EGFR order and/or UACR but no result
         if (followUpCompleted === 'Yes') {
             if (followUpEGFRValue !== null && followUpEGFRValue !== undefined && followUpUACRValue !== null && followUpUACRValue !== undefined) {
@@ -233,7 +373,7 @@ export const functionOneFollowUp = (data: PostFollowUpInterventionData[]): Outco
         }
     }
 
-    return finalData;
+    return { finalData, breReviewData };
 };
 
 // -----------------------------------------------------------------------------------------------------------------------------------------------
@@ -773,8 +913,7 @@ export const medicationCountAnalysisFxNew = (medicationData: AllMedicationData[]
 // Function 1 - 
 // -----------------------------------------------------------------------------------------------------------------------------------------------
 
-export const functionThree = (data: PatientData[]): DemographicsOutcomes => {
-
+export const functionThree = (data: { [key: string]: PatientData }, kitReturnedCondition: 'all' | 'yes' | 'no'): DemographicsOutcomes => {
     let demographics: DemographicsOutcomes = {
         "diabetes only": 0,
         "hypertension only": 0,
@@ -784,30 +923,43 @@ export const functionThree = (data: PatientData[]): DemographicsOutcomes => {
         race: {},
         ethnicity: {},
         language: {},
-    }
+    };
 
-    for (const key in data) {
-        const obj = data[key];
+    // Convert the object of objects into an array of objects
+    const dataArray = Object.values(data);
 
-        // Health
+    // Filter data based on the kitReturnedCondition
+    const filteredData = dataArray.filter(obj => {
+        if (kitReturnedCondition === 'yes') {
+            return obj.kitReturned === true;
+        } else if (kitReturnedCondition === 'no') {
+            return obj.kitReturned === false;
+        }
+        return true; // 'all' condition, no filtering
+    });
+
+    // Iterate over the filtered data
+    for (const obj of filteredData) {
+        // Health conditions
         const healthConditions = obj.healthConditions;
 
         if (healthConditions['Both Hypertension and Diabetes'] === 'Yes') {
-            demographics['diabetes and hypertension'] ++;
+            demographics['diabetes and hypertension']++;
         } else if (healthConditions.Hypertension === 'Yes' && healthConditions.Diabetes === 'No') {
-            demographics['hypertension only'] ++;
+            demographics['hypertension only']++;
         } else if (healthConditions.Diabetes === 'Yes' && healthConditions.Hypertension === 'No') {
-            demographics['diabetes only'] ++;
-        } else if (healthConditions.Diabetes === 'No' && 
-                    healthConditions.Hypertension === 'No' &&
-                    healthConditions['Both Hypertension and Diabetes'] === 'No'
-                ) {
-            demographics['neither diabetes or hypertension'] ++;
+            demographics['diabetes only']++;
+        } else if (
+            healthConditions.Diabetes === 'No' &&
+            healthConditions.Hypertension === 'No' &&
+            healthConditions['Both Hypertension and Diabetes'] === 'No'
+        ) {
+            demographics['neither diabetes or hypertension']++;
         } else {
-            console.log("BP HTN ERROR: HTN:" + obj.healthConditions.Hypertension + "diabetes:" + obj.healthConditions.Diabetes)
+            console.log("BP HTN ERROR: HTN:" + obj.healthConditions.Hypertension + " diabetes:" + obj.healthConditions.Diabetes);
         }
 
-        // Demographics - gender, race, eth, language
+        // Demographics - gender, race, ethnicity, language
         const demo = obj.demographics;
 
         // Gender
@@ -821,10 +973,291 @@ export const functionThree = (data: PatientData[]): DemographicsOutcomes => {
 
         // Language
         demographics.language[demo.Language] = (demographics.language[demo.Language] || 0) + 1;
+    }
+
+    return demographics;
+};
+
+// -----------------------------------------------------------------------------------------------------------------------------------------------
+// A1-3 + healthy io and affinia test result confirmations Analysis 
+// -----------------------------------------------------------------------------------------------------------------------------------------------
+
+export const katelynTable = (data: PostInterventionData[]) => {
+    let finalData = {
+        abnormal: {
+            a1: 0,
+            a2: 0,
+            a3: 0
+        },
+        normal: {
+            a1: 0,
+            a2: 0,
+            a3: 0
+        },
+        highAbnormal: {
+            a1: 0,
+            a2: 0,
+            a3: 0
+        },
+        missingLabs: {
+            normal: 0,
+            abnormal: 0,
+            highAbnormal: 0
+        }
     };
 
-    return demographics
+    for (const obj of data) {
+        const { testResult, post_uacr } = obj;
+
+        if (post_uacr === null || post_uacr === undefined) {
+            // Increment the count in `missingLabs` based on `testResult`
+            if (testResult === "Normal") {
+                finalData.missingLabs.normal++;
+            } else if (testResult === "Abnormal") {
+                finalData.missingLabs.abnormal++;
+            } else if (testResult === "High Abnormal") {
+                finalData.missingLabs.highAbnormal++;
+            }
+            continue; // Skip further processing for this entry
+        }
+
+        // Determine the group based on `post_uacr`
+        let group: 'a1' | 'a2' | 'a3';
+        if (post_uacr < 3) {
+            group = 'a1';
+        } else if (post_uacr >= 3 && post_uacr <= 29) {
+            group = 'a2';
+        } else if (post_uacr > 29) {
+            group = 'a3';
+        } else {
+            continue; // If `post_uacr` is invalid, skip this entry
+        }
+
+        // Count into the respective result category
+        if (testResult === "Normal") {
+            finalData.normal[group]++;
+        } else if (testResult === "Abnormal") {
+            finalData.abnormal[group]++;
+        } else if (testResult === "High Abnormal") {
+            finalData.highAbnormal[group]++;
+        }
+    }
+
+    return finalData;
 };
+
+// -----------------------------------------------------------------------------------------------------------------------------------------------
+// V9.0 Additional Functions - Eth Completion vs non Complete
+// -----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+export const ethnicityFxCount = (data: PreInterventionData[]) => {
+    let finalData = {
+        returned: {} as Record<string, number>,
+        notReturned: {} as Record<string, number>,
+    };
+
+    for (const obj of data) {
+        const { ethnicity, kitReturned } = obj;
+
+        if (kitReturned) {
+            finalData.returned[ethnicity] = (finalData.returned[ethnicity] || 0) + 1;
+        } else if (kitReturned === false) {
+            finalData.notReturned[ethnicity] = (finalData.notReturned[ethnicity] || 0) + 1;
+        }
+    }
+    return finalData;
+};
+
+
+export const zipInsuranceAll = (
+    allZipInsurance: AllZipInsurance[],
+    testReturnedData: PreInterventionData[]
+) => {
+    // Initialize counters
+    const insuranceCount: { [key: string]: { true: number; false: number } } = {};
+    const zipCount: { [key: string]: { [zip: string]: number } } = { true: {}, false: {} };
+
+    // Count insurance classes and ZIP occurrences for kitReturned = true/false
+    for (const test of testReturnedData) {
+        const { mrn, kitReturned } = test;
+
+        // Convert boolean to string for indexing
+        const kitReturnedKey = kitReturned ? "true" : "false";
+
+        // Find corresponding insurance and zip from allZipInsurance
+        const matchingData = allZipInsurance.find(data => data.mrn === mrn);
+        if (matchingData) {
+            const { zip, insuranceClass } = matchingData;
+
+            // Count ZIPs separately for kitReturned = true/false
+            zipCount[kitReturnedKey][zip] = (zipCount[kitReturnedKey][zip] || 0) + 1;
+
+            // Count insurance classes for kitReturned true/false
+            if (!insuranceCount[insuranceClass]) {
+                insuranceCount[insuranceClass] = { true: 0, false: 0 };
+            }
+            insuranceCount[insuranceClass][kitReturnedKey]++;
+        }
+    }
+
+    // Get the top 5 ZIP codes for completed (true) and not completed (false) with counts
+    const topZipsWithCounts = {
+        true: Object.entries(zipCount["true"])
+            .sort(([, countA], [, countB]) => countB - countA) // Sort by count descending
+            .slice(0, 5) // Take the top 5
+            .map(([zip, count]) => ({ zip, count })), // Create objects with zip and count
+        false: Object.entries(zipCount["false"])
+            .sort(([, countA], [, countB]) => countB - countA) // Sort by count descending
+            .slice(0, 5) // Take the top 5
+            .map(([zip, count]) => ({ zip, count })), // Create objects with zip and count
+    };
+
+    return { insuranceCount, topZipsWithCounts };
+};
+
+
+export const tableV9 = (
+    testData: PostInterventionData[],
+    followUpData: PostFollowUpInterventionData[]
+) => {
+    let finalData = {
+        followUpComplete: 0,
+        abnormal: {
+            a1: 0,
+            a2: 0,
+            a3: 0,
+        },
+        normal: {
+            a1: 0,
+            a2: 0,
+            a3: 0,
+        },
+        highAbnormal: {
+            a1: 0,
+            a2: 0,
+            a3: 0,
+        },
+        missingLabs: {
+            normal: 0,
+            abnormal: 0,
+            highAbnormal: 0,
+        },
+        missingTestMrn: [] as string[], // MRNs without test results
+        review: [] as { mrn: string; followUpUACRValue: number }[], // MRNs to review
+    };
+
+    // Create a map from testData for quick lookup by `mrn`
+    const testDataMap = new Map(
+        testData.map(({ mrn, testResult }) => [mrn.toString(), { testResult }])
+    );
+
+    for (const followUp of followUpData) {
+        const { mrn, followUpCompleted, followUpUACRValue } = followUp;
+
+        // Process only if follow-up is completed
+        if (followUpCompleted !== 'Yes') {
+            continue;
+        }
+
+        // Increment the follow-up complete count
+        finalData.followUpComplete++;
+
+        const testEntry = testDataMap.get(mrn.toString());
+
+        if (!testEntry) {
+            // No test result found for this `mrn`
+            finalData.missingTestMrn.push(mrn.toString());
+            continue;
+        }
+
+        const { testResult } = testEntry;
+
+        if (followUpUACRValue === null || followUpUACRValue === undefined) {
+            // If `followUpUACRValue` is missing, increment the count in `missingLabs`
+            if (testResult === 'Normal') {
+                finalData.missingLabs.normal++;
+            } else if (testResult === 'Abnormal') {
+                finalData.missingLabs.abnormal++;
+            } else if (testResult === 'High Abnormal') {
+                finalData.missingLabs.highAbnormal++;
+            }
+            continue;
+        }
+
+        // Determine the group based on `followUpUACRValue`
+        let group: 'a1' | 'a2' | 'a3' | null = null;
+        if (followUpUACRValue < 3) {
+            group = 'a1';
+        } else if (followUpUACRValue >= 3 && followUpUACRValue <= 29) {
+            group = 'a2';
+        } else if (followUpUACRValue > 29) {
+            group = 'a3';
+        }
+
+        if (!group) {
+            // If `followUpUACRValue` does not fit any group, add to review list
+            finalData.review.push({ mrn: mrn.toString(), followUpUACRValue });
+            continue;
+        }
+
+        // Increment the respective group count based on `testResult`
+        if (testResult === 'Normal') {
+            finalData.normal[group]++;
+        } else if (testResult === 'Abnormal') {
+            finalData.abnormal[group]++;
+        } else if (testResult === 'High Abnormal') {
+            finalData.highAbnormal[group]++;
+        }
+    }
+
+    return finalData;
+};
+
+
+
+export const zipDistanceFx = (zipData: AllZipInsurance[], testData: PostInterventionData[]) => {
+    let finalData: {
+        [kitReturned: string]: {
+            resultCount: number;
+            milesCount: number;
+        };
+    } = {
+        yesReturned: {
+            resultCount: 0,
+            milesCount: 0,
+        },
+        noReturned: {
+            resultCount: 0,
+            milesCount: 0,
+        },
+    };
+
+    for (const obj of zipData) {
+        const { mrn, zipDistanceAffinia } = obj;
+
+        // Check if MRN exists in PostInterventionData
+        const mrnMatches = testData.filter((data) => data.mrn === mrn);
+
+        if (mrnMatches.length > 0) {
+            // If MRN exists, categorize as 'yesReturned'
+            for (const match of mrnMatches) {
+                const { testResult } = match;
+
+                finalData['yesReturned'].resultCount += testResult ? 1 : 0;
+                finalData['yesReturned'].milesCount += zipDistanceAffinia || 0;
+            }
+        } else {
+            // If MRN does not exist, categorize as 'noReturned'
+            finalData['noReturned'].resultCount += 1;
+            finalData['noReturned'].milesCount += zipDistanceAffinia || 0;
+        }
+    }
+
+    return finalData;
+};
+
+
 
 // -----------------------------------------------------------------------------------------------------------------------------------------------
 // Survey Monkey Analysis 

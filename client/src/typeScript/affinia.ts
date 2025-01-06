@@ -21,6 +21,14 @@ export interface AllMedicationData {
     medStopDate: string,
 };
 
+export interface AllZipInsurance {
+    mrn: number,
+    zip: string,
+    zipDistanceAffinia: number,
+    insuranceClass: string,
+    insurancePayerType: string,
+};
+
 // --------------------------------
 // RAW Pre Intervention 
 // --------------------------------
@@ -154,20 +162,33 @@ export interface HealthConditions {
 // --------------------------------
 
 export interface OutcomeMeasures {
-    resultCategory: Record<string, number>,
+    resultCategory: Record<string, number>;
     ckdStage: CKDStage;
-};
+    mrns: CKDMrns;
+}
 
 export interface CKDStage {
-    g1: 0,
-    g2: 0,
-    g3a: 0,
-    g3b: 0,
-    g4: 0,
-    g5: 0,
-    g1NoUacr: 0,
-    g2NoUacr: 0,
-    missingEgfr: 0,
+    g1: number;
+    g2: number;
+    g3a: number;
+    g3b: number;
+    g4: number;
+    g5: number;
+    g1NoUacr: number;
+    g2NoUacr: number;
+    missingEgfr: number;
+}
+
+export interface CKDMrns {
+    g1: string[];
+    g2: string[];
+    g3a: string[];
+    g3b: string[];
+    g4: string[];
+    g5: string[];
+    g1NoUacr: string[];
+    g2NoUacr: string[];
+    missingEgfr: string[];
 }
 
 export interface OutcomeMeasuresFollowUp {

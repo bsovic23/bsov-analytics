@@ -56,7 +56,6 @@ export const wildApricotMemberLapseFx = (
             "Last name": lastName,
             "Email": email,
             "Phone": phone,
-            "Professional Category": professionalCategory,
             "Membership enabled": membershipEnabled,
             "Membership level": membershipLevel,
             "Membership status": membershipStatus,
@@ -80,7 +79,6 @@ export const wildApricotMemberLapseFx = (
                 lastName: lastName,
                 email: email,
                 phone: phone,
-                professionalCategory: professionalCategory,
                 membershipEnabled: membershipEnabled,
                 membershipLevel: membershipLevel,
                 membershipStatus: membershipStatus,
@@ -98,121 +96,104 @@ export const wildApricotMemberLapseFx = (
 // Wild Apricot Analysis
 // =======================================================================================================================================
 
-export const wildApricotFiscalYearAnalysis = (data: WildApricotData[]) => {
-    let finalData: Record<string, any> = {
-        total: {
-            memberActiveByYear: {
-                FY21: 0,
-                FY22: 0,
-                FY23: 0,
-                FY24: 0,
-                FY25: 0
+export const activeFyFx = (data: WildApricotData[]) => {
+    const updatedData = data.map((item) => {
+        return {
+            ...item,
+            fiscalYears: {
+                fy21: false,
+                fy22: false,
+                fy23: false,
+                fy24: false,
+                fy25: false,
             },
-            memberJoinedYear: {
-                FY21: 0,
-                FY22: 0,
-                FY23: 0,
-                FY24: 0,
-                FY25: 0
-            },
-            lapsedYear: {
-                FY21: 0,
-                FY22: 0,
-                FY23: 0,
-                FY24: 0,
-                FY25: 0
-            },
-        }
+        };
+    });
+
+    const fiscalYearRanges = {
+        fy21: { start: new Date("April 1, 2020"), end: new Date("March 31, 2021") },
+        fy22: { start: new Date("April 1, 2021"), end: new Date("March 31, 2022") },
+        fy23: { start: new Date("April 1, 2022"), end: new Date("March 31, 2023") },
+        fy24: { start: new Date("April 1, 2023"), end: new Date("March 31, 2024") },
+        fy25: { start: new Date("April 1, 2024"), end: new Date("March 31, 2025") },
     };
 
-    const getFiscalYear = (date: Date): keyof typeof finalData['total']['memberActiveByYear'] | undefined => {
-        const year = date.getFullYear();
-        const month = date.getMonth() + 1; // getMonth() returns 0-based month, so adding 1
-
-        if (year === 2020 && month >= 5 || year === 2021 && month <= 4) return 'FY21';
-        if (year === 2021 && month >= 5 || year === 2022 && month <= 4) return 'FY22';
-        if (year === 2022 && month >= 5 || year === 2023 && month <= 4) return 'FY23';
-        if (year === 2023 && month >= 5 || year === 2024 && month <= 4) return 'FY24';
-        if (year === 2024 && month >= 5) return 'FY25';
-        return undefined;
+    const normalizeLevel = (level: string): string => {
+        return level.replace(/ - 2 Yr$/, "");
     };
 
-    for (const obj of data) {
-        const { 
-            "Professional Category": professionalCategory,
+    for (const obj of updatedData) {
+        const {
+            "Membership level": membershipLevel,
             "Membership status": membershipStatus,
             "Member since": memberSince,
             "Renewal due": renewalDue,
         } = obj;
 
-        // Parse dates
         const memberSinceDate = new Date(memberSince);
-        const renewalDueDate = renewalDue ? new Date(renewalDue) : null;
+        const renewalDueDate = new Date(renewalDue);
 
-        // Ensure there's a category for this professionalCategory in finalData
-        if (!finalData[professionalCategory]) {
-            finalData[professionalCategory] = {
-                memberActiveByYear: {
-                    FY21: 0,
-                    FY22: 0,
-                    FY23: 0,
-                    FY24: 0,
-                    FY25: 0
-                },
-                memberJoinedYear: {
-                    FY21: 0,
-                    FY22: 0,
-                    FY23: 0,
-                    FY24: 0,
-                    FY25: 0
-                },
-                lapsedYear: {
-                    FY21: 0,
-                    FY22: 0,
-                    FY23: 0,
-                    FY24: 0,
-                    FY25: 0
-                }
-            };
-        }
-
-        // Member Joined Year
-        const joinedFiscalYear = getFiscalYear(memberSinceDate);
-        if (joinedFiscalYear) {
-            finalData.total.memberJoinedYear[joinedFiscalYear]++;
-            finalData[professionalCategory].memberJoinedYear[joinedFiscalYear]++;
-        }
-
-        // Member Active By Year
-        if (membershipStatus === 'Active') {
-            for (let year = memberSinceDate.getFullYear(); year <= 2025; year++) {
-                const activeFiscalYear = getFiscalYear(new Date(year, memberSinceDate.getMonth(), memberSinceDate.getDate()));
-                if (activeFiscalYear) {
-                    finalData.total.memberActiveByYear[activeFiscalYear]++;
-                    finalData[professionalCategory].memberActiveByYear[activeFiscalYear]++;
+        // Active Membership Status
+        if (membershipStatus === "Active") {
+            for (const [year, range] of Object.entries(fiscalYearRanges)) {
+                const { start, end } = range;
+                if (memberSinceDate <= end) {
+                    obj.fiscalYears[year as keyof typeof obj.fiscalYears] = true;
                 }
             }
         }
 
-        // Lapsed Year (only if more than 1 year has passed since renewalDueDate)
-        if (membershipStatus === 'Lapsed' && renewalDueDate) {
-            const today = new Date('2024-10-27');
-            const oneYearAgo = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
-
-            // Only count as lapsed if renewalDueDate was more than one year ago
-            if (renewalDueDate <= oneYearAgo) {
-                const lapsedFiscalYear = getFiscalYear(renewalDueDate);
-                if (lapsedFiscalYear) {
-                    finalData.total.lapsedYear[lapsedFiscalYear]++;
-                    finalData[professionalCategory].lapsedYear[lapsedFiscalYear]++;
+        // Lapsed/Inactive Membership Status
+        if (membershipStatus !== "Active") {
+            for (const [year, range] of Object.entries(fiscalYearRanges)) {
+                const { start, end } = range;
+                if (
+                    (memberSinceDate <= end && renewalDueDate >= start) || // Membership period overlaps FY
+                    (memberSinceDate >= start && memberSinceDate <= end)   // MemberSince falls within FY
+                ) {
+                    obj.fiscalYears[year as keyof typeof obj.fiscalYears] = true;
                 }
             }
         }
     }
 
-    return finalData;
-};
+    // Count true values for each fiscal year
+    const fiscalYearCounts: Record<keyof typeof fiscalYearRanges, number> = {
+        fy21: 0,
+        fy22: 0,
+        fy23: 0,
+        fy24: 0,
+        fy25: 0,
+    };
 
+    // Counts per fiscal year per professional level
+    const fiscalYearLevelCounts: Record<keyof typeof fiscalYearRanges, Record<string, number>> = {
+        fy21: {},
+        fy22: {},
+        fy23: {},
+        fy24: {},
+        fy25: {},
+    };
+
+    updatedData.forEach((item) => {
+        for (const [year, value] of Object.entries(item.fiscalYears)) {
+            if (value === true) {
+                fiscalYearCounts[year as keyof typeof fiscalYearCounts]++;
+
+                const level = normalizeLevel(item["Membership level"]);
+                const levelCounts = fiscalYearLevelCounts[year as keyof typeof fiscalYearLevelCounts];
+
+                if (level) {
+
+                    
+                    levelCounts[level] = (levelCounts[level] || 0) + 1;
+                }
+            }
+        }
+    });
+
+    return { fiscalYearCounts, fiscalYearLevelCounts };
+};
 
 // Retention Rate
 
@@ -226,11 +207,12 @@ export function calculateFiscalYearRetention(data: WildApricotData[], fiscalYear
         const year = date.getFullYear();
         const month = date.getMonth() + 1; // getMonth() returns 0-based month
 
-        if (year === 2020 && month >= 5 || year === 2021 && month <= 4) return 'FY21';
-        if (year === 2021 && month >= 5 || year === 2022 && month <= 4) return 'FY22';
-        if (year === 2022 && month >= 5 || year === 2023 && month <= 4) return 'FY23';
-        if (year === 2023 && month >= 5 || year === 2024 && month <= 4) return 'FY24';
-        if (year === 2024 && month >= 5) return 'FY25';
+        if (year === 2019 && month >= 4 || year === 2020 && month <= 3) return 'FY20';
+        if (year === 2020 && month >= 4 || year === 2021 && month <= 3) return 'FY21';
+        if (year === 2021 && month >= 4 || year === 2022 && month <= 3) return 'FY22';
+        if (year === 2022 && month >= 4 || year === 2023 && month <= 3) return 'FY23';
+        if (year === 2023 && month >= 4 || year === 2024 && month <= 3) return 'FY24';
+        if (year === 2024 && month >= 4) return 'FY25';
         return undefined;
     };
 
@@ -258,6 +240,84 @@ export function calculateFiscalYearRetention(data: WildApricotData[], fiscalYear
 }
 
 
+// NEW Active Memeber 
+
+export const activeMemberNewFx = (data: WildApricotData[]) => {
+    // Helper function to determine fiscal year
+    const getFiscalYear = (dateStr: string): string | null => {
+        const date = new Date(dateStr);
+        const year = date.getUTCFullYear();
+        const month = date.getUTCMonth() + 1; // Month is 0-indexed
+
+        if ((year === 2020 && month >= 4) || (year === 2021 && month <= 3)) return 'FY21';
+        if ((year === 2021 && month >= 4) || (year === 2022 && month <= 3)) return 'FY22';
+        if ((year === 2022 && month >= 4) || (year === 2023 && month <= 3)) return 'FY23';
+        if ((year === 2023 && month >= 4) || (year === 2024 && month <= 3)) return 'FY24';
+        if ((year === 2024 && month >= 4) || (year === 2025 && month <= 3)) return 'FY25';
+        return null; // If date doesn't fall within any FY
+    };
+
+    // Initialize data structures
+    const totals: { [fy: string]: number } = {};
+    const membershipBreakdown: { [membershipLevel: string]: { [fy: string]: number } } = {};
+
+    // Iterate through data
+    for (const obj of data) {
+        const {
+            "Membership level": membershipLevel,
+            "Membership status": membershipStatus,
+            "Member since": memberSince,
+        } = obj;
+
+        const fy = getFiscalYear(memberSince);
+        if (!fy) continue; // Skip if no fiscal year is found
+
+        // Normalize membership levels (merge " - 2 Yr" into base levels)
+        const normalizedMembershipLevel = membershipLevel?.replace(" - 2 Yr", "");
+
+        // Increment total count for the fiscal year
+        totals[fy] = (totals[fy] || 0) + 1;
+
+        // Increment membership level-specific count for the fiscal year
+        if (normalizedMembershipLevel) {
+            if (!membershipBreakdown[normalizedMembershipLevel]) {
+                membershipBreakdown[normalizedMembershipLevel] = {};
+            }
+            membershipBreakdown[normalizedMembershipLevel][fy] =
+                (membershipBreakdown[normalizedMembershipLevel][fy] || 0) + 1;
+        }
+    }
+
+    // Function to sort fiscal years
+    const sortFiscalYears = (obj: { [fy: string]: number }) => {
+        const ordered: { [fy: string]: number } = {};
+        Object.keys(obj)
+            .sort() // Sort fiscal years alphabetically (FY20, FY21, etc.)
+            .forEach((key) => {
+                ordered[key] = obj[key];
+            });
+        return ordered;
+    };
+
+    // Sort totals
+    const sortedTotals = sortFiscalYears(totals);
+
+    // Sort membership breakdown
+    const sortedMembershipBreakdown: { [membershipLevel: string]: { [fy: string]: number } } = {};
+    for (const [membershipLevel, fyData] of Object.entries(membershipBreakdown)) {
+        sortedMembershipBreakdown[membershipLevel] = sortFiscalYears(fyData);
+    }
+
+    // Return the sorted final aggregated data
+    return { totals: sortedTotals, membershipBreakdown: sortedMembershipBreakdown };
+};
+
+// New Lapsed Member Count
+
+export const lapsedMemberNewFx = (data: WildApricotData[]) => {
+
+};
+
 // WILD APRICOT Last Clicked
 
 export const newFunctions = (data: WildApricotData[]) => {
@@ -284,12 +344,12 @@ export const newFunctions = (data: WildApricotData[]) => {
 
     for (const obj of data) {
         const { 
-            "Professional Category": professionalCategory, 
+            "Membership level": membershipLevel, 
             "Last login": lastLogin
         } = obj;
 
         // Count paid vs. non-paid memberships
-        if (professionalCategory === "Student" || professionalCategory === "Fellow" || professionalCategory === "Resident") {
+        if (membershipLevel === "Student" || membershipLevel === "Fellow" || membershipLevel === "Resident") {
             finalData.nonPaidMemberships++;
         } else {
             finalData.paidMemberships++;
@@ -313,10 +373,10 @@ export const newFunctions = (data: WildApricotData[]) => {
 
 export const quarterAnalysis = (data: WildApricotData[]) => {
     let finalData = {
-        'Q1 (Jan-Mar)': 0,
-        'Q2 (Apr-Jun)': 0,
-        'Q3 (Jul-Sep)': 0,
-        'Q4 (Oct-Dec)': 0,
+        'Q1 (Apr-Jun)': 0,
+        'Q2 (Jul-Sept)': 0,
+        'Q3 (Oct-Dec)': 0,
+        'Q4 (Jan-Mar)': 0,
     };
 
     for (const obj of data) {
@@ -330,18 +390,243 @@ export const quarterAnalysis = (data: WildApricotData[]) => {
         const month = memberSinceDate.getMonth() + 1; // Months are 0-based, so +1
 
         // Only count if the year is 2024
-        if (year === 2024) {
-            if (month >= 1 && month <= 3) {
-                finalData['Q1 (Jan-Mar)'] += 1;
-            } else if (month >= 4 && month <= 6) {
-                finalData['Q2 (Apr-Jun)'] += 1;
-            } else if (month >= 7 && month <= 9) {
-                finalData['Q3 (Jul-Sep)'] += 1;
-            } else if (month >= 10 && month <= 12) {
-                finalData['Q4 (Oct-Dec)'] += 1;
+        if (year === 2024 || year === 2025) {
+            if (month >= 4  && month <= 6 && year === 2024) {
+                finalData['Q1 (Apr-Jun)'] += 1;
+            } else if (month >= 7 && month <= 9 && year === 2024) {
+                finalData['Q2 (Jul-Sept)'] += 1;
+            } else if (month >= 10 && month <= 12 && year === 2024) {
+                finalData['Q3 (Oct-Dec)'] += 1;
+            } else if (month >= 1 && month <= 3 && year === 2025) {
+                finalData['Q4 (Jan-Mar)'] += 1;
+            } else {
+                console.log("error" + memberSinceDate)
             }
         }
     }
 
     return finalData;
 }
+
+// Active Members Over Last 24 Months
+
+export const activeMemberByMonth = (data: WildApricotData[]) => {
+    let finalData: { [key: string]: number } = {};
+
+    const startPeriod = new Date("01/01/2023");
+    const endPeriod = new Date("11/30/2024");
+    const today = new Date("12/10/2024");
+
+    // Generate an array of months between startPeriod and endPeriod
+    const getMonthsArray = (start: Date, end: Date): string[] => {
+        const months = [];
+        let current = new Date(start);
+        current.setDate(1); // Set to the first of the month
+
+        while (current <= end) {
+            const yearMonth = `${current.getFullYear()}-${String(current.getMonth() + 1).padStart(2, "0")}`;
+            months.push(yearMonth);
+            current.setMonth(current.getMonth() + 1); // Move to the next month
+        }
+        return months;
+    };
+
+    const monthsArray = getMonthsArray(startPeriod, endPeriod);
+
+    // Initialize finalData with each month and a count of 0
+    for (const month of monthsArray) {
+        finalData[month] = 0;
+    }
+
+    // Calculate active members for each month
+    for (const obj of data) {
+        const {
+            "Membership level": membershipLevel,
+            "Member since": memberSince,
+            "Renewal due": renewalDue,
+            "Membership status": memberStatus,
+        } = obj;
+
+        const memberStart = new Date(memberSince);
+        const memberEnd =
+            memberStatus === "Active"
+                ? today // Active members are active up to today
+                : new Date(renewalDue);
+
+        // Iterate through the months and check for overlap
+        for (const month of monthsArray) {
+            const [year, monthIndex] = month.split("-");
+            const monthStart = new Date(parseInt(year), parseInt(monthIndex) - 1, 1);
+            const monthEnd = new Date(parseInt(year), parseInt(monthIndex), 0); // Last day of the month
+
+            // Check if the member is active during the month
+            if (memberStart <= monthEnd && memberEnd >= monthStart) {
+                finalData[month]++;
+            }
+        }
+    }
+
+    return finalData;
+};
+
+// Top State active members
+
+export const activeMemberByState = (data: WildApricotData[]) => {
+    let finalData: { [ key: string ]: number } = {};
+
+    for (const obj of data) {
+        const {
+         "Membership status": membershipStatus,
+         "State/Province": state,
+         "Country": country,
+         } = obj;
+
+        if (membershipStatus === 'Active' && country === 'United States') {
+            finalData[state] = (finalData[state] || 0 ) + 1;
+        }
+    }
+
+    const sortedStates = Object.entries(finalData).sort((a, b) => b[1] - a[1]);
+
+    const topFiveStates = sortedStates.slice(0,5);
+
+    return {
+        finalData,
+        topFiveStates,
+    }
+};
+
+// Subscription Source
+
+export const subscriptionSourceFx = (data: WildApricotData[]) => {
+    let finalData: { [key: string]: number } = {};
+
+    for (const obj of data) {
+        const {
+            "How did you learn about NKF Professional Membership?": nkfSource,
+            "Membership status": membershipStatus,
+        } = obj;
+
+        if (nkfSource) {
+            // Split the nkfSource string by commas and process each source
+            const sources = nkfSource.split(',').map(source => source.trim());
+            for (const source of sources) {
+                // Increment count for source
+                finalData[source] = (finalData[source] || 0) + 1;
+
+                // If the membership is active, increment active count
+                if (membershipStatus === "Active") {
+                    const activeKey = `active_${source}`;
+                    finalData[activeKey] = (finalData[activeKey] || 0) + 1;
+
+                }
+            }
+        }
+    }
+
+    return finalData;
+};
+
+// Age Analysis
+export const ageAnalysisFx = (data: WildApricotData[]) => {
+    const ages: number[] = [];
+    const currentYear = new Date().getFullYear();
+
+    // Extract ages from the dataset
+    for (const obj of data) {
+        const dob = obj["Date of Birth"];
+        if (dob) {
+            const birthYear = new Date(dob).getFullYear();
+            const age = currentYear - birthYear;
+            ages.push(age);
+        }
+    }
+
+    // Sort ages for range and median calculation
+    ages.sort((a, b) => a - b);
+
+    // Calculate range
+    const range = ages.length > 0 ? ages[ages.length - 1] - ages[0] : 0;
+
+    // Calculate mean
+    const total = ages.reduce((sum, age) => sum + age, 0);
+    const mean = ages.length > 0 ? total / ages.length : 0;
+
+    // Calculate median
+    const mid = Math.floor(ages.length / 2);
+    const median =
+        ages.length % 2 === 0
+            ? (ages[mid - 1] + ages[mid]) / 2
+            : ages[mid];
+
+    // Calculate mode
+    const frequencyMap: Record<number, number> = {};
+    for (const age of ages) {
+        frequencyMap[age] = (frequencyMap[age] || 0) + 1;
+    }
+    const maxFrequency = Math.max(...Object.values(frequencyMap));
+    const modes = Object.keys(frequencyMap)
+        .filter((key) => frequencyMap[+key] === maxFrequency)
+        .map(Number);
+
+    return {
+        range,
+        mean: +mean.toFixed(2), // Optional: rounding to 2 decimal places
+        median,
+        mode: modes, // Return all modes if there's a tie
+    };
+};
+
+
+// Add on analysis
+
+export const addOnAnalysisFx = (data: WildApricotData[]) => {
+    let finalData: {
+        [addOnType: string]: number;
+    } = {};
+
+    for (const obj of data) {
+        const {
+            "Add-On E-Subscription to NKF Journals": nkfJournal,
+            "Add-On E-Subscription to NKF Journals 2 Year": nkfJournal2Year,
+            "Add-On Print Subscription to Advances in Kidney Disease and Health (AKDH) - RN/PHYS": advanceRn,
+            "Add-On Print Subscription to Advances in Kidney Disease and Health (AKDH) - RN/PHYS 2 Year": advanceRn2Year,
+            "Add-On Print Subscription to Advances in Kidney Disease and Health (AKDH)": advance,
+            "Add-On Print Subscription to Advances in Kidney Disease and Health (AKDH) 2 Year": advance2Year,
+            "Add-On Print Subscription to American Journal of Kidney Diseases (AJKD)": americanJournal,
+            "Add-On Print Subscription to American Journal of Kidney Diseases (AJKD) 2 Year": americanJournal2Year,
+            "Add-On Print Subscription to Journal of Renal Nutrition": renalNutrition,
+            "Add-On Print Subscription to Journal of Renal Nutrition 2 Year": renalNutrition2Year,
+            "Add-On International Society of Nutrition and Metabolism (ISRNM) Membership - Physician": nutritionPhy,
+            "Add-On International Society of Nutrition and Metabolism (ISRNM) Membership - Physician 2 Year": nutritionPhy2Year,
+            "Add-On International Society of Nutrition and Metabolism (ISRNM) Membership - Dietitian": nutritionDiet,
+            "Add-On International Society of Nutrition and Metabolism (ISRNM) Membership - Dietitian 2 Year": nutritionDiet2Year,
+        } = obj;
+
+        const addOns = {
+            nkfJournal,
+            nkfJournal2Year,
+            advanceRn,
+            advanceRn2Year,
+            advance,
+            advance2Year,
+            americanJournal,
+            americanJournal2Year,
+            renalNutrition,
+            renalNutrition2Year,
+            nutritionPhy,
+            nutritionPhy2Year,
+            nutritionDiet,
+            nutritionDiet2Year,
+        };
+
+        for (const [addOnType, value] of Object.entries(addOns)) {
+            if (value) {
+                // Increment the count for the add-on type
+                finalData[addOnType] = (finalData[addOnType] || 0) + 1;
+            }
+        }
+    }
+
+    return finalData;
+};

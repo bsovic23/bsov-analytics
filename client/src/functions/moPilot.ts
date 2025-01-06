@@ -456,3 +456,26 @@ export const moSiteDemographicsFx = (initialData: MoPilotInitial[]) => {
 
     return siteDemData;
 };
+
+
+// ------------- Abnormal vs Normal Results By Site ----------- //
+
+export const moSiteLabs = (data: MoPilotFollowUp[]) => {
+    let finalData: { [site: string]: { yes: number, no: number }} = {};
+
+    for (const obj of data) {
+        const { location, labResultsOutsideRange } = obj;
+
+        if (!finalData[location]) {
+            finalData[location] = { yes: 0, no: 0 };
+        }
+
+        if (labResultsOutsideRange === 'Yes') {
+            finalData[location].yes += 1;
+        } else if (labResultsOutsideRange === 'No') {
+            finalData[location].no += 1;
+        }
+    }
+
+    return finalData;
+};

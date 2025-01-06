@@ -1,35 +1,34 @@
 import { utils, writeFile } from 'xlsx';
 
 const GenerateExcelFileGeneral = ({ generalData }) => {
-
   if (generalData.length === 0) {
     console.error('generalData is empty. Cannot generate Excel file.');
     return;
   }
 
-  // Extract column headers from the first item in generalData
-  const columnHeaders = Object.keys(generalData[0]);
-
-  // Create an array to store the Excel-friendly data
-  const excelData = [columnHeaders]; // Initialize with the headers
-
-  // Loop through the generalData to extract data rows
-  for (const item of generalData) {
-    const rowData = columnHeaders.map((header) => {
-      const value = item[header];
+  // Process `generalData` to ensure array values are converted to strings
+  const processedData = generalData.map((item) => {
+    const processedItem = {};
+    for (const key in item) {
+      const value = item[key];
       if (Array.isArray(value)) {
         // If the value is an array, join its elements with a comma
-        return value.join(', ');
+        processedItem[key] = value.join(', ');
       } else {
-        return value;
+        processedItem[key] = value;
       }
-    });
-    excelData.push(rowData);
-  }
+    }
+    return processedItem;
+  });
 
-  const ws = utils.json_to_sheet(excelData);
+  // Convert the processed data to a worksheet
+  const ws = utils.json_to_sheet(processedData);
+
+  // Create a new workbook and append the worksheet
   const wb = utils.book_new();
   utils.book_append_sheet(wb, ws, 'ExcelFile');
+
+  // Write the workbook to a file
   writeFile(wb, 'excel_file.xlsx');
 };
 

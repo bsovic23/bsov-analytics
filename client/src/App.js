@@ -16,6 +16,7 @@ import Membership from './pages/Membership';
 import MoPilot from './pages/moPilot';
 import ProjectEcho from './pages/ProjectEcho';
 import BsovAnalytics from './pages/BsovAnalytics';
+import PatientPortal from './pages/PatientPortal';
 
 // Bsov Analytics
 import DataBot from './pages/BsovAnalyticsPages/DataBot';
@@ -41,6 +42,7 @@ const routes = [
   {path: "/MoPilot", element: <MoPilot />},
   {path: "/ProjectEcho", element: <ProjectEcho />},
   {path: "/BsovAnalytics", element: <BsovAnalytics />},
+  {path: "/PatientPortal", element: <PatientPortal />},
   // Bsov Analytics
   {path: "/DataBot", element: <DataBot />},
   {path: "/NkfAnalyticsPage", element: <NkfAnalyticsPage />},
