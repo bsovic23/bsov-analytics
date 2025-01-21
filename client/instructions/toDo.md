@@ -7,7 +7,6 @@ To Do
 * Affinia Data Sheet Updates
     - Analysis Methods Updates if Megan/Katelyn send back needing feedback
     - Bre MRN Emails [] Email 1    [] Email 2
-    - Katelyn G1 - G5 and A1-3 Heat map analysis ![alt text](image.png)
     - Potentially doing the payer type analysis if katelyn says can emial affinia for payer information
 
     **** ONES THAT DID NOT HAVE A UACR RESULT (2 LISTS, 68 AND 91??)

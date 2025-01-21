@@ -80,13 +80,30 @@ V5.0 -> Meeting January 8th 2025: Discuss the updates / changes made below (alon
 * KDQOL and EQ5D5L run QAQC on the scores to see if they are accurate or not accurate (and if not accurate what variables are causing issues)
 
 -----------------------------
-4. Sandy Additional Questions For Meeting 1/5/2025
+4. To Do
 -----------------------------
 
+- Data Rule Chance Guide that I made (is format correct / columns)
+
 - I rename variables with a prefix / shorter variable name for my benefit (I know what form the variable from, short and sweet variables)
-    [] Keep my way
-    [] keep prefix but have the old variable name ex:  reg_REGISTRATION_FIRST_NAME rather than reg_firstName
-    [] Go back to the old variable name
+    [x] Keep my way prefix + camelCasing: core_bloodCreatinineUnit
+    [] keep prefix but have the old variable name ex: core_WHAT_IS_THE_UNIT_USED_IN_THE_BLOOD_CREATININE_TEST_RESULT
+    [] Go back to the old variable name: WHAT_IS_THE_UNIT_USED_IN_THE_BLOOD_CREATININE_TEST_RESULT
 
 - Do you have the stat numbers for completion ? I would like to compare vs my stats, I know they may not be exact
 since yours might be delayed, but i just want to make sure im in the realm to ensure theres no code issue on my end
+        Will get the numbers via the downloads Sandy sends
+
+- Send top 50 list (non-lab value variables) of all 'changed variables' to review for rules
+    * Meeting with Sandy (include the counts of how often the 'change' is happening) and include rule change logic
+
+Current Combo Versions:
+1. Raw No Rule, Combo Data
+2. Combo Data, with rules cleaned up
+3. Combo Data but just one core survey that uses all of the rules so it represents 'baseline demographics'
+    - core survey questions that are supposed to change pulled out and similar to eq5d5l will be 'lab values'
+
+4. CREATE also a dataset that can be used for the interactive dashboard built
+
+* Map + Charts/stats will be available next week if you need another up to date dataset by like Friday
+

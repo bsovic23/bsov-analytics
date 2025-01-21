@@ -6,7 +6,7 @@ import GenerateExcelFileGeneral from '../components/GenerateExcelFileGeneral';
 
 // Function Imports
 import { 
-    // Duplicate Cleaning Fx
+    // Duplicate Identification Fx
     dupsFx,
 
     // Clean Up Surveys Pre Combo
@@ -16,17 +16,12 @@ import {
     eq5d5lSurveyFxUpdate,
     kdqolSurveyFxUpdate,
 
+    // Identify High Changing Core Survey Variables
+    coreSurveyVariableCountFx,
+
     // Combine Cleaned Up Surveys
-    patientPortalCombo,
     patientPortalComboNew,
 
-    // Clean up new
-    combineRegistrationAndICF,
-    combineSurveys,
-    mergeBySurveyTime,
-
-    // rule function
-    coreSurveyFx,
 } from '../functions/patientPortalFx';
 
 // Data Imports
@@ -54,7 +49,7 @@ const PatientPortal = () => {
 
     // ----- Page Variables
     
-    const title = 'Sandra Patient Portal';
+    const title = 'KIDNEYcare: Patient Portal';
 
     // Duplicate Cleaning
     const [data1, setData1] = useState((registrationData !== 'No data found') ? (dupsFx(registrationData)) : 'No registration data found');
@@ -70,7 +65,7 @@ const PatientPortal = () => {
     const [kdqolUpdate, setKdqollUpdate] = useState((kdqolData !== 'No data found') ? (kdqolSurveyFxUpdate(kdqolData)) : 'No eq5d5l data found');
 
     // Rule figure out variable function
-    const [variableRules, setVariableRules] = useState((coreSurveyData !== 'No data found') ? (coreSurveyFx(coreSurveyData)) : 'No eq5d5l data found');
+    const [variableRules, setVariableRules] = useState((coreSurveyData !== 'No data found') ? (coreSurveyVariableCountFx(coreSurveyData)) : 'No eq5d5l data found');
 
     // CombinationData
     

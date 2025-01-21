@@ -1,24 +1,17 @@
 // Functions
 
 import {
-    // Data Imports
+    // TypeScript Data Structure Imports
     Registration,
     InformedConsent,
     CoreSurvey,
     EQ5D5L,
     KDQOL,
-
-    // Cleaned NKF Combo Dataset
-    // NkfCleanData,
 } from '../typeScript/patientPortal';
 
 // ======================================================================================================================================
-//
-// ======================================================================================================================================
-
-// --------------------------------------------
 // Function 1 - Duplicates Function
-// --------------------------------------------
+// ======================================================================================================================================
 
 export const dupsFx = (data: { id: string | number }[]): Record<string | number, number> => {
     const dups: Record<string | number, number> = {};
@@ -42,9 +35,9 @@ export const dupsFx = (data: { id: string | number }[]): Record<string | number,
     return dups;
 };
 
-// --------------------------------------------
+// ======================================================================================================================================
 // Function 2 - Update Surveys with additional Variables
-// --------------------------------------------
+// ======================================================================================================================================
 
 const fiscalYears = {
     FY24: { start: new Date("April 1, 2023"), end: new Date("May 30, 2024") },
@@ -132,9 +125,71 @@ export const kdqolSurveyFxUpdate = (data: KDQOL[]): KDQOL[] => {
     return kdqolSurveyDataNew;
 }
 
-// --------------------------------------------
-// Function 3 - Combine Surveys
-// --------------------------------------------
+// ======================================================================================================================================
+// Function 3 - Determining which Core Survey Variables are changing the most for each person
+// ======================================================================================================================================
+
+export const coreSurveyVariableCountFx = (data: CoreSurvey[]) => {
+  // Step 1: Group surveys by ID
+  const groupedById: Record<string, CoreSurvey[]> = {};
+
+  data.forEach((survey) => {
+    if (!groupedById[survey.id]) groupedById[survey.id] = [];
+    groupedById[survey.id].push(survey);
+  });
+
+  // Step 2: Filter IDs with more than one survey
+  const filteredIds = Object.keys(groupedById).filter(
+    (id) => groupedById[id].length > 1
+  );
+
+  // Step 3: Initialize a tracker for variable changes
+  const changeTracker: Record<string, number> = {};
+
+  // Step 4: Compare all surveys for each ID
+  filteredIds.forEach((id) => {
+    const surveys = groupedById[id];
+
+    // Compare each pair of surveys
+    for (let i = 0; i < surveys.length; i++) {
+      for (let j = i + 1; j < surveys.length; j++) {
+        const surveyA = surveys[i];
+        const surveyB = surveys[j];
+
+        // Compare all keys/variables except 'id'
+        Object.keys(surveyA).forEach((key) => {
+          if (key === "id") return;
+
+          const valueA = surveyA[key as keyof CoreSurvey];
+          const valueB = surveyB[key as keyof CoreSurvey];
+
+          if (valueA !== valueB) {
+            // Increment change count for the variable
+            if (!changeTracker[key]) changeTracker[key] = 0;
+            changeTracker[key]++;
+          }
+        });
+      }
+    }
+  });
+
+  // Step 5: Sort the variables by the number of changes (descending)
+  const sortedChanges = Object.entries(changeTracker)
+    .sort((a, b) => b[1] - a[1]) // Sort by count of changes
+    .slice(0, 60); // Take top 20 variables
+
+  // Step 6: Return the top 20 variables with their change counts
+  const finalData = sortedChanges.map(([variable, count]) => ({
+    variable,
+    count,
+  }));
+
+  return finalData;
+};
+
+// ======================================================================================================================================
+// Function 4 - Combine Surveys
+// ======================================================================================================================================
 
 export interface NkfCleanData {
     id: string; // Patient identifier
@@ -227,70 +282,6 @@ export const patientPortalComboNew = (
     return combinedData;
   };
 
-
-
-
-  export const coreSurveyFx = (data: CoreSurvey[]) => {
-    // Step 1: Group surveys by ID
-    const groupedById: Record<string, CoreSurvey[]> = {};
-  
-    data.forEach((survey) => {
-      if (!groupedById[survey.id]) groupedById[survey.id] = [];
-      groupedById[survey.id].push(survey);
-    });
-  
-    // Step 2: Filter IDs with more than one survey
-    const filteredIds = Object.keys(groupedById).filter(
-      (id) => groupedById[id].length > 1
-    );
-  
-    // Step 3: Initialize a tracker for variable changes
-    const changeTracker: Record<string, number> = {};
-  
-    // Step 4: Compare all surveys for each ID
-    filteredIds.forEach((id) => {
-      const surveys = groupedById[id];
-  
-      // Compare each pair of surveys
-      for (let i = 0; i < surveys.length; i++) {
-        for (let j = i + 1; j < surveys.length; j++) {
-          const surveyA = surveys[i];
-          const surveyB = surveys[j];
-  
-          // Compare all keys/variables except 'id'
-          Object.keys(surveyA).forEach((key) => {
-            if (key === "id") return;
-  
-            const valueA = surveyA[key as keyof CoreSurvey];
-            const valueB = surveyB[key as keyof CoreSurvey];
-  
-            if (valueA !== valueB) {
-              // Increment change count for the variable
-              if (!changeTracker[key]) changeTracker[key] = 0;
-              changeTracker[key]++;
-            }
-          });
-        }
-      }
-    });
-  
-    // Step 5: Sort the variables by the number of changes (descending)
-    const sortedChanges = Object.entries(changeTracker)
-      .sort((a, b) => b[1] - a[1]) // Sort by count of changes
-      .slice(0, 60); // Take top 20 variables
-  
-    // Step 6: Return the top 20 variables with their change counts
-    const finalData = sortedChanges.map(([variable, count]) => ({
-      variable,
-      count,
-    }));
-  
-    return finalData;
-  };
-
-
-export const coreSurveyVariableUpdate = (data: CoreSurvey[]) => {
-  let finalData = {};
-
-  return finalData;
-}
+// ======================================================================================================================================
+// Function 5 - Combine Core Surveys into one based on rules, export core survey questions that SHOULD change into repeating survey
+// ======================================================================================================================================

@@ -38,6 +38,8 @@ export interface CoreSurvey {
     [key: string]: string | number | boolean | null;
 }
 
+// EQ5D5L
+
 export interface EQ5D5L {
     id: string,
     eq_mobility: string,
@@ -51,6 +53,8 @@ export interface EQ5D5L {
     eq_template: string,
     eq_batchLastRun: string,
 }
+
+// KDQOL
 
 export interface KDQOL {
     id: string,
