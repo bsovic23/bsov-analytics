@@ -1,24 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// Page Imports
-import Home from '../src/pages/Home';
-import DataDictionary from './pages/DataDictionary';
-import Registry from './pages/Registry';
-import GeneralAnalysis from './pages/GeneralAnalysis';
-import Survey from './pages/Survey';
-import Salesforce from './pages/Salesforce';
-import Affinia from './pages/Affinia';
-import Ce from './pages/CE';
-import Pam from './pages/Pam';
-import TxTransplant from './pages/TxTransplant';
-import Membership from './pages/Membership';
-import MoPilot from './pages/moPilot';
-import ProjectEcho from './pages/ProjectEcho';
-import BsovAnalytics from './pages/BsovAnalytics';
-import PatientPortal from './pages/PatientPortal';
-
 // Bsov Analytics
+import BsovAnalyticsComponent from './pages/BsovAnalytics';
+
 import DataBot from './pages/BsovAnalyticsPages/DataBot';
 import NkfAnalyticsPage from './pages/BsovAnalyticsPages/NkfAnalytics';
 
@@ -28,21 +13,8 @@ import YouTubeAnalyticsPage from './pages/BsovAnalyticsPages/YouTubeAnalytics';
 import CaseHippoAnalyticsPage from './pages/BsovAnalyticsPages/CaseHippoAnalytics';
 
 const routes = [
-  {path: "/", element: <Home />},
-  {path: "/DataDictionary", element: <DataDictionary />},
-  {path: "/Registry", element: <Registry />},
-  {path: "/GeneralAnalysis", element: <GeneralAnalysis />},
-  {path: "/Survey", element: <Survey />},
-  {path: "/Salesforce", element: <Salesforce />},
-  {path: "/Affinia", element: <Affinia />},
-  {path: "/Ce", element: <Ce />},
-  {path: "/Pam", element: <Pam />},
-  {path: "/TxTransplant", element: <TxTransplant />},
-  {path: "/Membership", element: <Membership />},
-  {path: "/MoPilot", element: <MoPilot />},
-  {path: "/ProjectEcho", element: <ProjectEcho />},
-  {path: "/BsovAnalytics", element: <BsovAnalytics />},
-  {path: "/PatientPortal", element: <PatientPortal />},
+  {path: "/", element: <BsovAnalyticsComponent />},
+
   // Bsov Analytics
   {path: "/DataBot", element: <DataBot />},
   {path: "/NkfAnalyticsPage", element: <NkfAnalyticsPage />},
@@ -57,12 +29,12 @@ function App() {
   return (
     <section class='app'>
         <header class='app-heading'>
-          <h1>BSOV ANALYTICS</h1>
-          <p>Version 2.01.01</p>
+          <h1>NKF ANALYTICS</h1>
+          <p>Version 1.01.01</p>
         </header>
         <div>
             <body>
-              <Router>
+              <Router basename="/bsov-analytics">
                 <Routes>
                   {routes.map(({ path, element }) => (
                     <Route key={path} path={path} element={element} />

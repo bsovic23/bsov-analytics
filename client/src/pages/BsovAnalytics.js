@@ -7,7 +7,7 @@ import React from 'react';
 import Cards from "../components/Cards";
 
 const importCards = [
-    {title: 'DataBot', text: 'DataBot can answer your analytic questions', link: '/DataBot'},
+    {title: 'DataBot - x Under Construction x', text: 'DataBot can answer your analytic questions', link: '/'},
     {title: 'Google Analytics', text: 'Web Page Analytics', link: '/GoogleAnalyticsPage'},
     {title: 'Youtube Analytics', text: 'YouTube Video Analytics', link: '/YouTubeAnalyticsPage'},
     {title: 'Genially Analytics', text: 'Genially Platform Analytics', link: '/GeniallyAnalyticsPage'},

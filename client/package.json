@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "homepage": "https://bsovic23.github.io/",
+  "homepage": "https://bsovic23.github.io/bsov-analytics/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -44,7 +44,7 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^6.0.0",
+    "gh-pages": "^6.3.0",
     "typescript": "^5.4.5"
   }
 }
