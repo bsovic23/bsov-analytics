@@ -21,7 +21,7 @@ import {
 
 let youtubeAnalyticsData;
 try {
-    youtubeAnalyticsData = require('../../data/bsovAnalytics/youtubeData').youtubeAnalyticsData;
+    youtubeAnalyticsData = require('../../data/youtubeData').youtubeAnalyticsData;
 } catch (error) {
     console.error('Youtube Data not available', error);
 }

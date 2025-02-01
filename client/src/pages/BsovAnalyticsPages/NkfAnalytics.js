@@ -22,9 +22,9 @@ import {
 
 let nkfAnalyticsData;
 try {
-    nkfAnalyticsData = require('../../data/bsovAnalytics/nkfAnalytics').nkfAnalyticsData;
+    nkfAnalyticsData = require('../../data/nkfAnalytics').nkfAnalyticsData;
 } catch (error) {
-    console.error('Genially Data not available', error);
+    console.error('NKF Data not available', error);
 }
 
 // ------------------------------------

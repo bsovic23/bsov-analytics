@@ -55,7 +55,7 @@ export const caseHippoModuleCompleteFx = (data: CasehippoData[]) => {
 };
 
 
-export const caseHippoModuleEnrolleFx = (data: CasehippoData[]) => {
+export const caseHippoModuleEnrollFx = (data: CasehippoData[]) => {
     let moduleCount: { [key: string]: number } = {};
 
     for (const obj of data) {

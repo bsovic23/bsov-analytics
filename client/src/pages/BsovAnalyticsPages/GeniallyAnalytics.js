@@ -20,7 +20,7 @@ import {
 
 let geniallyAnalyticsData;
 try {
-    geniallyAnalyticsData = require('../../data/bsovAnalytics/geniallyData').geniallyAnalyticsData;
+    geniallyAnalyticsData = require('../../data/geniallyData').geniallyAnalyticsData;
 } catch (error) {
     console.error('Genially Data not available', error);
 }

@@ -15,7 +15,7 @@ import {
     caseHippoEnrollmentFx,
     caseHippoCompleteFx,
     caseHippoModuleCompleteFx,
-    caseHippoModuleEnrolleFx,
+    caseHippoModuleEnrollFx,
     caseHippoCompleteProfessionFx,
 } from '../../functions/caseHippoAnalysisFx';
 
@@ -24,8 +24,8 @@ import {
 let caseHippoData;
 let caseHippoMappingData;
 try {
-    caseHippoData = require('../../data/bsovAnalytics/casehippoData').caseHippoData;
-    caseHippoMappingData = require('../../data/bsovAnalytics/casehippoMappingData').caseHippoMappingData;
+    caseHippoData = require('../../data/casehippoData').caseHippoData;
+    caseHippoMappingData = require('../../data/casehippoMappingData').caseHippoMappingData;
 } catch (error) {
     console.error('Case Hippo data not available', error);
 }
@@ -61,7 +61,7 @@ const CaseHippoAnalyticsPage = () => {
         {
             id: 4, 
             title: "Module Enroll Count", 
-            data:  caseHippoModuleEnrolleFx,
+            data:  caseHippoModuleEnrollFx,
         },
         {
             id: 5, 
