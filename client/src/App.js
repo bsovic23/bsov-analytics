@@ -30,7 +30,7 @@ function App() {
     <section class='app'>
         <header class='app-heading'>
           <h1>NKF ANALYTICS</h1>
-          <p>Version 1.01.01</p>
+          <p>Version 5.01.03</p>
         </header>
         <div>
             <body>
