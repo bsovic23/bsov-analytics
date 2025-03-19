@@ -12,6 +12,9 @@ import GeniallyAnalyticsPage from './pages/BsovAnalyticsPages/GeniallyAnalytics'
 import YouTubeAnalyticsPage from './pages/BsovAnalyticsPages/YouTubeAnalytics';
 import CaseHippoAnalyticsPage from './pages/BsovAnalyticsPages/CaseHippoAnalytics';
 
+// NKF Analytics V5.0 New
+import NewPage from './pages/NkfAnalyticsPages/NewPage';
+
 const routes = [
   {path: "/", element: <BsovAnalyticsComponent />},
 
@@ -23,6 +26,9 @@ const routes = [
   {path: "/GeniallyAnalyticsPage", element: <GeniallyAnalyticsPage />},
   {path: "/YouTubeAnalyticsPage", element: <YouTubeAnalyticsPage />},
   {path: "/CaseHippoAnalyticsPage", element: <CaseHippoAnalyticsPage />},
+
+  // NKF Analytics V5.0 New
+  {path: "/NewPage", element: <NewPage />},
 ];
 
 function App() {

@@ -13,6 +13,9 @@ const importCards = [
     {title: 'Genially Analytics', text: 'Genially Platform Analytics', link: '/GeniallyAnalyticsPage'},
     {title: 'CaseHippo Analytics', text: 'CME/CE Analytics', link: '/CaseHippoAnalyticsPage'},
     {title: 'NKF Analytics Combo', text: 'overview and comparison among analytics', link: '/NkfAnalyticsPage'},
+
+    //
+    {title: 'NKF V5.0 layout', text: 'New Layout', link: '/NewPage'},
 ];
 
 const BsovAnalytics = () => {
