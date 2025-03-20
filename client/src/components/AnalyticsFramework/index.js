@@ -1,21 +1,29 @@
 import React, { useState } from 'react';
 
+// ----------------------------------------------------------------------------------------------
+// Component Imports
+// ----------------------------------------------------------------------------------------------
+import BarChart from '../AnalyticsCharts/Bar';
+
+// ===============================================================================================
+// Analytics Framework
+// ===============================================================================================
+
 const AnalyticsFramework = ({ pageTitle, data }) => {
 
   const [selectedType, setSelectedType] = useState(null);
-  const [chartTitle, setChartTitle] = useState('CHART');
-  const [chartDescription, setChartInfo] = useState("Analysis Information");
+  const [selectedData, setSelectedData] = useState(null);
+  const [chartDescription, setChartDescription] = useState("Analysis Information");
 
   const handleSelectedType = (type) => {
     setSelectedType(type);
-    setChartTitle('CHART');
-    setChartInfo('Analysis Information');
+    setChartDescription('Analysis Information');
   };
 
   const handleOptionClick = (item) => {
     console.log('Selected Data:', item.formattedData);
-    setChartTitle(item.optionTitle);
-    setChartInfo(item.optionInformation);
+    setSelectedData(item.formattedData);
+    setChartDescription(item.optionInformation);
   };
 
   return (
@@ -23,8 +31,14 @@ const AnalyticsFramework = ({ pageTitle, data }) => {
       {/* Box 1 Left */}
       <div className="analyticsFramework-leftBox">
         <h2>{pageTitle}</h2>
-        <div>{chartTitle}</div>
-        <p>{chartDescription}</p>
+        {selectedData ? (
+          <>
+            <BarChart data={selectedData} />
+            <p>{chartDescription}</p>
+          </>
+        ) : (
+          <p>Select a chart type and option to display the chart</p>
+        )}
       </div>
 
       {/* Box 2 Right */}
@@ -40,7 +54,8 @@ const AnalyticsFramework = ({ pageTitle, data }) => {
             </button>
           ))}
         </div>
-        <div>
+
+        <div className="option-buttons">
           {selectedType ? (
             data
               .filter((item) => item.type === selectedType)

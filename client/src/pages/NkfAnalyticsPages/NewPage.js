@@ -6,7 +6,16 @@ const NewPage = () => {
 
     const cleanData = [
         { type: 'line', optionTitle: 'option 1', optionInformation: 'info 1', formattedData: 'data1'},
-        { type: 'bar', optionTitle: 'option 2', optionInformation: 'info 2', formattedData: 'data2'},
+        { type: 'bar', optionTitle: 'option 2', optionInformation: 'info 2', formattedData: {
+            "apples": 30,
+            "bannanas": 20,
+            "oranges": 10,
+        }},
+        { type: 'bar', optionTitle: 'option 2', optionInformation: 'info 2', formattedData: {
+            "cars": 10,
+            "bikes": 2,
+            "peopls": 100,
+        }},
         { type: 'other', optionTitle: 'option 3', optionInformation: 'info 3', formattedData: 'data3'},
     ];
 

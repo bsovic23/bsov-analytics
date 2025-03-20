@@ -14,6 +14,7 @@ import CaseHippoAnalyticsPage from './pages/BsovAnalyticsPages/CaseHippoAnalytic
 
 // NKF Analytics V5.0 New
 import NewPage from './pages/NkfAnalyticsPages/NewPage';
+import CaseHippoAnalyticsPageNew from './pages/NkfAnalyticsPages/CaseHippo'; 
 
 const routes = [
   {path: "/", element: <BsovAnalyticsComponent />},
@@ -29,6 +30,7 @@ const routes = [
 
   // NKF Analytics V5.0 New
   {path: "/NewPage", element: <NewPage />},
+  {path: "/CaseHippoAnalyticsPageNew", element: <CaseHippoAnalyticsPageNew />},
 ];
 
 function App() {

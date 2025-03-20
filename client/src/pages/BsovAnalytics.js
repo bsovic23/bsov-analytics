@@ -16,6 +16,7 @@ const importCards = [
 
     //
     {title: 'NKF V5.0 layout', text: 'New Layout', link: '/NewPage'},
+    {title: 'NKF V5.0 layout - casehippo new', text: 'New Layout', link: '/CaseHippoAnalyticsPageNew'},
 ];
 
 const BsovAnalytics = () => {

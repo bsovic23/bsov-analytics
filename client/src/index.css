@@ -324,21 +324,31 @@ code {
   justify-content: center;
   border: 1px solid #ccc;
   padding: 20px;
+  overflow-y: auto; /* Prevents content from expanding the box vertically */
+  max-height: 600px; /* Adjust as needed */
+  background-color: #bdb6a8; /* Light orange background for the boxes */
+  border-radius: 8px; /* Optional: rounded corners for a softer look */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
 }
 
 .analyticsFramework-RightBox {
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start; /* Aligns items to the top */
+  justify-content: flex-start; /* Keeps items at the top */
   border: 1px solid #ccc;
   padding: 20px;
+  max-height: 600px; /* Adjust height to fit the screen */
+  overflow-y: auto; /* Prevents content from overflowing vertically */
+  background-color: #d6a853; /* Light orange background for the boxes */
+  border-radius: 8px; /* Optional: rounded corners for a softer look */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
 }
 
 .analyticsFramework-RightBox div:first-child {
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start; /* Keeps the type buttons aligned at the top */
   margin-bottom: 16px;
 }
 
@@ -367,4 +377,10 @@ code {
 .analyticsFramework-RightBox button.active::after {
   width: 100%;
   background-color: #007bff;
+}
+
+.analyticsFramework-RightBox .option-buttons {
+  display: flex;
+  flex-direction: column; /* Stacks the buttons vertically */
+  gap: 8px; /* Adds space between the buttons */
 }
