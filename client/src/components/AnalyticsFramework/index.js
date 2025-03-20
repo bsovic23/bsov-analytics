@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 // Component Imports
 // ----------------------------------------------------------------------------------------------
 import BarChart from '../AnalyticsCharts/Bar';
+import LineChart from '../AnalyticsCharts/Line';
 
 // ===============================================================================================
 // Analytics Framework
@@ -18,6 +19,7 @@ const AnalyticsFramework = ({ pageTitle, data }) => {
   const handleSelectedType = (type) => {
     setSelectedType(type);
     setChartDescription('Analysis Information');
+    setSelectedData(null);
   };
 
   const handleOptionClick = (item) => {
@@ -33,7 +35,8 @@ const AnalyticsFramework = ({ pageTitle, data }) => {
         <h2>{pageTitle}</h2>
         {selectedData ? (
           <>
-            <BarChart data={selectedData} />
+            {selectedType === 'bar' && <BarChart data={selectedData} />}
+            {selectedType === 'line' && <LineChart data={selectedData} />}
             <p>{chartDescription}</p>
           </>
         ) : (
