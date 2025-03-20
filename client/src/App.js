@@ -8,13 +8,12 @@ import DataBot from './pages/BsovAnalyticsPages/DataBot';
 import NkfAnalyticsPage from './pages/BsovAnalyticsPages/NkfAnalytics';
 
 import GoogleAnalyticsPage from './pages/BsovAnalyticsPages/GoogleAnalytics';
-import GeniallyAnalyticsPage from './pages/BsovAnalyticsPages/GeniallyAnalytics';
-import YouTubeAnalyticsPage from './pages/BsovAnalyticsPages/YouTubeAnalytics';
-import CaseHippoAnalyticsPage from './pages/BsovAnalyticsPages/CaseHippoAnalytics';
 
 // NKF Analytics V5.0 New
-import NewPage from './pages/NkfAnalyticsPages/NewPage';
 import CaseHippoAnalyticsPageNew from './pages/NkfAnalyticsPages/CaseHippo'; 
+import YouTube from './pages/NkfAnalyticsPages/Youtube';
+import Genially from './pages/NkfAnalyticsPages/Genially';
+import Google from './pages/NkfAnalyticsPages/Google';
 
 const routes = [
   {path: "/", element: <BsovAnalyticsComponent />},
@@ -22,15 +21,13 @@ const routes = [
   // Bsov Analytics
   {path: "/DataBot", element: <DataBot />},
   {path: "/NkfAnalyticsPage", element: <NkfAnalyticsPage />},
-
   {path: "/GoogleAnalyticsPage", element: <GoogleAnalyticsPage />},
-  {path: "/GeniallyAnalyticsPage", element: <GeniallyAnalyticsPage />},
-  {path: "/YouTubeAnalyticsPage", element: <YouTubeAnalyticsPage />},
-  {path: "/CaseHippoAnalyticsPage", element: <CaseHippoAnalyticsPage />},
 
   // NKF Analytics V5.0 New
-  {path: "/NewPage", element: <NewPage />},
   {path: "/CaseHippoAnalyticsPageNew", element: <CaseHippoAnalyticsPageNew />},
+  {path: "/YouTube", element: <YouTube />},
+  {path: "/Genially", element: <Genially />},
+  {path: "/Google", element: <Google />},
 ];
 
 function App() {

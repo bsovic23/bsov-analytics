@@ -40,32 +40,32 @@ const CaseHippoAnalyticsPageNew = () => {
         const result = [
             { 
                 type: 'bar',
-                optionTitle: 'Enrollments Count',
-                optionInformation: 'Enrollment Information count total',
+                optionTitle: 'Module Enrollments Count',
+                optionInformation: 'The total amount of module enrollments',
                 formattedData: caseHippoEnrollmentFx(caseHippoData),
             },
             { 
                 type: 'bar',
-                optionTitle: 'Completions Count',
-                optionInformation: 'Total Counts of Completions', 
+                optionTitle: 'Module Completions Count',
+                optionInformation: 'The total amount of module completions', 
                 formattedData: caseHippoCompleteFx(caseHippoData),
             },
             { 
                 type: 'bar', 
                 optionTitle: 'Modules Enrolled', 
-                optionInformation: 'Case Hippo Modules Enrolled',
+                optionInformation: 'Amount of enrollments broken down by specific modules',
                 formattedData: caseHippoModuleEnrollFx(caseHippoData),
             },
             { 
                 type: 'bar',
                 optionTitle: 'Modules Complete',
-                optionInformation: 'Case Hippo Modules Completed',
+                optionInformation: 'Amount of completions broken down by specific modules',
                 formattedData: caseHippoModuleCompleteFx(caseHippoData),
             },
             { 
                 type: 'bar', 
                 optionTitle: 'Professions Completed', 
-                optionInformation: 'Modules completed by profession',
+                optionInformation: 'What is the self reported profession for completed modules',
                 formattedData: caseHippoCompleteProfessionFx(caseHippoData),
             },
         ];

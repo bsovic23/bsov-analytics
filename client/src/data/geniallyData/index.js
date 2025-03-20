@@ -1,4 +1,4 @@
-export const geniallyData = [
+export const geniallyAnalyticsData = [
     {
       "topic": "apol1",
       "viewingTime": "0h 0m 39s",
