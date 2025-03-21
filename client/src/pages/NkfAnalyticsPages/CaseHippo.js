@@ -16,6 +16,9 @@ import {
     caseHippoModuleCompleteFx,
     caseHippoModuleEnrollFx,
     caseHippoCompleteProfessionFx,
+    caseHippoCompleteFyFx,
+    caseHippoEnrollFyFx,
+    caseHippoMemberCount,
 } from '../../functions/caseHippoAnalysisFx';
 
 // Data Import
@@ -67,6 +70,24 @@ const CaseHippoAnalyticsPageNew = () => {
                 optionTitle: 'Professions Completed', 
                 optionInformation: 'What is the self reported profession for completed modules',
                 formattedData: caseHippoCompleteProfessionFx(caseHippoData),
+            },
+            { 
+                type: 'line', 
+                optionTitle: 'Modules Complete each FY', 
+                optionInformation: 'How many modules were completed during specific FY',
+                formattedData: caseHippoCompleteFyFx(caseHippoData),
+            },
+            { 
+                type: 'line', 
+                optionTitle: 'Modules Enrolled each FY', 
+                optionInformation: 'How many modules were enrolled during specific FY',
+                formattedData: caseHippoEnrollFyFx(caseHippoData),
+            },
+            { 
+                type: 'bar', 
+                optionTitle: 'Member Count', 
+                optionInformation: 'How many members enrolled in modules',
+                formattedData: caseHippoMemberCount(caseHippoData),
             },
         ];
 

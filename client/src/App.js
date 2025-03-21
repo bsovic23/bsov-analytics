@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 // Bsov Analytics
 import BsovAnalyticsComponent from './pages/BsovAnalytics';
@@ -14,6 +14,7 @@ import CaseHippoAnalyticsPageNew from './pages/NkfAnalyticsPages/CaseHippo';
 import YouTube from './pages/NkfAnalyticsPages/Youtube';
 import Genially from './pages/NkfAnalyticsPages/Genially';
 import Google from './pages/NkfAnalyticsPages/Google';
+import NkfAnalytics from './pages/NkfAnalyticsPages/Nkf';
 
 const routes = [
   {path: "/", element: <BsovAnalyticsComponent />},
@@ -28,30 +29,37 @@ const routes = [
   {path: "/YouTube", element: <YouTube />},
   {path: "/Genially", element: <Genially />},
   {path: "/Google", element: <Google />},
+  {path: "/NkfAnalytics", element: <NkfAnalytics />},
 ];
 
 function App() {
   return (
-    <section class='app'>
-        <header class='app-heading'>
+    <Router basename="/bsov-analytics">
+      <section className="app">
+        <header className="app-heading">
+          <Link to="/">Home</Link>
           <h1>NKF ANALYTICS</h1>
           <p>Version 5.01.03</p>
         </header>
-        <div>
-            <body>
-              <Router basename="/bsov-analytics">
-                <Routes>
-                  {routes.map(({ path, element }) => (
-                    <Route key={path} path={path} element={element} />
-                  ))}
-                </Routes>
-              </Router>
-            </body>
+
+        <div className="app-content">
+          <Routes>
+            {routes.map(({ path, element }) => (
+              <Route key={path} path={path} element={element} />
+            ))}
+          </Routes>
         </div>
-        <footer class='app-footer'>
-            Footer Created Here
+
+        <footer className="app-footer">
+          <div className="footer-left">
+            <p>Brit Sovic</p>
+          </div>
+          <div className="footer-right">
+            <p>National Kidney Foundation</p>
+          </div>
         </footer>
-    </section>
+      </section>
+    </Router>
   );
 }
 

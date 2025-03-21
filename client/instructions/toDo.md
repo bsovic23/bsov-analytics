@@ -9,12 +9,17 @@ To Do
 * Analytics Framework Page
     [] Add buttons for bar graphs that re-shape if one bar is wayyyyyy bigger than another
 
+* CSS
+    [] Format the structure of CSS order
+    [] Clean up the CSS code that is not used anymore
+    [] Update pages with new CSS id/class if needed
+
 -----------------------------
 1. Design Updates
 -----------------------------
 
 * Layout - header
-    [] Update the header with a home button
+    [] Instead of 'Home' text replace with a home icon
 
 * Layout - analytics framework
     [] Create a spot where each page has a spot with a date of: 'last updated' since each page of data will be differnet
@@ -27,16 +32,14 @@ To Do
 * Footer
     [] Create a Footer
 
-
 -----------------------------
 2. Data Page Updates
 -----------------------------
     
 * PodBean Data
-    [] Add PodBean
+    [] Add PodBean Data
 
 * YouTube Data
-    []
 
 * Genially Data
     [] Month by Month Fx off due to format of first Accessed format i think
@@ -44,8 +47,8 @@ To Do
     [] topic views by month (multi line for each month each topic)
 
 * Case Hippo Data
-    [] Create Line (Fiscal Year) for Module Completions
-    [] Create Line (Fiscal Year) for Module Enrollments
+    [x] Create Line (Fiscal Year) for Module Completions  ONLY FY23 IS IN CURRENT DATA
+    [x] Create Line (Fiscal Year) for Module Enrollments  ONLY FY23 IS IN CURRENT DATA
  
 * Google
     [] Need to re-work the Original Google page into a 'live whenever mary needs stats'

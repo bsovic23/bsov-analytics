@@ -16,6 +16,7 @@ const importCards = [
     {title: 'YouTube Analytics', text: 'NKF YouTube Channel Video Analytics', link: '/YouTube'},
     {title: 'Genially Analytics', text: 'KLS Infographic Analytics', link: '/Genially'},
     {title: 'Google Analytics', text: 'NKF Webtraffic Analytics', link: '/Google'},
+    {title: 'Nkf Analytics', text: 'NKF Analytics', link: '/NkfAnalytics'},
 ];
 
 const BsovAnalytics = () => {

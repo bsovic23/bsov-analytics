@@ -23,7 +23,6 @@ const AnalyticsFramework = ({ pageTitle, data }) => {
   };
 
   const handleOptionClick = (item) => {
-    console.log('Selected Data:', item.formattedData);
     setSelectedData(item.formattedData);
     setChartDescription(item.optionInformation);
   };

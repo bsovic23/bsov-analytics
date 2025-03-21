@@ -83,3 +83,51 @@ export const caseHippoCompleteProfessionFx = (data: CasehippoData[]) => {
 
     return professionEnroll;
 };
+
+
+export const caseHippoCompleteFyFx = (data: CasehippoData[]) => {
+
+    let fyCompleteCount: { [key: string]: number } = {}
+
+    for (const obj of data) {
+        const { fiscalYear, complete } = obj;
+
+        if (complete) {
+            fyCompleteCount[fiscalYear] = (fyCompleteCount[fiscalYear] || 0) + 1;
+        }
+    }
+
+    return fyCompleteCount;
+};
+
+export const caseHippoEnrollFyFx = (data: CasehippoData[]) => {
+
+    let fyEnrollCount: { [key: string]: number } = {}
+
+    for (const obj of data) {
+        const { fiscalYear, enrolled } = obj;
+
+        if (enrolled) {
+            fyEnrollCount[fiscalYear] = (fyEnrollCount[fiscalYear] || 0) + 1;
+        }
+    }
+
+    return fyEnrollCount;
+};
+
+export const caseHippoMemberCount = (data: CasehippoData[]) => {
+
+    let memberCount = {
+        members: 0
+    };
+
+    for (const obj of data) {
+        const { member } = obj;
+
+        if (member) {
+            memberCount.members += 1;
+        }
+    }
+
+    return memberCount;
+}

@@ -13,10 +13,50 @@ code {
 }
 
 /* App.js ============================================================================ */
-.app .app-heading {
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ---------- Header --------------- */
+.app-heading {
   background: linear-gradient(to bottom, rgb(240, 149, 30), #899197);
-  text-align: center;
-  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px;
+}
+
+.app-heading a {
+  text-decoration: none;
+  color: black;
+  border: 2px solid black;
+  padding: 8px 16px;
+  border-radius: 20px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.app-heading a:hover {
+  background-color: lightgreen;
+  color: black;
+}
+
+/* ---------- Content Section --------------- */
+.app-content {
+  flex: 1;
+  padding: 20px;
+}
+
+/* ---------- Footer --------------- */
+.app-footer {
+  background: linear-gradient(to bottom, rgb(240, 149, 30), #899197);
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  font-size: 16px;
 }
 
 /* Pages ============================================================================ */
