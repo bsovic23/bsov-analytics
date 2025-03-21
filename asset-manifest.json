@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/bsov-analytics/static/css/main.1f13fd4a.css",
-    "main.js": "/bsov-analytics/static/js/main.6cfe8d66.js",
+    "main.css": "/bsov-analytics/static/css/main.523fe86d.css",
+    "main.js": "/bsov-analytics/static/js/main.a1ff8ec6.js",
     "index.html": "/bsov-analytics/index.html",
-    "main.1f13fd4a.css.map": "/bsov-analytics/static/css/main.1f13fd4a.css.map",
-    "main.6cfe8d66.js.map": "/bsov-analytics/static/js/main.6cfe8d66.js.map"
+    "main.523fe86d.css.map": "/bsov-analytics/static/css/main.523fe86d.css.map",
+    "main.a1ff8ec6.js.map": "/bsov-analytics/static/js/main.a1ff8ec6.js.map"
   },
   "entrypoints": [
-    "static/css/main.1f13fd4a.css",
-    "static/js/main.6cfe8d66.js"
+    "static/css/main.523fe86d.css",
+    "static/js/main.a1ff8ec6.js"
   ]
 }
