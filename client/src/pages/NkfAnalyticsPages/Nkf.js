@@ -58,7 +58,7 @@ export const NkfAnalytics = () => {
                 { 
                     type: 'line', 
                     optionTitle: 'Views By Month', 
-                    optionInformation: 'Total views of Genially material by month',
+                    optionInformation: 'Total views of NKF material by month',
                     formattedData: nkfAnalyticsFYFx(nkfAnalyticsData),
                 },
             ];

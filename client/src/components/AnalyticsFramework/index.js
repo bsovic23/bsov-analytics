@@ -23,7 +23,9 @@ const AnalyticsFramework = ({ pageTitle, data }) => {
   };
 
   const handleOptionClick = (item) => {
-    setSelectedData(item.formattedData);
+    setSelectedData(item.formattedData)
+    
+    ;
     setChartDescription(item.optionInformation);
   };
 
