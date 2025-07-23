@@ -7,14 +7,11 @@ import BsovAnalyticsComponent from './pages/BsovAnalytics';
 import DataBot from './pages/BsovAnalyticsPages/DataBot';
 import NkfAnalyticsPage from './pages/BsovAnalyticsPages/NkfAnalytics';
 
-import GoogleAnalyticsPage from './pages/BsovAnalyticsPages/GoogleAnalytics';
-
 // NKF Analytics V5.0 New
 import CaseHippoAnalyticsPageNew from './pages/NkfAnalyticsPages/CaseHippo'; 
 import YouTube from './pages/NkfAnalyticsPages/Youtube';
 import Genially from './pages/NkfAnalyticsPages/Genially';
 import Google from './pages/NkfAnalyticsPages/Google';
-import NkfAnalytics from './pages/NkfAnalyticsPages/Nkf';
 
 const routes = [
   {path: "/", element: <BsovAnalyticsComponent />},
@@ -22,14 +19,12 @@ const routes = [
   // Bsov Analytics
   {path: "/DataBot", element: <DataBot />},
   {path: "/NkfAnalyticsPage", element: <NkfAnalyticsPage />},
-  {path: "/GoogleAnalyticsPage", element: <GoogleAnalyticsPage />},
 
   // NKF Analytics V5.0 New
   {path: "/CaseHippoAnalyticsPageNew", element: <CaseHippoAnalyticsPageNew />},
   {path: "/YouTube", element: <YouTube />},
   {path: "/Genially", element: <Genially />},
   {path: "/Google", element: <Google />},
-  {path: "/NkfAnalytics", element: <NkfAnalytics />},
 ];
 
 function App() {

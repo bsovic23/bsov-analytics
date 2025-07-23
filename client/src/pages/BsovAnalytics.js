@@ -8,7 +8,6 @@ import Cards from "../components/Cards";
 
 const importCards = [
     {title: 'DataBot', text: 'DataBot can answer your analytic questions', link: '/DataBot'},
-    {title: 'Google Analytics', text: 'NKF Webtraffic Analytics - Live auto calculate', link: '/GoogleAnalyticsPage'},
     {title: 'NKF Analytics Combo', text: 'All NKF Analytics', link: '/NkfAnalyticsPage'},
 
     //
@@ -16,7 +15,6 @@ const importCards = [
     {title: 'YouTube Analytics', text: 'NKF YouTube Channel Video Analytics', link: '/YouTube'},
     {title: 'Genially Analytics', text: 'KLS Infographic Analytics', link: '/Genially'},
     {title: 'Google Analytics', text: 'NKF Webtraffic Analytics', link: '/Google'},
-    {title: 'Nkf Analytics', text: 'NKF Analytics', link: '/NkfAnalytics'},
 ];
 
 const BsovAnalytics = () => {
